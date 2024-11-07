@@ -1,3 +1,4 @@
+// src/presentation/screen/admin/wisata_list_admin_screen.dart
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:provider/provider.dart';
@@ -11,8 +12,8 @@ import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.da
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 
-class WisataListScreen extends StatelessWidget {
-  const WisataListScreen({super.key});
+class WisataListAdminScreen extends StatelessWidget {
+  const WisataListAdminScreen({super.key});
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
@@ -60,12 +61,8 @@ class WisataListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Wisata> wisataList = context.watch<WisataProvider>().state.wisataList;
-
-    final List<WisataCategory> categories =
-        context.watch<CategoryProvider>().state.wisataCategories;
-
-    final List<Wisata> filteredWisata =
-        context.watch<CategoryProvider>().state.wisataList;
+    final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
+    final List<Wisata> filteredWisata = context.watch<CategoryProvider>().filteredWisataList;
 
     return Scaffold(
       appBar: _appBar(context),
@@ -76,11 +73,11 @@ class WisataListScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Morning, Faqih",
+                "Morning, Admin",
                 style: Theme.of(context).textTheme.headlineSmall,
               ).fadeAnimation(0.2),
               Text(
-                "Explore breathtaking \nlandscapes that await you \nat the summit!",
+                "Manage available destinations here!",
                 style: Theme.of(context).textTheme.displayLarge,
               ).fadeAnimation(0.4),
               _searchBar(),
@@ -126,7 +123,10 @@ class WisataListScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              WisataListView(wisatas: filteredWisata),
+              WisataListView(
+                wisatas: filteredWisata,
+                isAdmin: true,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 25, bottom: 5),
                 child: Row(
@@ -149,7 +149,11 @@ class WisataListScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              WisataListView(wisatas: wisataList, isReversedList: true),
+              WisataListView(
+                wisatas: wisataList,
+                isReversedList: true,
+                isAdmin: true,
+              ),
             ],
           ),
         ),

@@ -1,20 +1,20 @@
-import 'profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:wisata_app/core/app_data.dart';
-import 'package:wisata_app/src/presentation/screen/cart_screen.dart';
-import 'package:wisata_app/src/presentation/screen/favorite_screen.dart';
-import 'package:wisata_app/src/presentation/screen/wisata_list_screen.dart';
+import 'package:wisata_app/src/presentation/screen/admin/daftar_pesanan.dart';
+import 'package:wisata_app/src/presentation/screen/admin/daftar_wisata.dart';
+import 'package:wisata_app/src/presentation/screen/admin/wisata_list_admin_screen.dart';
 import 'package:wisata_app/src/presentation/animation/page_transition.dart';
+import 'package:wisata_app/src/presentation/screen/admin/profile_admin_screen.dart';
 
-class HomeScreen extends HookWidget {
-  HomeScreen({super.key});
+class HomeAdminScreen extends HookWidget {
+  HomeAdminScreen({super.key});
 
   final List<Widget> screen = [
-    const WisataListScreen(),
-    const CartScreen(),
-    const FavoriteScreen(),
-    const ProfileScreen()
+    const WisataListAdminScreen(),
+    const DaftarPesananScreen(),
+    const DaftarWisataScreen(),
+    const ProfileAdminScreen()
   ];
 
   @override
@@ -27,7 +27,7 @@ class HomeScreen extends HookWidget {
         currentIndex: selectedIndex.value,
         onTap: (int index) => selectedIndex.value = index,
         selectedFontSize: 0,
-        items: AppData.bottomNavigationItems.map(
+        items: AppData.bottomNavigationItemsadmin.map(
           (element) {
             return BottomNavigationBarItem(
               icon: element.disableIcon,

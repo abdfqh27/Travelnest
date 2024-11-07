@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wisata_app/core/app_style.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
-import 'package:wisata_app/src/presentation/screen/wisata_detail_screen.dart';
+import 'package:wisata_app/src/presentation/screen/admin/wisata_detail_screen_admin.dart';
+import 'package:wisata_app/src/presentation/screen/customer/wisata_detail_screen_customer.dart';
 import 'package:wisata_app/src/presentation/widget/custom_page_route.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
@@ -17,27 +18,46 @@ class WisataListView extends StatelessWidget {
     super.key,
     required this.wisatas,
     this.isReversedList = false,
+    required this.isAdmin,
   });
 
   final List<Wisata> wisatas;
   final bool isReversedList;
+  final bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
+    // Tambahkan pengecekan jika `wisatas` kosong
+    if (wisatas.isEmpty) {
+      return Center(
+        child: Text(
+          'Data wisata tidak tersedia',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: Colors.grey,
+              ),
+        ),
+      );
+    }
+
     return SizedBox(
-      height: 220, // Tinggi disesuaikan agar cukup
+      height: 220,
       child: ListView.separated(
         padding: const EdgeInsets.only(top: 20, left: 10),
         scrollDirection: Axis.horizontal,
-        itemCount: isReversedList ? 3 : wisatas.length,
+        itemCount: isReversedList ? (wisatas.length < 3 ? wisatas.length : 3) : wisatas.length,
         itemBuilder: (_, index) {
-          Wisata wisata =
-              isReversedList ? wisatas.reversed.toList()[index] : wisatas[index];
+          final wisata = isReversedList ? wisatas.reversed.toList()[index] : wisatas[index];
+
           return GestureDetector(
             onTap: () {
+              // Navigasi ke halaman detail sesuai peran pengguna (Admin atau Customer)
               Navigator.push(
                 context,
-                CustomPageRoute(child: WisataDetailScreen(wisata: wisata)),
+                CustomPageRoute(
+                  child: isAdmin
+                      ? WisataDetailScreenAdmin(wisata: wisata)
+                      : WisataDetailScreenCustomer(wisata: wisata),
+                ),
               );
             },
             child: Container(
@@ -50,40 +70,43 @@ class WisataListView extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, // Ubah ke `start`
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Membungkus gambar dengan Container
+                  // Menggunakan Image.network untuk gambar dari Firebase Storage
                   SizedBox(
                     height: 100,
-                    width: 120, // Berikan tinggi spesifik pada gambar
+                    width: 120,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
+                      child: Image.network(
                         wisata.image,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.image_not_supported, size: 50);
+                        },
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10), // Menambahkan jarak antara gambar dan teks
+                  const SizedBox(height: 10),
                   
-                  // Ubah tampilan harga menjadi format Rupiah
+                  // Tampilkan harga dalam format Rupiah
                   Text(
                     formatRupiah(wisata.price),
                     style: h3Style.copyWith(color: LightThemeColor.accent),
                   ),
-                  const SizedBox(height: 5), // Menambahkan jarak antar elemen
+                  const SizedBox(height: 5),
                   
-                  // Tampilkan nama makanan
-                  Expanded( // Menambahkan `Expanded` agar teks tidak overflow
+                  // Tampilkan nama wisata
+                  Expanded(
                     child: Text(
                       wisata.name,
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis, // Mengatasi overflow teks
-                      maxLines: 1, // Batasi jumlah baris
-                      textAlign: TextAlign.center, // Posisikan di tengah
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
@@ -91,9 +114,7 @@ class WisataListView extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (_, __) {
-          return const Padding(padding: EdgeInsets.only(right: 50));
-        },
+        separatorBuilder: (_, __) => const SizedBox(width: 20),
       ),
     );
   }

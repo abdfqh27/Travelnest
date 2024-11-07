@@ -1,3 +1,5 @@
+// src/data/model/wisata.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -5,9 +7,9 @@ enum WisataType { all, tertinggi, jawabarat, jawatengah, jawatimur, best }
 
 @immutable
 class Wisata extends Equatable {
-  final int id;
-  final String image; // Main image
-  final List<String> carouselImages; // Carousel images
+  final String id; // Ubah id menjadi String agar sesuai dengan Firestore Document ID
+  final String image;
+  final List<String> carouselImages;
   final String name;
   final double price;
   final int quantity;
@@ -33,13 +35,45 @@ class Wisata extends Equatable {
     required this.voter,
   });
 
-//metode representasi string dari objek wisata nya
-  @override
-  String toString() {
-    return '\nWisata{id: $id, name: $name, quantity: $quantity, isFavorite: $isFavorite, cart: $cart}';
+  // Konversi objek Wisata menjadi Map untuk disimpan di Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'image': image,
+      'carouselImages': carouselImages,
+      'name': name,
+      'price': price,
+      'quantity': quantity,
+      'isFavorite': isFavorite,
+      'description': description,
+      'score': score,
+      'type': type.toString().split('.').last, // Simpan type sebagai String
+      'voter': voter,
+      'cart': cart,
+    };
   }
 
-//untuk mendefinisikan properti yang akan dibandigkan sama atau tidak
+  // Membuat objek Wisata dari Firestore Document
+  factory Wisata.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Wisata(
+      id: doc.id,
+      image: data['image'],
+      carouselImages: List<String>.from(data['carouselImages'] ?? []),
+      name: data['name'],
+      price: data['price'],
+      quantity: data['quantity'] ?? 1,
+      isFavorite: data['isFavorite'] ?? false,
+      description: data['description'],
+      score: data['score'],
+      type: WisataType.values.firstWhere(
+          (e) => e.toString() == 'WisataType.${data['type']}',
+          orElse: () => WisataType.all),
+      voter: data['voter'],
+      cart: data['cart'] ?? false,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,
@@ -53,12 +87,12 @@ class Wisata extends Equatable {
         score,
         type,
         voter,
-        cart
+        cart,
       ];
 
-//metode yang digunakan untuk membuat salinan dari objek wisata
+  // Membuat salinan objek Wisata dengan nilai yang dimodifikasi
   Wisata copyWith({
-    int? id,
+    String? id,
     String? image,
     List<String>? carouselImages,
     String? name,

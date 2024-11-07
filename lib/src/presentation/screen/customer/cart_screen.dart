@@ -10,7 +10,7 @@ import 'package:wisata_app/src/presentation/widget/counter_button.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
-// Fungsi untuk memformat harga menjadi Rupiah
+// Fungsi untuk memformat harga menjadi format Rupiah
 String formatRupiah(double amount) {
   return 'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')}';
 }
@@ -42,14 +42,14 @@ class CartScreen extends StatelessWidget {
             onDismissed: (direction) {
               context.read<WisataProvider>().removeItem(cartWisata[index]);
             },
-            key: Key(cartWisata[index].name),
+            key: Key(cartWisata[index].id),
             background: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
               decoration: BoxDecoration(
                 color: Colors.redAccent,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: const FaIcon(FontAwesomeIcons.trash),
+              child: const FaIcon(FontAwesomeIcons.trash, color: Colors.white),
             ),
             child: Container(
               padding: const EdgeInsets.all(5),
@@ -63,7 +63,16 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   const SizedBox(width: 20),
-                  Image.asset(cartWisata[index].image, scale: 10),
+                  // Menggunakan Image.network untuk mengambil gambar dari URL Firebase
+                  Image.network(
+                    cartWisata[index].image,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.image_not_supported, size: 50, color: Colors.grey);
+                    },
+                  ),
                   const SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +141,7 @@ class CartScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        // Logika untuk kembali ke halaman utama atau ke tempat lain
+                        Navigator.pop(context); // Kembali ke halaman sebelumnya
                       },
                       child: const Text("Tambah Item"),
                     ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wisata_app/core/app_asset.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileAdminScreen extends StatelessWidget {
+  const ProfileAdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
             child: Image.asset(AppAsset.profileImage, width: 300),
           ),
           Text(
-            "Hello Faqih!",
+            "Hello Faqih Ini costumer!",
             style: Theme.of(context).textTheme.displayLarge,
           ),
           Row(

@@ -29,4 +29,27 @@ class AppData {
       'Profile',
     )
   ];
+  static const List<BottomNavigationItem> bottomNavigationItemsadmin = [
+    BottomNavigationItem(
+      Icon(Icons.home_outlined),
+      Icon(Icons.home),
+      'Home',
+      isSelected: true,
+    ),
+    BottomNavigationItem(
+      Icon(Icons.list_outlined),
+      Icon(Icons.list),
+      'Daftar Pesanan',
+    ),
+    BottomNavigationItem(
+      Icon(Icons.library_add_outlined),
+      Icon(Icons.library_add),
+      'Tambah Wsiata',
+    ),
+    BottomNavigationItem(
+      Icon(Icons.person_outline),
+      Icon(Icons.person),
+      'Profile',
+    )
+  ];
 }

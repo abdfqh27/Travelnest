@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wisata_app/core/app_icon.dart';
-import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/core/app_extension.dart';
+import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:wisata_app/src/presentation/widget/counter_button.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
@@ -15,8 +14,8 @@ String formatRupiah(double amount) {
   return 'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')}';
 }
 
-class WisataDetailScreen extends StatefulWidget {
-  const WisataDetailScreen({
+class WisataDetailScreenAdmin extends StatefulWidget {
+  const WisataDetailScreenAdmin({
     super.key,
     required this.wisata,
   });
@@ -24,11 +23,10 @@ class WisataDetailScreen extends StatefulWidget {
   final Wisata wisata;
 
   @override
-  // ignore: library_private_types_in_public_api
   _WisataDetailScreenState createState() => _WisataDetailScreenState();
 }
 
-class _WisataDetailScreenState extends State<WisataDetailScreen> {
+class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
   late PageController _pageController;
   late int _currentIndex;
 
@@ -36,7 +34,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    _currentIndex = 0; // Start at the first image
+    _currentIndex = 0;
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -66,7 +64,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      _pageController.jumpToPage(0); // Jump to the first page
+      _pageController.jumpToPage(0);
     }
   }
 
@@ -85,74 +83,88 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
             Stack(
               alignment: Alignment.center,
               children: [
-                // Carousel for images
+                // Carousel for images from Firebase Storage URLs
                 SizedBox(
                   height: 250,
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: widget.wisata.carouselImages.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return Center(
-                        child: Image.asset(
-                          widget.wisata.carouselImages[index],
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                  child: widget.wisata.carouselImages.isNotEmpty
+                      ? PageView.builder(
+                          controller: _pageController,
+                          itemCount: widget.wisata.carouselImages.length,
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: Image.network(
+                                widget.wisata.carouselImages[index], // Load image from URL
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => const Icon(
+                                  Icons.broken_image,
+                                  size: 80,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: Colors.grey[400],
+                            size: 100,
+                          ),
                         ),
-                      );
-                    },
-                  ),
                 ),
                 // Left Arrow
-                Positioned(
-                  left: 10,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () {
-                      if (_currentIndex > 0) {
-                        _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      } else {
-                        _pageController.jumpToPage(widget.wisata.carouselImages.length - 1); // Go to the last image
-                      }
-                    },
+                if (widget.wisata.carouselImages.isNotEmpty)
+                  Positioned(
+                    left: 10,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      onPressed: () {
+                        if (_currentIndex > 0) {
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          _pageController.jumpToPage(widget.wisata.carouselImages.length - 1);
+                        }
+                      },
+                    ),
                   ),
-                ),
                 // Right Arrow
-                Positioned(
-                  right: 10,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-                    onPressed: _nextPage,
+                if (widget.wisata.carouselImages.isNotEmpty)
+                  Positioned(
+                    right: 10,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      onPressed: _nextPage,
+                    ),
                   ),
-                ),
                 // Page Indicator
-                Positioned(
-                  bottom: 10,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      widget.wisata.carouselImages.length,
-                      (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _currentIndex == index
-                              ? Colors.white
-                              : Colors.grey,
-                          shape: BoxShape.circle,
+                if (widget.wisata.carouselImages.isNotEmpty)
+                  Positioned(
+                    bottom: 10,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        widget.wisata.carouselImages.length,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: _currentIndex == index ? Colors.white : Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -161,6 +173,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Rating and Review Count
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -194,22 +207,13 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                           ),
                         ],
                       ),
-                      IconButton(
-                        icon: wisataList[wisataList.getIndex(widget.wisata)].isFavorite
-                            ? const Icon(AppIcon.heart)
-                            : const Icon(AppIcon.outlinedHeart),
-                        onPressed: () => context
-                            .read<WisataProvider>()
-                            .isFavorite(wisataList[wisataList.getIndex(widget.wisata)]),
-                        color: LightThemeColor.accent,
-                      ),
                     ],
                   ).fadeAnimation(0.4),
                   const SizedBox(height: 15),
+                  // Price and Quantity
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Menggunakan fungsi formatRupiah untuk menampilkan harga
                       Text(
                         formatRupiah(widget.wisata.price),
                         style: Theme.of(context)
@@ -225,9 +229,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreen> {
                             .read<WisataProvider>()
                             .decreaseQuantity(widget.wisata),
                         label: Text(
-                          wisataList[wisataList.getIndex(widget.wisata)]
-                              .quantity
-                              .toString(),
+                          wisataList.firstWhere((w) => w.id == widget.wisata.id).quantity.toString(),
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ),
