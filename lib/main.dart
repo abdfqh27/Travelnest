@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wisata_app/firebase_options.dart';
 import 'dart:ui' show PointerDeviceKind;
 
 import 'package:wisata_app/src/presentation/screen/admin/home_admin_screen.dart';
@@ -11,7 +12,9 @@ import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Inisialisasi Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Inisialisasi Firebase
   runApp(const MyApp());
 }
 
@@ -42,7 +45,7 @@ class MyApp extends StatelessWidget {
             },
           ),
           theme: themeProvider.state.theme,
-          home: HomeCustomerScreen(), // Sesuaikan untuk admin atau customer
+          home: HomeAdminScreen(), // Sesuaikan untuk admin atau customer
         ),
       ),
     );

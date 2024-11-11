@@ -167,26 +167,25 @@ Future<void> updateWisata(Wisata updatedWisata, XFile? mainImageFile, List<XFile
 
 
   // Menandai atau membatalkan favorit item
-  // Menandai atau membatalkan favorit item dan menyimpan status ke Firebase
   void toggleFavorite(Wisata wisata) async {
-    int index = _state.wisataList.indexWhere((element) => element.id == wisata.id);
-    if (index != -1) {
-      final updatedWisata = _state.wisataList[index].copyWith(
-        isFavorite: !_state.wisataList[index].isFavorite,
-      );
+  int index = _state.wisataList.indexWhere((element) => element.id == wisata.id);
+  if (index != -1) {
+    final updatedWisata = _state.wisataList[index].copyWith(
+      isFavorite: !_state.wisataList[index].isFavorite,
+    );
 
-      // Update status favorit di Firebase
-      await _firestore.collection('wisata').doc(wisata.id).update({
-        'isFavorite': updatedWisata.isFavorite,
-      });
+    // Update status favorit di Firebase
+    await _firestore.collection('wisata').doc(wisata.id).update({
+      'isFavorite': updatedWisata.isFavorite,
+    });
 
-      // Update state lokal
-      final updatedList = List<Wisata>.from(_state.wisataList)
-        ..[index] = updatedWisata;
-      _state = _state.copyWith(wisataList: updatedList);
-      notifyListeners();
-    }
+    // Update state lokal
+    final updatedList = List<Wisata>.from(_state.wisataList)
+      ..[index] = updatedWisata;
+    _state = _state.copyWith(wisataList: updatedList);
+    notifyListeners();
   }
+}
 
 
   // Menambah item ke keranjang

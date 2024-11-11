@@ -72,7 +72,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    final List<Wisata> wisataList = context.watch<WisataProvider>().state.wisataList;
+    final List<Wisata> wisataList =
+        context.watch<WisataProvider>().state.wisataList;
     final WisataProvider wisataProvider = context.read<WisataProvider>();
 
     return Scaffold(
@@ -99,10 +100,12 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                           itemBuilder: (context, index) {
                             return Center(
                               child: Image.network(
-                                widget.wisata.carouselImages[index], // Load image from URL
+                                widget.wisata.carouselImages[
+                                    index], // Load image from URL
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) => const Icon(
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(
                                   Icons.broken_image,
                                   size: 80,
                                   color: Colors.grey,
@@ -124,7 +127,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   Positioned(
                     left: 10,
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_back_ios, color: Colors.white),
                       onPressed: () {
                         if (_currentIndex > 0) {
                           _pageController.previousPage(
@@ -132,7 +136,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          _pageController.jumpToPage(widget.wisata.carouselImages.length - 1);
+                          _pageController.jumpToPage(
+                              widget.wisata.carouselImages.length - 1);
                         }
                       },
                     ),
@@ -142,7 +147,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   Positioned(
                     right: 10,
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      icon: const Icon(Icons.arrow_forward_ios,
+                          color: Colors.white),
                       onPressed: _nextPage,
                     ),
                   ),
@@ -159,7 +165,9 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                           width: 8,
                           height: 8,
                           decoration: BoxDecoration(
-                            color: _currentIndex == index ? Colors.white : Colors.grey,
+                            color: _currentIndex == index
+                                ? Colors.white
+                                : Colors.grey,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -236,10 +244,17 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                             ?.copyWith(color: LightThemeColor.accent),
                       ),
                       CounterButton(
-                        onIncrementSelected: () => wisataProvider.increaseQuantity(widget.wisata),
-                        onDecrementSelected: () => wisataProvider.decreaseQuantity(widget.wisata),
+                        onIncrementSelected: () =>
+                            wisataProvider.increaseQuantity(widget.wisata),
+                        onDecrementSelected: () =>
+                            wisataProvider.decreaseQuantity(widget.wisata),
                         label: Text(
-                          wisataList.firstWhere((w) => w.id == widget.wisata.id).quantity.toString(),
+                          // Menggunakan orElse untuk menangani kondisi di mana elemen tidak ditemukan
+                          wisataList
+                              .firstWhere((w) => w.id == widget.wisata.id,
+                                  orElse: () => widget.wisata)
+                              .quantity
+                              .toString(),
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       ),
@@ -262,7 +277,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: width * 0.1),
                       child: ElevatedButton(
-                        onPressed: () => wisataProvider.addToCart(widget.wisata),
+                        onPressed: () =>
+                            wisataProvider.addToCart(widget.wisata),
                         child: const Text("Add to cart"),
                       ),
                     ),

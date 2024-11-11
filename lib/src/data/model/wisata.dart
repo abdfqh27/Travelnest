@@ -1,4 +1,3 @@
-// src/data/model/wisata.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,7 @@ enum WisataType { all, tertinggi, jawabarat, jawatengah, jawatimur, best }
 
 @immutable
 class Wisata extends Equatable {
-  final String id; // Ubah id menjadi String agar sesuai dengan Firestore Document ID
+  final String id;
   final String image;
   final List<String> carouselImages;
   final String name;
@@ -61,14 +60,18 @@ class Wisata extends Equatable {
       image: data['image'],
       carouselImages: List<String>.from(data['carouselImages'] ?? []),
       name: data['name'],
-      price: data['price'],
+      // Periksa tipe `price` dan konversi ke double jika diperlukan
+      price: (data['price'] is int)
+          ? (data['price'] as int).toDouble()
+          : (data['price'] ?? 0.0),
       quantity: data['quantity'] ?? 1,
       isFavorite: data['isFavorite'] ?? false,
       description: data['description'],
-      score: data['score'],
-      type: WisataType.values.firstWhere(
-          (e) => e.toString() == 'WisataType.${data['type']}',
-          orElse: () => WisataType.all),
+      // Periksa tipe `score` dan konversi ke double jika diperlukan
+      score: (data['score'] is int)
+          ? (data['score'] as int).toDouble()
+          : (data['score'] ?? 0.0),
+      type: _mapStringToWisataType(data['type']),
       voter: data['voter'],
       cart: data['cart'] ?? false,
     );
@@ -119,5 +122,23 @@ class Wisata extends Equatable {
       voter: voter ?? this.voter,
       cart: cart ?? this.cart,
     );
+  }
+
+  // Fungsi pembantu untuk mapping String ke WisataType
+  static WisataType _mapStringToWisataType(String? type) {
+    switch (type) {
+      case 'tertinggi':
+        return WisataType.tertinggi;
+      case 'jawabarat':
+        return WisataType.jawabarat;
+      case 'jawatengah':
+        return WisataType.jawatengah;
+      case 'jawatimur':
+        return WisataType.jawatimur;
+      case 'best':
+        return WisataType.best;
+      default:
+        return WisataType.all;
+    }
   }
 }

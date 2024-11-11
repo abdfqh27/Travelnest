@@ -2,8 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-
-enum WisataType { all, tertinggi, jawabarat, jawatengah, jawatimur, best }
+import 'package:wisata_app/src/data/model/wisata.dart'; // Mengimpor WisataType
 
 @immutable
 class WisataCategory extends Equatable {
@@ -15,7 +14,7 @@ class WisataCategory extends Equatable {
   @override
   List<Object?> get props => [type, isSelected];
 
-  // Metode untuk membuat objek WisataCategory dari Firestore
+  // Membuat objek WisataCategory dari Firestore
   factory WisataCategory.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return WisataCategory(
@@ -24,7 +23,7 @@ class WisataCategory extends Equatable {
     );
   }
 
-  // Fungsi pembantu untuk mengonversi String ke WisataType
+  // Fungsi pembantu untuk konversi String ke WisataType
   static WisataType _mapStringToWisataType(String? type) {
     switch (type) {
       case 'tertinggi':

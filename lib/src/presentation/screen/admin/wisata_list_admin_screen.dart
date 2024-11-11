@@ -111,15 +111,13 @@ class WisataListAdminScreen extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            category.type.name.toCapital,
+                            category.type.name.toUpperCase(),
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                       );
                     },
-                    separatorBuilder: (_, __) {
-                      return const Padding(padding: EdgeInsets.only(right: 15));
-                    },
+                    separatorBuilder: (_, __) => const Padding(padding: EdgeInsets.only(right: 15)),
                   ),
                 ),
               ),

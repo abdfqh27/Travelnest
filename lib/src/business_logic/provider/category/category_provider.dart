@@ -2,59 +2,65 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wisata_app/src/data/model/wisata_category.dart';
-import 'package:wisata_app/src/data/model/wisata.dart' as WisataModel;
+import 'package:wisata_app/src/data/model/wisata.dart'; // Mengimpor WisataType dari wisata.dart
 
 class CategoryProvider with ChangeNotifier {
   List<WisataCategory> _categories = [];
-  List<WisataModel.Wisata> _filteredWisataList = [];
+  List<Wisata> _filteredWisataList = [];
+  List<Wisata> _allWisataList = [];
 
-  // Firebase Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<WisataCategory> get categories => _categories;
-  List<WisataModel.Wisata> get filteredWisataList => _filteredWisataList;
+  List<Wisata> get filteredWisataList => _filteredWisataList;
 
-  // Metode untuk mengambil data kategori dari Firestore
+  CategoryProvider() {
+    fetchCategories();
+    fetchAllWisata();
+  }
+
+  // Mengambil data kategori dari Firestore
   Future<void> fetchCategories() async {
     try {
       final snapshot = await _firestore.collection('categories').get();
       _categories = snapshot.docs.map((doc) {
         return WisataCategory.fromFirestore(doc);
       }).toList();
+
+      // Tambahkan kategori 'All' sebagai default
+      _categories.insert(0, WisataCategory(type: WisataType.all, isSelected: true));
       notifyListeners();
     } catch (e) {
       print("Error fetching categories: $e");
     }
   }
 
+  // Mengambil semua data wisata dari Firestore
+  Future<void> fetchAllWisata() async {
+    try {
+      final snapshot = await _firestore.collection('wisata').get();
+      _allWisataList = snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList();
+      _filteredWisataList = _allWisataList;
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching wisata: $e");
+    }
+  }
+
   // Filter item berdasarkan kategori yang dipilih
-  void filterItemByCategory(WisataCategory category) {
-    final updatedCategories = _categories.map((element) {
-      if (element == category) {
-        return category.copyWith(isSelected: true);
-      }
-      return element.copyWith(isSelected: false);
+  void filterItemByCategory(WisataCategory selectedCategory) {
+    // Update kategori yang dipilih dengan isSelected
+    _categories = _categories.map((category) {
+      return category.copyWith(isSelected: category == selectedCategory);
     }).toList();
 
-    _categories = updatedCategories;
-
     // Filter wisata berdasarkan kategori yang dipilih
-    if (category.type == WisataModel.WisataType.all) {
-      _filteredWisataList = _getAllWisata(); // Metode untuk mengambil semua wisata
+    if (selectedCategory.type == WisataType.all) {
+      _filteredWisataList = _allWisataList;
     } else {
-      _filteredWisataList = _getAllWisata()
-          .where((wisata) => wisata.type == category.type)
-          .toList();
+      _filteredWisataList = _allWisataList.where((wisata) => wisata.type == selectedCategory.type).toList();
     }
 
     notifyListeners();
-  }
-
-  // Fungsi untuk mengambil semua data wisata dari Firestore
-  List<WisataModel.Wisata> _getAllWisata() {
-    // Implementasi logika untuk mengambil data wisata dari Firestore atau repository
-    // Misalnya: mengambil data dari collection 'wisata' di Firestore
-    // Kembalikan data wisata dalam bentuk List<Wisata>
-    return [];
   }
 }

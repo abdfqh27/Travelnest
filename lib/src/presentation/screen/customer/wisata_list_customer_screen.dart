@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/core/app_extension.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:wisata_app/src/data/model/wisata_category.dart';
 import 'package:wisata_app/src/presentation/widget/wisata_list_view.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
-import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 
 class WisataListCustomerScreen extends StatelessWidget {
@@ -60,9 +60,8 @@ class WisataListCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Wisata> wisataList = context.watch<WisataProvider>().state.wisataList;
-    final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
     final List<Wisata> filteredWisata = context.watch<CategoryProvider>().filteredWisataList;
+    final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
 
     return Scaffold(
       appBar: _appBar(context),
@@ -95,20 +94,14 @@ class WisataListCustomerScreen extends StatelessWidget {
                     itemBuilder: (_, index) {
                       WisataCategory category = categories[index];
                       return GestureDetector(
-                        onTap: () => context
-                            .read<CategoryProvider>()
-                            .filterItemByCategory(category),
+                        onTap: () => context.read<CategoryProvider>().filterItemByCategory(category),
                         child: Container(
                           width: 100,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: category.isSelected
-                                ? LightThemeColor.accent
-                                : Colors.transparent,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(15),
-                            ),
+                            color: category.isSelected ? LightThemeColor.accent : Colors.transparent,
+                            borderRadius: const BorderRadius.all(Radius.circular(15)),
                           ),
                           child: Text(
                             category.type.name.toCapital,
@@ -117,42 +110,13 @@ class WisataListCustomerScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    separatorBuilder: (_, __) {
-                      return const Padding(padding: EdgeInsets.only(right: 15));
-                    },
+                    separatorBuilder: (_, __) => const Padding(padding: EdgeInsets.only(right: 15)),
                   ),
                 ),
               ),
               WisataListView(
                 wisatas: filteredWisata,
-                isAdmin: false, // Set isAdmin sesuai konteks Customer
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 25, bottom: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Best wisata of the week",
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Text(
-                        "See all",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(color: LightThemeColor.accent),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              WisataListView(
-                wisatas: wisataList,
-                isReversedList: true,
-                isAdmin: false, // Set isAdmin sesuai konteks Customer
+                isAdmin: false,
               ),
             ],
           ),
