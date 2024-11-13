@@ -1,4 +1,3 @@
-// src/presentation/screen/admin/daftar_wisata_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/core/app_color.dart';
@@ -16,15 +15,17 @@ class DaftarWisataScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Daftar Wisata",
-        style: TextStyle(color: LightThemeColor.accent),),
+        title: const Text(
+          "Daftar Wisata",
+          style: TextStyle(color: LightThemeColor.accent),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TambahWisataScreen()),
+                MaterialPageRoute(builder: (context) => const TambahWisataScreen()),
               );
             },
           ),
@@ -36,14 +37,12 @@ class DaftarWisataScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final wisata = wisataProvider.wisataList[index];
           return Card(
-            // Mengatur margin dan elevasi pada Card
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
-            // Menambahkan transparansi pada background Card
-            color: Colors.white.withOpacity(0.8), // 0.8 menandakan 80% opasitas (20% transparan)
+            color: Colors.white.withOpacity(0.8),
             child: ListTile(
               contentPadding: const EdgeInsets.all(8.0),
               leading: ClipRRect(
@@ -57,7 +56,7 @@ class DaftarWisataScreen extends StatelessWidget {
               ),
               title: Text(
                 wisata.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -74,19 +73,30 @@ class DaftarWisataScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit, color: LightThemeColor.yellow),
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      // Menunggu hasil dari EditWisataScreen
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditWisataScreen(wisata: wisata),
                         ),
                       );
+
+                      // Jika update berhasil, tampilkan notifikasi
+                      if (result == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Wisata berhasil diperbarui"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
-                      wisataProvider.deleteWisata(wisata.id);
+                      wisataProvider.deleteWisata(context, wisata.id);
                     },
                   ),
                 ],

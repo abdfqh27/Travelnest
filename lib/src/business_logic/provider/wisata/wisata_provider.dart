@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import intl package for currency formatting
 import 'package:wisata_app/core/app_extension.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
@@ -95,20 +96,40 @@ class WisataProvider with ChangeNotifier {
 
   // Memperbarui data wisata di Firestore
   // Menambahkan fungsi untuk update wisata
-Future<void> updateWisata(Wisata updatedWisata, XFile? mainImageFile, List<XFile>? carouselImages) async {
+Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mainImageFile, List<XFile>? carouselImages) async {
   try {
     String imageUrl = updatedWisata.image;
     List<String> carouselUrls = updatedWisata.carouselImages;
 
-    // Jika gambar utama di-update, unggah gambar baru
+    // Jika gambar utama di-update, hapus gambar lama dan unggah gambar baru
     if (mainImageFile != null) {
+      // Hapus gambar utama lama dari Firebase Storage jika ada
+      if (imageUrl.isNotEmpty) {
+        try {
+          await _storage.refFromURL(imageUrl).delete();
+        } catch (e) {
+          print("Error deleting old main image: $e");
+        }
+      }
+
+      // Unggah gambar utama baru
       final storageRef = _storage.ref().child('images/${mainImageFile.name}');
       await storageRef.putFile(File(mainImageFile.path));
       imageUrl = await storageRef.getDownloadURL();
     }
 
-    // Jika gambar carousel di-update, unggah gambar baru
+    // Jika gambar carousel di-update, hapus gambar lama dan unggah gambar baru
     if (carouselImages != null && carouselImages.isNotEmpty) {
+      // Hapus semua gambar carousel lama dari Firebase Storage
+      for (String oldUrl in carouselUrls) {
+        try {
+          await _storage.refFromURL(oldUrl).delete();
+        } catch (e) {
+          print("Error deleting old carousel image: $e");
+        }
+      }
+
+      // Unggah gambar carousel baru
       carouselUrls = await _uploadImages(carouselImages);
     }
 
@@ -124,18 +145,49 @@ Future<void> updateWisata(Wisata updatedWisata, XFile? mainImageFile, List<XFile
       _state = _state.copyWith(wisataList: updatedList);
       notifyListeners();
     }
+    // // Tampilkan SnackBar setelah berhasil mengupdate
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Data wisata berhasil diperbarui!'),
+    //       backgroundColor: Colors.green,
+    //     ),
+    //   );
   } catch (e) {
     print("Error updating wisata: $e");
   }
 }
 
   // Menghapus wisata dari Firestore
-  Future<void> deleteWisata(String id) async {
-    await _firestore.collection('wisata').doc(id).delete();
-    _state = _state.copyWith(
-      wisataList: _state.wisataList.where((w) => w.id != id).toList(),
-    );
-    notifyListeners();
+  Future<void> deleteWisata(BuildContext context, String id) async {
+     try {
+      final wisata = _state.wisataList.firstWhere((w) => w.id == id);
+
+      // Hapus gambar utama dan gambar carousel dari Firebase Storage
+      if (wisata.image.isNotEmpty) {
+        await _storage.refFromURL(wisata.image).delete(); // Hapus gambar utama
+      }
+      for (String carouselImageUrl in wisata.carouselImages) {
+        await _storage.refFromURL(carouselImageUrl).delete(); // Hapus gambar carousel
+      }
+
+      // Hapus data dari Firestore
+      await _firestore.collection('wisata').doc(id).delete();
+
+      // Hapus dari state lokal
+      _state = _state.copyWith(
+        wisataList: _state.wisataList.where((w) => w.id != id).toList(),
+      );
+      notifyListeners();
+      // Tampilkan SnackBar setelah berhasil menghapus
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Data wisata berhasil dihapus!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      print("Error deleting wisata: $e");
+    }
   }
 
 //menambahkan quantity

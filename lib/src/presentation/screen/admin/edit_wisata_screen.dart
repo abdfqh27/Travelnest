@@ -1,4 +1,3 @@
-// src/presentation/screen/admin/edit_wisata_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -60,7 +59,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Card(
             elevation: 4,
-            color: Colors.white.withOpacity(0.6), // Warna Card dengan transparansi
+            color: Colors.white.withOpacity(0.6),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -71,59 +70,53 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Text
                     const Text(
                       "Edit Wisata",
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const Divider(),
-                    // Nama Wisata Field
                     TextFormField(
                       initialValue: name,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Nama Wisata",
                         border: OutlineInputBorder(),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => name = value,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Nama wisata diperlukan" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Nama wisata diperlukan"
+                          : null,
                     ),
                     const SizedBox(height: 16),
-                    // Harga Field
                     TextFormField(
                       initialValue: price.toString(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Harga",
                         border: OutlineInputBorder(),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Harga diperlukan" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Harga diperlukan"
+                          : null,
                     ),
                     const SizedBox(height: 16),
-                    // Deskripsi Field
                     TextFormField(
                       initialValue: description,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Deskripsi",
                         border: OutlineInputBorder(),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => description = value,
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Deskripsi diperlukan" : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Deskripsi diperlukan"
+                          : null,
                     ),
                     const SizedBox(height: 16),
-                    // Tipe Dropdown Field
                     DropdownButtonFormField<WisataType>(
                       value: type,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Tipe",
                         border: OutlineInputBorder(),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       items: WisataType.values.map((type) {
                         return DropdownMenuItem(
@@ -134,16 +127,15 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                       onChanged: (value) => type = value!,
                     ),
                     const SizedBox(height: 24),
-                    // Gambar Utama Section
                     const Text(
                       "Gambar Utama",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: Icon(Icons.add_a_photo, size: 40, color: Colors.blueAccent),
+                        icon: const Icon(Icons.add_a_photo, size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
-                        tooltip: 'Pilih Gambar Utama', // Tooltip untuk aksesibilitas
+                        tooltip: 'Pilih Gambar Utama',
                       ),
                     ),
                     if (_mainImageFile != null)
@@ -161,16 +153,15 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                         ),
                       ),
                     const SizedBox(height: 24),
-                    // Gambar Carousel Section
                     const Text(
                       "Gambar Carousel",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: Icon(Icons.collections, size: 40, color: Colors.green),
+                        icon: const Icon(Icons.collections, size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
-                        tooltip: 'Pilih Gambar Carousel', // Tooltip untuk aksesibilitas
+                        tooltip: 'Pilih Gambar Carousel',
                       ),
                     ),
                     if (_carouselImages.isNotEmpty)
@@ -193,7 +184,6 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                         }).toList(),
                       ),
                     const SizedBox(height: 24),
-                    // Tombol Simpan Perubahan
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -202,8 +192,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {
-                          // Validasi form sebelum menyimpan perubahan
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final updatedWisata = widget.wisata.copyWith(
                               name: name,
@@ -211,9 +200,15 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                               description: description,
                               type: type,
                             );
-                            // Update data wisata dengan gambar utama dan gambar carousel
-                            wisataProvider.updateWisata(updatedWisata, _mainImageFile, _carouselImages);
-                            Navigator.pop(context);
+                            await wisataProvider.updateWisata(
+                              context,
+                              updatedWisata,
+                              _mainImageFile,
+                              _carouselImages,
+                            );
+
+                            // Kembali ke layar sebelumnya dan berikan nilai true
+                            Navigator.pop(context, true);
                           }
                         },
                         child: const Text("Simpan Perubahan"),
