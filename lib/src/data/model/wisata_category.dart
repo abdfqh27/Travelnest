@@ -1,4 +1,3 @@
-// src/data/model/wisata_category.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -26,18 +25,16 @@ class WisataCategory extends Equatable {
   // Fungsi pembantu untuk konversi String ke WisataType
   static WisataType _mapStringToWisataType(String? type) {
     switch (type) {
-      case 'tertinggi':
-        return WisataType.tertinggi;
-      case 'jawabarat':
-        return WisataType.jawabarat;
-      case 'jawatengah':
-        return WisataType.jawatengah;
-      case 'jawatimur':
-        return WisataType.jawatimur;
-      case 'best':
-        return WisataType.best;
+      case 'gunung':
+        return WisataType.gunung;
+      case 'pantai':
+        return WisataType.pantai;
+      case 'air_terjun':
+        return WisataType.air_terjun;
+      case 'danau':
+        return WisataType.danau;
       default:
-        return WisataType.all;
+        return WisataType.semua;
     }
   }
 

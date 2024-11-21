@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import intl package for currency formatting
+import 'package:provider/provider.dart';
 import 'package:wisata_app/core/app_extension.dart';
+import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -63,7 +65,7 @@ class WisataProvider with ChangeNotifier {
   }
 
   // Menambahkan wisata baru ke Firestore dan mengunggah gambar ke Firebase Storage
-  Future<void> addWisata(Wisata wisata,  XFile? mainImageFile, List<XFile>? carouselImages) async {
+  Future<void> addWisata(Wisata wisata,  XFile? mainImageFile, List<XFile>? carouselImages, BuildContext context,) async {
     List<String> carouselImageUrls = [];
     String mainImageUrl = '';
 
@@ -88,11 +90,23 @@ class WisataProvider with ChangeNotifier {
     // Tambahkan wisata ke Firestore dengan URL gambar dari Firebase Storage
   final newWisata = wisata.copyWith(image: mainImageUrl, carouselImages: carouselImageUrls);
   final docRef = await _firestore.collection('wisata').add(newWisata.toMap());
+  //update state wisata provider
     _state = _state.copyWith(
       wisataList: [..._state.wisataList, newWisata.copyWith(id: docRef.id)],
     );
+
     notifyListeners();
-  }
+
+    // Panggil CategoryProvider untuk memperbarui filter
+    context.read<CategoryProvider>().addWisata(newWisata);
+    // Tampilkan SnackBar setelah berhasil menambahkan
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Wisata berhasil ditambahkan!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  } 
 
   // Memperbarui data wisata di Firestore
   // Menambahkan fungsi untuk update wisata
@@ -145,15 +159,25 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
       _state = _state.copyWith(wisataList: updatedList);
       notifyListeners();
     }
-    // // Tampilkan SnackBar setelah berhasil mengupdate
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text('Data wisata berhasil diperbarui!'),
-    //       backgroundColor: Colors.green,
-    //     ),
-    //   );
+
+    // Panggil CategoryProvider untuk menyegarkan filter
+      context.read<CategoryProvider>().updateWisata(wisata);
+
+      // Tampilkan SnackBar setelah berhasil mengupdate
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Data wisata berhasil diperbarui!'),
+        backgroundColor: Colors.green,
+      ),
+    );
   } catch (e) {
     print("Error updating wisata: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Gagal memperbarui wisata: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 }
 
@@ -220,24 +244,40 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
 
   // Menandai atau membatalkan favorit item
   void toggleFavorite(Wisata wisata) async {
+  // Cari indeks wisata dalam daftar
   int index = _state.wisataList.indexWhere((element) => element.id == wisata.id);
   if (index != -1) {
+    // Simpan status awal untuk rollback jika ada kesalahan
+    final bool previousFavoriteStatus = _state.wisataList[index].isFavorite;
+
+    // Update status favorit secara lokal (optimistik)
     final updatedWisata = _state.wisataList[index].copyWith(
-      isFavorite: !_state.wisataList[index].isFavorite,
+      isFavorite: !previousFavoriteStatus,
     );
-
-    // Update status favorit di Firebase
-    await _firestore.collection('wisata').doc(wisata.id).update({
-      'isFavorite': updatedWisata.isFavorite,
-    });
-
-    // Update state lokal
-    final updatedList = List<Wisata>.from(_state.wisataList)
-      ..[index] = updatedWisata;
+    final updatedList = List<Wisata>.from(_state.wisataList)..[index] = updatedWisata;
     _state = _state.copyWith(wisataList: updatedList);
     notifyListeners();
+
+    try {
+      // Perbarui status favorit di Firebase
+      await _firestore.collection('wisata').doc(wisata.id).update({
+        'isFavorite': updatedWisata.isFavorite,
+      });
+    } catch (e) {
+      // Jika terjadi kesalahan, rollback status favorit
+      final rolledBackWisata = _state.wisataList[index].copyWith(
+        isFavorite: previousFavoriteStatus,
+      );
+      final rolledBackList = List<Wisata>.from(_state.wisataList)
+        ..[index] = rolledBackWisata;
+      _state = _state.copyWith(wisataList: rolledBackList);
+      notifyListeners();
+
+      print("Error updating favorite status: $e");
+    }
   }
 }
+
 
 
   // Menambah item ke keranjang

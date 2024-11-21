@@ -1,6 +1,11 @@
 class AppAsset {
   const AppAsset._();
 
+  static const profileImage = "assets/images/Akun.png";
+  static const githubImage = "assets/images/github_pic.png";
+  static const emptyCart = "assets/images/Keranjang.png";
+  static const emptyFavorite = "assets/images/Suka.png";
+
   // Tertinggi
   static const ciremai1 = "assets/images/Jawa-Barat/Ciremai/Ciremai.jpeg";
   static const ciremai2 = "assets/images/Jawa-Barat/Ciremai/Ciremai-1.jpeg";
@@ -83,8 +88,4 @@ class AppAsset {
   static const bromo4 = "assets/images/Jawa-Timur/Bromo/Bromo-3.jpeg";
   static const bromo5 = "assets/images/Jawa-Timur/Bromo/Bromo-4.jpeg";
 
-  static const profileImage = "assets/images/Akun.png";
-  static const githubImage = "assets/images/github_pic.png";
-  static const emptyCart = "assets/images/Keranjang.png";
-  static const emptyFavorite = "assets/images/Suka.png";
 }

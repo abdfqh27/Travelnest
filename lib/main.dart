@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             },
           ),
           theme: themeProvider.state.theme,
-          home: HomeAdminScreen(), // Sesuaikan untuk admin atau customer
+          home: HomeCustomerScreen(), // Sesuaikan untuk admin atau customer
         ),
       ),
     );

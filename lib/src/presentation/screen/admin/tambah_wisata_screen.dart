@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
+import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 
 class TambahWisataScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
   String name = '';
   double price = 0;
   String description = '';
-  WisataType type = WisataType.tertinggi;
+  WisataType type = WisataType.gunung; // Default tipe wisata
   XFile? _mainImageFile;
   List<XFile> _carouselImages = []; // List untuk menyimpan gambar carousel
 
@@ -41,7 +42,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final wisataProvider = Provider.of<WisataProvider>(context);
+    final wisataProvider = Provider.of<WisataProvider>(context, listen: false);
+    final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Tambah Wisata")),
@@ -68,12 +70,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: "Nama Wisata",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey), // Border kotak tanpa radius
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => name = value,
                       validator: (value) {
@@ -87,12 +85,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: "Harga",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey), // Border kotak tanpa radius
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
@@ -110,12 +104,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: "Deskripsi",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey), // Border kotak tanpa radius
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => description = value,
                       validator: (value) {
@@ -129,12 +119,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     DropdownButtonFormField<WisataType>(
                       decoration: const InputDecoration(
                         labelText: "Tipe",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey), // Border kotak tanpa radius
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       value: type,
                       items: WisataType.values.map((WisataType type) {
@@ -154,12 +140,11 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       "Gambar Utama",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    // IconButton untuk memilih gambar utama
                     Center(
                       child: IconButton(
                         icon: const Icon(Icons.add_a_photo, size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
-                        tooltip: 'Pilih Gambar Utama', // Tooltip untuk aksesibilitas
+                        tooltip: 'Pilih Gambar Utama',
                       ),
                     ),
                     if (_mainImageFile != null)
@@ -180,20 +165,18 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       "Gambar Carousel",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    // IconButton untuk memilih gambar carousel
                     Center(
                       child: IconButton(
                         icon: const Icon(Icons.collections, size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
-                        tooltip: 'Pilih Gambar Carousel', // Tooltip untuk aksesibilitas
+                        tooltip: 'Pilih Gambar Carousel',
                       ),
                     ),
                     if (_carouselImages.isNotEmpty)
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,
@@ -216,13 +199,12 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final wisata = Wisata(
                               id: '',
@@ -236,8 +218,15 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                               voter: 0,
                             );
 
-                            wisataProvider.addWisata(
-                                wisata, _mainImageFile, _carouselImages);
+                            // Tambahkan wisata ke Firestore dan Provider
+                            await wisataProvider.addWisata(
+                              wisata,
+                              _mainImageFile,
+                              _carouselImages,
+                              context,
+                            );
+
+                            // Navigasi kembali setelah sukses
                             Navigator.pop(context);
                           }
                         },

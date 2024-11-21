@@ -58,6 +58,50 @@ class WisataListAdminScreen extends StatelessWidget {
     );
   }
 
+  Widget _categoryButtons(BuildContext context) {
+    final categories = context.watch<CategoryProvider>().categories;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: SizedBox(
+        height: 40,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (_, index) {
+            WisataCategory category = categories[index];
+            return GestureDetector(
+              onTap: () => context.read<CategoryProvider>().filterItemByCategory(category),
+              child: Container(
+                width: 100,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: category.isSelected ? LightThemeColor.accent : Colors.transparent,
+                  border: category.isSelected
+                      ? null
+                      : Border.all(color: LightThemeColor.accent),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                ),
+                child: Text(
+                  category.type.name.toCapital,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: category.isSelected
+                            ? Colors.white
+                            : LightThemeColor.accent,
+                      ),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (_, __) => const Padding(padding: EdgeInsets.only(right: 15)),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Wisata> wisataList = context.watch<WisataProvider>().state.wisataList;
@@ -85,46 +129,26 @@ class WisataListAdminScreen extends StatelessWidget {
                 "Available for you",
                 style: Theme.of(context).textTheme.displaySmall,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: SizedBox(
-                  height: 40,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (_, index) {
-                      WisataCategory category = categories[index];
-                      return GestureDetector(
-                        onTap: () => context
-                            .read<CategoryProvider>()
-                            .filterItemByCategory(category),
-                        child: Container(
-                          width: 100,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: category.isSelected
-                                ? LightThemeColor.accent
-                                : Colors.transparent,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(15),
-                            ),
-                          ),
-                          child: Text(
-                            category.type.name.toUpperCase(),
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
+              // Filter Button List
+              _categoryButtons(context),
+              // Wisata List View
+              filteredWisata.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: Center(
+                        child: Text(
+                          "Data wisata tidak tersedia",
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: Colors.grey,
+                              ),
                         ),
-                      );
-                    },
-                    separatorBuilder: (_, __) => const Padding(padding: EdgeInsets.only(right: 15)),
-                  ),
-                ),
-              ),
-              WisataListView(
-                wisatas: filteredWisata,
-                isAdmin: true,
-              ),
+                      ),
+                    )
+                  : WisataListView(
+                      wisatas: filteredWisata,
+                      isAdmin: true,
+                    ),
+              // Best Wisata Section
               Padding(
                 padding: const EdgeInsets.only(top: 25, bottom: 5),
                 child: Row(

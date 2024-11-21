@@ -25,7 +25,7 @@ class WisataListCustomerScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.location_on_outlined, color: LightThemeColor.accent),
-          Text("Location", style: Theme.of(context).textTheme.bodyLarge)
+          Text("Location", style: Theme.of(context).textTheme.bodyLarge),
         ],
       ),
       actions: [
@@ -40,7 +40,7 @@ class WisataListCustomerScreen extends StatelessWidget {
             position: BadgePosition.topStart(start: -3),
             child: const Icon(Icons.notifications_none, size: 30),
           ),
-        )
+        ),
       ],
     );
   }
@@ -62,6 +62,7 @@ class WisataListCustomerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Wisata> filteredWisata = context.watch<CategoryProvider>().filteredWisataList;
     final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
+    final List<Wisata> bestWisata = context.watch<WisataProvider>().state.wisataList;
 
     return Scaffold(
       appBar: _appBar(context),
@@ -72,11 +73,11 @@ class WisataListCustomerScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Morning, Faqih",
+                "Good Morning, Customer",
                 style: Theme.of(context).textTheme.headlineSmall,
               ).fadeAnimation(0.2),
               Text(
-                "Explore breathtaking \nlandscapes that await you \nat the summit!",
+                "Discover and book the best \ntravel experiences around you!",
                 style: Theme.of(context).textTheme.displayLarge,
               ).fadeAnimation(0.4),
               _searchBar(),
@@ -84,6 +85,7 @@ class WisataListCustomerScreen extends StatelessWidget {
                 "Available for you",
                 style: Theme.of(context).textTheme.displaySmall,
               ),
+              // Filter Button List
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: SizedBox(
@@ -102,10 +104,17 @@ class WisataListCustomerScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: category.isSelected ? LightThemeColor.accent : Colors.transparent,
                             borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            border: category.isSelected
+                                ? null
+                                : Border.all(color: LightThemeColor.accent),
                           ),
                           child: Text(
                             category.type.name.toCapital,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  color: category.isSelected
+                                      ? Colors.white
+                                      : LightThemeColor.accent,
+                                ),
                           ),
                         ),
                       );
@@ -114,8 +123,47 @@ class WisataListCustomerScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              // Wisata List View
+              filteredWisata.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: Center(
+                        child: Text(
+                          "Data wisata tidak tersedia",
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: Colors.grey,
+                              ),
+                        ),
+                      ),
+                    )
+                  : WisataListView(
+                      wisatas: filteredWisata,
+                      isAdmin: false,
+                    ),
+              // Best Wisata Section
+              Padding(
+                padding: const EdgeInsets.only(top: 25, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Best wisata for you",
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Text(
+                        "See all",
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              color: LightThemeColor.accent,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               WisataListView(
-                wisatas: filteredWisata,
+                wisatas: bestWisata,
                 isAdmin: false,
               ),
             ],

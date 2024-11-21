@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; //l
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/core/app_style.dart';
 import 'package:wisata_app/core/app_color.dart';
@@ -8,7 +8,6 @@ import 'package:wisata_app/src/presentation/screen/customer/wisata_detail_screen
 import 'package:wisata_app/src/presentation/widget/custom_page_route.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
-// Fungsi untuk memformat harga menjadi format Rupiah
 String formatRupiah(double amount) {
   return 'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')}';
 }
@@ -27,11 +26,10 @@ class WisataListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Tambahkan pengecekan jika `wisatas` kosong
     if (wisatas.isEmpty) {
       return Center(
         child: Text(
-          'Data wisata tidak tersedia',
+          'Data wisata tidak tersedia untuk kategori ini.',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: Colors.grey,
               ),
@@ -50,7 +48,6 @@ class WisataListView extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              // Navigasi ke halaman detail sesuai peran pengguna (Admin atau Customer)
               Navigator.push(
                 context,
                 CustomPageRoute(
@@ -88,14 +85,14 @@ class WisataListView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  
+
                   // Tampilkan harga dalam format Rupiah
                   Text(
                     formatRupiah(wisata.price),
                     style: h3Style.copyWith(color: LightThemeColor.accent),
                   ),
                   const SizedBox(height: 5),
-                  
+
                   // Tampilkan nama wisata
                   Expanded(
                     child: Text(
