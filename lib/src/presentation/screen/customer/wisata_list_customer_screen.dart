@@ -1,16 +1,19 @@
 // src/presentation/screen/customer/wisata_list_customer_screen.dart
 import 'package:badges/badges.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/core/app_extension.dart';
+import 'package:wisata_app/src/business_logic/provider/providers/auth_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:wisata_app/src/data/model/wisata_category.dart';
 import 'package:wisata_app/src/presentation/widget/wisata_list_view.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
+// import 'package:wisata_app/src/business_logic/provider/providers/auth_provider.dart';
 
 class WisataListCustomerScreen extends StatelessWidget {
   const WisataListCustomerScreen({super.key});
@@ -64,6 +67,9 @@ class WisataListCustomerScreen extends StatelessWidget {
     final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
     final List<Wisata> bestWisata = context.watch<WisataProvider>().state.wisataList;
 
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.user;
+
     return Scaffold(
       appBar: _appBar(context),
       body: Padding(
@@ -73,7 +79,7 @@ class WisataListCustomerScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Good Morning, Customer",
+                "Hello, ${user?.name}!",
                 style: Theme.of(context).textTheme.headlineSmall,
               ).fadeAnimation(0.2),
               Text(
