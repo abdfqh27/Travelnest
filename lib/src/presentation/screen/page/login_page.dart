@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import '../customer/home_customer_screen.dart';
 import '../admin/home_admin_screen.dart';
 import './signup_page.dart';
+import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage>
                     style: TextStyle(
                       fontSize: screenWidth * 0.07,
                       fontWeight: FontWeight.bold,
-                      color: Colors.teal[700],
+                      color: Color(0xFF5A189A),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -104,20 +105,42 @@ class _LoginPageState extends State<LoginPage>
                     'Please sign in to continue',
                     style: TextStyle(
                       fontSize: screenWidth * 0.04,
-                      color: Colors.grey[700],
+                      color: Color(0xFF5A189A),
                     ),
                   ),
                   const SizedBox(height: 30),
                   TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: const Icon(Icons.email, color: Colors.teal),
-                      border: OutlineInputBorder(
+                      labelText: 'Enter Your Email',
+                      labelStyle: TextStyle(color: Color(0xFF5A189A)),
+                      prefixIcon:
+                          const Icon(Icons.email, color: Color(0xFF5A189A)),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.teal),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF5A189A), width: 2),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF5A189A), width: 2), //fokus
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 2),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15),
                     ),
+                    style: TextStyle(color: Color(0xFF5A189A)),
                   ),
                   const SizedBox(height: 15),
                   TextField(
@@ -125,21 +148,44 @@ class _LoginPageState extends State<LoginPage>
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.teal),
-                      border: OutlineInputBorder(
+                      labelStyle: TextStyle(color: Color(0xFF5A189A)),
+                      prefixIcon:
+                          const Icon(Icons.lock, color: Color(0xFF5A189A)),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.teal),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF5A189A), width: 2),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF5A189A), width: 2),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.red, width: 2),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 16.0),
                     ),
+                    style: TextStyle(color: Color(0xFF5A189A)),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => _login(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Color(0xFF5A189A),
                       padding: EdgeInsets.symmetric(
                         horizontal: screenWidth * 0.2,
-                        vertical: 15,
+                        vertical: 10,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -148,17 +194,23 @@ class _LoginPageState extends State<LoginPage>
                     child: Text(
                       'LOGIN',
                       style: TextStyle(
-                        fontSize: screenWidth * 0.05,
+                        fontSize: 15,
                         color: Colors.white,
                       ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ForgotPasswordPage()));
+                    },
                     child: const Text(
                       'Forgot Password?',
-                      style: TextStyle(color: Colors.teal),
+                      style: TextStyle(color: Color(0xFF5A189A)),
                     ),
                   ),
                   const Divider(),
@@ -171,7 +223,7 @@ class _LoginPageState extends State<LoginPage>
                     },
                     child: Text(
                       'Create a new account',
-                      style: TextStyle(color: Colors.teal[700]),
+                      style: TextStyle(color: Color(0xFF5A189A)),
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.05),

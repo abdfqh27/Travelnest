@@ -50,14 +50,12 @@ class _SignUpPageState extends State<SignUpPage> {
           Reference storageRef =
               FirebaseStorage.instance.ref().child('profile_pics/$fileName');
 
-          // Proses upload gambar ke Firebase Storage
           await storageRef.putFile(File(_image!.path));
 
-          // Mendapatkan URL gambar yang telah diupload
+          // url gambar
           photoUrl = await storageRef.getDownloadURL();
         }
 
-        // Mengirimkan data ke AuthProvider untuk melakukan sign-up
         await Provider.of<AuthProvider>(context, listen: false)
             .signUp(email, password, name, address, photoUrl);
 
@@ -65,7 +63,6 @@ class _SignUpPageState extends State<SignUpPage> {
           _isLoading = false;
         });
 
-        // Navigasi ke halaman login setelah berhasil
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } catch (e) {
@@ -73,7 +70,6 @@ class _SignUpPageState extends State<SignUpPage> {
           _isLoading = false;
         });
 
-        // Menampilkan SnackBar jika terjadi error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Terjadi kesalahan: $e'),
@@ -133,17 +129,31 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
                   ),
                   style: const TextStyle(color: Colors.black),
                   validator: (value) => value == null || value.isEmpty
@@ -157,10 +167,24 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Password',
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
                   ),
                   obscureText: true,
                   style: const TextStyle(color: Colors.black),
@@ -175,10 +199,24 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Name',
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
                   ),
                   style: const TextStyle(color: Colors.black),
                   validator: (value) => value == null || value.isEmpty
@@ -192,10 +230,24 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: 'Address',
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
                   ),
                   style: const TextStyle(color: Colors.black),
                   validator: (value) => value == null || value.isEmpty
@@ -210,10 +262,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: ElevatedButton(
                           onPressed: _signUp,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            backgroundColor: Color(0xFF5A189A),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(10)),
                           ),
                           child: const Text(
                             'Sign Up',

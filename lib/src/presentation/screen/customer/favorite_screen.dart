@@ -13,7 +13,9 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Wisata> favoriteWisatas = context.watch<WisataProvider>().getFavoriteList;
+    // Ambil daftar wisata favorit dari WisataProvider
+    final List<Wisata> favoriteWisatas =
+        context.watch<WisataProvider>().getFavoriteList;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +50,8 @@ class FavoriteScreen extends StatelessWidget {
                         height: 50,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.image_not_supported, color: Colors.grey),
+                            const Icon(Icons.image_not_supported,
+                                color: Colors.grey),
                       ),
                     ),
                     subtitle: Text(
@@ -58,21 +61,24 @@ class FavoriteScreen extends StatelessWidget {
                     ),
                     trailing: IconButton(
                       icon: Icon(
-                        wisata.isFavorite ? AppIcon.heart : AppIcon.outlinedHeart,
-                        color: wisata.isFavorite ? Colors.redAccent : Colors.grey,
+                        wisata.isFavorite
+                            ? AppIcon.heart
+                            : AppIcon.outlinedHeart,
+                        color:
+                            wisata.isFavorite ? Colors.redAccent : Colors.grey,
                       ),
                       onPressed: () {
+                        // Toggle favorite status dan perbarui Firebase
                         context.read<WisataProvider>().toggleFavorite(wisata);
                       },
                     ),
                   ),
                 ).fadeAnimation(index * 0.6);
               },
-              separatorBuilder: (_, __) {
-                return const Padding(padding: EdgeInsets.only(bottom: 15));
-              },
+              separatorBuilder: (_, __) =>
+                  const Padding(padding: EdgeInsets.only(bottom: 15)),
             )
-          : EmptyWidget(
+          : const EmptyWidget(
               type: EmptyWidgetType.favorite,
               title: "Empty Favorite",
               child: Column(
@@ -80,13 +86,17 @@ class FavoriteScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.favorite_border,
-                    color: Colors.grey[400],
+                    color: Colors.grey,
                     size: 100,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   Text(
                     "Belum ada item favorit",
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.grey),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),

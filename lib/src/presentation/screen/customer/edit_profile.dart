@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +44,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
+  Future<void> _showConfirmationDialog() async {
+    final shouldSave = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text("Apakah Anda yakin ingin melakukan perubahan?"),
+        content: const Text("Pastikan semua data sudah benar"),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(color: Colors.blueAccent),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              "Yes",
+              style: TextStyle(color: Colors.blueAccent),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldSave == true) {
+      _saveProfileChanges();
+      Navigator.pop(context); // ke profil
+    }
+  }
+
   Future<void> _saveProfileChanges() async {
     if (_formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -51,7 +84,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         _addressController.text,
         _newPhoto,
       );
-      Navigator.pop(context);
     }
   }
 
@@ -112,7 +144,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 30),
               Center(
                 child: ElevatedButton(
-                  onPressed: _saveProfileChanges,
+                  onPressed: _showConfirmationDialog,
                   child: const Text("Save Changes"),
                 ),
               ),

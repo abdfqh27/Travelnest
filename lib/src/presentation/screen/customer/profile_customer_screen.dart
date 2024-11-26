@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/src/presentation/screen/customer/edit_profile.dart';
@@ -16,17 +17,15 @@ class ProfileCustomerScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
-        backgroundColor: Colors.blueAccent,
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              authProvider.signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()));
-            },
+            onPressed: () => _showLogoutConfirmation(context),
           ),
         ],
       ),
@@ -36,18 +35,43 @@ class ProfileCustomerScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 45),
               CircleAvatar(
-                radius: 75,
-                backgroundImage: user?.photoUrl != null
-                    ? NetworkImage(user!.photoUrl)
-                    : const AssetImage(AppAsset.profileImage) as ImageProvider,
+                radius: 55,
+                child: ClipOval(
+                  child: user?.photoUrl != null
+                      ? Image.network(
+                          user!.photoUrl,
+                          fit: BoxFit.cover,
+                          width: 110,
+                          height: 110,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                            Icons.error,
+                            size: 55,
+                          ),
+                        )
+                      : const Image(
+                          image: AssetImage(AppAsset.profileImage),
+                          fit: BoxFit.cover,
+                          width: 110,
+                          height: 110,
+                        ),
+                ),
               ),
               const SizedBox(height: 15),
               Text(
                 user?.name ?? "Guest",
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30,
+                      color: Colors.white,
                     ),
               ),
               const SizedBox(height: 5),
@@ -55,10 +79,10 @@ class ProfileCustomerScreen extends StatelessWidget {
                 'Customer',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[600],
+                      color: Colors.grey[500],
                     ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Text(
                 'Bergabung sejak 2023',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -66,7 +90,6 @@ class ProfileCustomerScreen extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 30),
-
               InfoCard(
                 icon: Icons.email,
                 label: "Email",
@@ -79,29 +102,7 @@ class ProfileCustomerScreen extends StatelessWidget {
                 value: user?.address ?? "Address not provided",
               ),
               const SizedBox(height: 10),
-              // InfoCard(
-              //   icon: Icons.phone,
-              //   label: "Phone Number",
-              //   value: user?.phone ?? "Phone number not provided",
-              // ),
-              const SizedBox(height: 30),
-
-              const Text(
-                'Recent Activity',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              const SizedBox(height: 15),
-              // ActivityCard(
-              //   activity: 'Pesanan #1234 - Status: Terkirim',
-              //   date: '10 November 2024',
-              // ),
-              // const SizedBox(height: 10),
-              // ActivityCard(
-              //   activity: 'Pesanan #1233 - Status: Dibayar',
-              //   date: '9 November 2024',
-              // ),
-              const SizedBox(height: 30),
-
+              const SizedBox(height: 35),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -111,46 +112,16 @@ class ProfileCustomerScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: const Color(0xFF5A189A),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text('Edit Profile'),
-              ),
-              const SizedBox(height: 10),
-              // ElevatedButton(
-              //   onPressed: () {},
-              //   child: const Text('Settings'),
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: Colors.greenAccent,
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(12),
-              //     ),
-              //   ),
-              // ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: () {
-                  authProvider.signOut();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()));
-                },
-                icon: const Icon(Icons.logout, color: Colors.white),
-                label: const Text("Log Out"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -158,5 +129,42 @@ class ProfileCustomerScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showLogoutConfirmation(BuildContext context) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final shouldLogout = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text("Apakah Anda yakin ingin keluar?"),
+        content: const Text("Pastikan semua data sudah aman tersimpan"),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text(
+              "Tidak",
+              style: TextStyle(color: Colors.blueAccent),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              "Ya",
+              style: TextStyle(color: Colors.blueAccent),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout == true) {
+      authProvider.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    }
   }
 }

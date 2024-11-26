@@ -3,11 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../../data/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 
   Future<User?> signUp(String email, String password, String name,
       String address, String? photoUrl) async {
@@ -33,6 +38,16 @@ class AuthService {
       print("Sign Up Error: ${e.toString()}");
       return null;
     }
+  }
+
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  Future<bool> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
   }
 
   Future<User?> signIn(String email, String password) async {
@@ -117,7 +132,8 @@ class AuthService {
   }
 
   // Sign out the user
-  void signOut() {
+ void signOut() async {
+    await saveLoginStatus(false);
     _auth.signOut();
   }
 }

@@ -8,6 +8,7 @@ import 'package:wisata_app/core/app_extension.dart';
 import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wisata_app/src/data/repository/repository.dart';
@@ -18,6 +19,7 @@ class WisataProvider with ChangeNotifier {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   WisataProvider() : _state = const WisataState.initial([]){
     // Panggil `fetchWisata` untuk memastikan data diambil saat provider diinisialisasi
@@ -31,26 +33,51 @@ class WisataProvider with ChangeNotifier {
   // }) : _state = WisataState.initial(repository.getWisataList);
 
   // Tambahkan getter ini untuk mendapatkan daftar wisata
-  List<Wisata> get wisataList => _state.wisataList;
+  // List<Wisata> get wisataList => _state.wisataList;
+  List<Wisata> get wisataList => _wisataList;
+  List<Wisata> _wisataList = [];
   
   WisataState get state => _state;
+
+  String get userId => _auth.currentUser?.uid ?? "";
 
   // Format the price as Rupiah
   final NumberFormat _currencyFormat =
       NumberFormat.currency(locale: 'id_ID', symbol: 'Rp');
 
   // Metode untuk mengambil data wisata dari Firestore
-  Future<void> fetchWisata() async {
+   Future<void> fetchWisata() async {
     try {
       final snapshot = await _firestore.collection('wisata').get();
-      _state = WisataState(
-        wisataList: snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList(),
-      );
+      _wisataList = snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList();
+      await fetchFavorites();
       notifyListeners();
     } catch (e) {
       print("Error fetching wisata: $e");
     }
   }
+
+  Future<void> fetchFavorites() async {
+  if (userId.isEmpty) return;
+
+  try {
+    final snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .get();
+
+    final favoriteIds = snapshot.docs.map((doc) => doc.id).toSet();
+
+    _wisataList = _wisataList.map((wisata) {
+      return wisata.copyWith(isFavorite: favoriteIds.contains(wisata.id));
+    }).toList();
+    notifyListeners();
+  } catch (e) {
+    print("Error fetching favorites: $e");
+  }
+}
+
 
    // Fungsi untuk mengunggah beberapa gambar dan mendapatkan URL-nya
   Future<List<String>> _uploadImages(List<XFile> images) async {
@@ -244,39 +271,39 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
 
   // Menandai atau membatalkan favorit item
   void toggleFavorite(Wisata wisata) async {
-  // Cari indeks wisata dalam daftar
-  int index = _state.wisataList.indexWhere((element) => element.id == wisata.id);
-  if (index != -1) {
-    // Simpan status awal untuk rollback jika ada kesalahan
-    final bool previousFavoriteStatus = _state.wisataList[index].isFavorite;
+    if (userId.isEmpty) return;
 
-    // Update status favorit secara lokal (optimistik)
-    final updatedWisata = _state.wisataList[index].copyWith(
-      isFavorite: !previousFavoriteStatus,
-    );
-    final updatedList = List<Wisata>.from(_state.wisataList)..[index] = updatedWisata;
-    _state = _state.copyWith(wisataList: updatedList);
+    final isFavorite = !wisata.isFavorite;
+    final updatedWisata = wisata.copyWith(isFavorite: isFavorite);
+
+    // Update state lokal
+    _wisataList = _wisataList.map((w) => w.id == wisata.id ? updatedWisata : w).toList();
     notifyListeners();
 
     try {
-      // Perbarui status favorit di Firebase
-      await _firestore.collection('wisata').doc(wisata.id).update({
-        'isFavorite': updatedWisata.isFavorite,
-      });
-    } catch (e) {
-      // Jika terjadi kesalahan, rollback status favorit
-      final rolledBackWisata = _state.wisataList[index].copyWith(
-        isFavorite: previousFavoriteStatus,
-      );
-      final rolledBackList = List<Wisata>.from(_state.wisataList)
-        ..[index] = rolledBackWisata;
-      _state = _state.copyWith(wisataList: rolledBackList);
-      notifyListeners();
+      final docRef = _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(wisata.id);
 
-      print("Error updating favorite status: $e");
+      if (isFavorite) {
+        await docRef.set({'addedAt': DateTime.now()});
+      } else {
+        await docRef.delete();
+      }
+    } catch (e) {
+      print("Error toggling favorite: $e");
     }
   }
+
+  List<Wisata> get getFavoriteList {
+  return _wisataList.where((wisata) => wisata.isFavorite).toList();
 }
+
+
+  // List<Wisata> get getFavoriteList =>
+  //     _wisataList.where((wisata) => wisata.isFavorite).toList();
 
 
 
@@ -327,6 +354,4 @@ void removeItem(Wisata wisata) {
   // Mendapatkan daftar cart
   List<Wisata> get getCartList => _state.wisataList.where((element) => element.cart).toList();
 
-  // Mendapatkan daftar favorit
-  List<Wisata> get getFavoriteList => _state.wisataList.where((element) => element.isFavorite).toList();
 }

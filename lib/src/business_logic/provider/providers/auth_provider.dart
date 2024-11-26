@@ -2,12 +2,36 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../data/model/user_model.dart';
 import '../services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   UserModel? _user;
   final AuthService _authService = AuthService();
+  bool _isLoggedIn = false;
 
   UserModel? get user => _user;
+  bool get isLoggedIn => _isLoggedIn;
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _authService.resetPassword(email);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //simpan status
+  Future<void> _saveLoginStatus(bool status) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', status);
+  }
+
+//periksa status
+  Future<void> _loadLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    notifyListeners();
+  }
 
   Future<void> signUp(String email, String password, String name,
       String address, String? photoUrl) async {
@@ -18,12 +42,21 @@ class AuthProvider with ChangeNotifier {
   Future<void> signIn(String email, String password) async {
     await _authService.signIn(email, password);
     await fetchUserData();
+    _isLoggedIn = true;
+    await _saveLoginStatus(true);
   }
 
   //dari firestore
   Future<void> fetchUserData() async {
     _user = await _authService.getCurrentUserData();
     notifyListeners();
+  }
+
+  Future<void> cekLoginStatus() async {
+    await _loadLoginStatus();
+    if (_isLoggedIn) {
+      await fetchUserData();
+    }
   }
 
   // Future<void> updateUserProfile(
@@ -91,6 +124,9 @@ class AuthProvider with ChangeNotifier {
   void signOut() {
     _authService.signOut();
     _user = null;
+    _isLoggedIn = false;
+    _saveLoginStatus(false);
     notifyListeners();
   }
+   String get userId => _user?.id ?? "";
 }
