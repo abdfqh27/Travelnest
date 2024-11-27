@@ -23,11 +23,11 @@ class ForgotPasswordPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Enter your email to reset your password',
               style: TextStyle(
                 fontSize: 16,
-                color: const Color(0xFF5A189A),
+                color: Color(0xFF5A189A),
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,

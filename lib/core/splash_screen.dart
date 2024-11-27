@@ -1,8 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-//import 'package:wisata_app/src/presentation/screen/customer/home_customer_screen.dart';
-import '.././src/presentation/screen/page/login_page.dart';
+import 'package:wisata_app/core/root_screen.dart';
+//import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
+//import './root_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -26,7 +27,7 @@ class SplashScreen extends StatelessWidget {
               ),
             ],
           ),
-          nextScreen: const LoginPage(),
+          nextScreen: const RootScreen(),
           splashIconSize: splashIconSize,
           backgroundColor: const Color(0xFF18172B),
         );

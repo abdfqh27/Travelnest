@@ -11,7 +11,7 @@ class DaftarWisataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wisataProvider = context.watch<WisataProvider>();
+    final wisataProvider = context.read<WisataProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,86 +22,163 @@ class DaftarWisataScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TambahWisataScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const TambahWisataScreen(),
+                ),
               );
+
+              // Tampilkan notifikasi jika wisata berhasil ditambahkan
+              if (result == true && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Wisata berhasil ditambahkan"),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
             },
           ),
         ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: wisataProvider.wisataList.length,
-        itemBuilder: (context, index) {
-          final wisata = wisataProvider.wisataList[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8.0),
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            color: Colors.white.withOpacity(0.8),
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(8.0),
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.network(
-                  wisata.image,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(
-                wisata.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              subtitle: Text(
-                "Rp ${wisata.price}",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 14,
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, color: LightThemeColor.yellow),
-                    onPressed: () async {
-                      // Menunggu hasil dari EditWisataScreen
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditWisataScreen(wisata: wisata),
-                        ),
-                      );
+      body: StreamBuilder<List<Wisata>>(
+        stream: wisataProvider.getWisataStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-                      // Jika update berhasil, tampilkan notifikasi
-                      if (result == true) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Wisata berhasil diperbarui"),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      wisataProvider.deleteWisata(context, wisata.id);
-                    },
-                  ),
-                ],
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Terjadi kesalahan, coba lagi.",
+                style: TextStyle(fontSize: 16, color: Colors.red),
               ),
-            ),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text(
+                "Belum ada data wisata",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            );
+          }
+
+          final wisataList = snapshot.data!;
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: wisataList.length,
+            itemBuilder: (context, index) {
+              final wisata = wisataList[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                color: Colors.white.withOpacity(0.8),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(8.0),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      wisata.image,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, size: 80),
+                    ),
+                  ),
+                  title: Text(
+                    wisata.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Rp ${wisata.price.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')} ",
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit,
+                            color: LightThemeColor.yellow),
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditWisataScreen(wisata: wisata),
+                            ),
+                          );
+
+                          if (result == true && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Wisata berhasil diperbarui"),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          // Konfirmasi penghapusan data
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Hapus Wisata"),
+                              content: const Text(
+                                  "Apakah Anda yakin ingin menghapus wisata ini?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("Batal"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    wisataProvider
+                                        .deleteWisata(context, wisata.id);
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text("Wisata berhasil dihapus"),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Text("Hapus"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

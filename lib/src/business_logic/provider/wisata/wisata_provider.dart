@@ -36,6 +36,7 @@ class WisataProvider with ChangeNotifier {
   // List<Wisata> get wisataList => _state.wisataList;
   List<Wisata> get wisataList => _wisataList;
   List<Wisata> _wisataList = [];
+
   
   WisataState get state => _state;
 
@@ -44,6 +45,13 @@ class WisataProvider with ChangeNotifier {
   // Format the price as Rupiah
   final NumberFormat _currencyFormat =
       NumberFormat.currency(locale: 'id_ID', symbol: 'Rp');
+  
+  Stream<List<Wisata>> getWisataStream() {
+  return _firestore.collection('wisata').snapshots().map((snapshot) {
+    return snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList();
+  });
+}
+
 
   // Metode untuk mengambil data wisata dari Firestore
    Future<void> fetchWisata() async {
