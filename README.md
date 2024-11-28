@@ -42,3 +42,18 @@ TravelNest adalah aplikasi wisata modern yang dirancang untuk memudahkan penggun
 ### 💻 **Frontend**
 - **Flutter**: Framework modern untuk pengembangan aplikasi mobile yang cepat dan responsif.
 - **Provider**: State management yang memastikan pengalaman pengguna yang mulus dan efisien.
+
+### **Manfaat Aplikasi TravelNest**
+
+- ⏱️ **Efisiensi**  
+  Semua informasi wisata dalam satu aplikasi, menghemat waktu Anda.
+
+- 🎯 **Personalisasi**  
+  Destinasi dan rencana perjalanan sesuai dengan minat Anda.
+
+- 📱 **Kemudahan Akses**  
+  Antarmuka yang ramah pengguna memastikan pengalaman yang menyenangkan.
+
+- ✅ **Akurat dan Terpercaya**  
+  Informasi wisata yang selalu diperbarui untuk memberikan layanan terbaik.
+
