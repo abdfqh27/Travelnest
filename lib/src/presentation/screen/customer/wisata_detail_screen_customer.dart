@@ -188,7 +188,9 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                     children: [
                       Text(
                         currentWisata.name,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        style: Theme.of(context).textTheme
+                        .displayLarge
+                        ?.copyWith(color: LightThemeColor.accent)
                       ),
                       IconButton(
                         icon: Icon(
@@ -219,7 +221,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                     formatRupiah(currentWisata.price),
                     style: Theme.of(context)
                         .textTheme
-                        .displayLarge
+                        .displayMedium
                         ?.copyWith(color: LightThemeColor.accent),
                   ),
                   const SizedBox(height: 15),
@@ -239,7 +241,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () => wisataProvider.addToCart(currentWisata),
-                      child: const Text("Tambahkan ke Keranjang"),
+                      child: const Text("Pesan Wisata"),
                     ),
                   ),
                 ],

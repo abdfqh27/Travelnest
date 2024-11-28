@@ -14,9 +14,9 @@ class AppData {
       isSelected: true,
     ),
     BottomNavigationItem(
-      Icon(Icons.shopping_cart_outlined),
-      Icon(Icons.shopping_cart),
-      'Shopping cart',
+      Icon(Icons.topic_outlined),
+      Icon(Icons.topic_rounded),
+      'Daftar Ticket',
     ),
     BottomNavigationItem(
       Icon(AppIcon.outlinedHeart),

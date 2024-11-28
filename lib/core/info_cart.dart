@@ -16,13 +16,14 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: Color(0xFF1F1F30),
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Row(
           children: [
-            Icon(icon, color: Colors.blueAccent),
+            Icon(icon, color: Color(0xFF5A189A)),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -31,14 +32,13 @@ class InfoCard extends StatelessWidget {
                   Text(
                     label,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     value,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[700],
+                          color: Colors.white70,
                         ),
                   ),
                 ],

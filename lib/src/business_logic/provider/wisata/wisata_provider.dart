@@ -36,6 +36,8 @@ class WisataProvider with ChangeNotifier {
   // List<Wisata> get wisataList => _state.wisataList;
   List<Wisata> get wisataList => _wisataList;
   List<Wisata> _wisataList = [];
+  List<Wisata> get getFavoriteList => _state.wisataList;
+
 
   
   WisataState get state => _state;
@@ -58,15 +60,16 @@ class WisataProvider with ChangeNotifier {
     try {
       final snapshot = await _firestore.collection('wisata').get();
       _wisataList = snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList();
-      await fetchFavorites();
+      await fetchFavoritesForCurrentUser();
       notifyListeners();
     } catch (e) {
       print("Error fetching wisata: $e");
     }
   }
 
-  Future<void> fetchFavorites() async {
-  if (userId.isEmpty) return;
+  Future<void> fetchFavoritesForCurrentUser() async {
+  final userId = _auth.currentUser?.uid;
+  if (userId == null) return;
 
   try {
     final snapshot = await _firestore
@@ -75,16 +78,24 @@ class WisataProvider with ChangeNotifier {
         .collection('favorites')
         .get();
 
-    final favoriteIds = snapshot.docs.map((doc) => doc.id).toSet();
+    // Buat daftar wisata dari dokumen di subkoleksi favorites
+    final List<Wisata> userFavorites = [];
+    for (var doc in snapshot.docs) {
+      final wisataSnapshot =
+          await _firestore.collection('wisata').doc(doc.id).get();
+      if (wisataSnapshot.exists) {
+        userFavorites.add(Wisata.fromFirestore(wisataSnapshot));
+      }
+    }
 
-    _wisataList = _wisataList.map((wisata) {
-      return wisata.copyWith(isFavorite: favoriteIds.contains(wisata.id));
-    }).toList();
+    // Update state dengan daftar favorit user
+    _state = _state.copyWith(wisataList: userFavorites);
     notifyListeners();
   } catch (e) {
-    print("Error fetching favorites: $e");
+    print("Error fetching favorites for current user: $e");
   }
 }
+
 
 
    // Fungsi untuk mengunggah beberapa gambar dan mendapatkan URL-nya
@@ -278,36 +289,40 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
 
 
   // Menandai atau membatalkan favorit item
-  void toggleFavorite(Wisata wisata) async {
-    if (userId.isEmpty) return;
-
-    final isFavorite = !wisata.isFavorite;
-    final updatedWisata = wisata.copyWith(isFavorite: isFavorite);
-
-    // Update state lokal
-    _wisataList = _wisataList.map((w) => w.id == wisata.id ? updatedWisata : w).toList();
-    notifyListeners();
-
-    try {
-      final docRef = _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('favorites')
-          .doc(wisata.id);
-
-      if (isFavorite) {
-        await docRef.set({'addedAt': DateTime.now()});
-      } else {
-        await docRef.delete();
-      }
-    } catch (e) {
-      print("Error toggling favorite: $e");
-    }
+  Future <void> toggleFavorite(Wisata wisata) async {
+  final userId = _auth.currentUser?.uid;
+  if (userId == null) {
+    print("User is not logged in.");
+    return;
   }
 
-  List<Wisata> get getFavoriteList {
-  return _wisataList.where((wisata) => wisata.isFavorite).toList();
+  try {
+    // Referensi ke subkoleksi favorites
+    final docRef = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(wisata.id);
+
+    // Cek apakah wisata sudah ada di favorites
+    final docSnapshot = await docRef.get();
+    final isFavorite = docSnapshot.exists;
+
+    if (isFavorite) {
+      // Jika sudah ada, hapus dari favorites
+      await docRef.delete();
+    } else {
+      // Jika belum ada, tambahkan ke favorites
+      await docRef.set({'addedAt': FieldValue.serverTimestamp()});
+    }
+
+    // Refresh daftar favorit setelah perubahan
+    await fetchFavoritesForCurrentUser();
+  } catch (e) {
+    print("Error toggling favorite: $e");
+  }
 }
+
 
 
   // List<Wisata> get getFavoriteList =>

@@ -21,7 +21,7 @@ class CartScreen extends StatelessWidget {
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       title: Text(
-        "Cart Screen",
+        "Ticket Screen",
         style: Theme.of(context).textTheme.displayMedium,
       ),
     );
@@ -128,7 +128,7 @@ class CartScreen extends StatelessWidget {
       appBar: _appBar(context),
       body: cartWisata.isEmpty
           ? EmptyWidget(
-              title: "Keranjang Kosong",
+              title: "Ticket Kosong",
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: Column(
