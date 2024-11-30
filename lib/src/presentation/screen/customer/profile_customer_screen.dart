@@ -6,6 +6,8 @@ import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
 import '../../../../core/app_asset.dart';
 import '../../../business_logic/provider/providers/auth_provider.dart';
 import '../../../../core/info_cart.dart';
+import 'package:wisata_app/core/app_color.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class ProfileCustomerScreen extends StatelessWidget {
   const ProfileCustomerScreen({super.key});
@@ -17,9 +19,9 @@ class ProfileCustomerScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Profile",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
         centerTitle: true,
         actions: [
@@ -71,7 +73,9 @@ class ProfileCustomerScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 30,
-                      color: Colors.white,
+                      color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white
                     ),
               ),
               const SizedBox(height: 5),
@@ -84,7 +88,7 @@ class ProfileCustomerScreen extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                'Bergabung sejak 2023',
+                'Bergabung sejak 2024',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.grey[500],
                     ),

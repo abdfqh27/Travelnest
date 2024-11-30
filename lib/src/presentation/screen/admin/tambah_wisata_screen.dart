@@ -43,10 +43,15 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
   @override
   Widget build(BuildContext context) {
     final wisataProvider = Provider.of<WisataProvider>(context, listen: false);
-    final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+    final categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Wisata")),
+      appBar: AppBar(
+          title: Text(
+        "Tambah Wisata",
+        style: Theme.of(context).textTheme.displayMedium,
+      )),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -64,14 +69,16 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                   children: [
                     const Text(
                       "Tambah Wisata Baru",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const Divider(),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: "Nama Wisata",
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => name = value,
                       validator: (value) {
@@ -86,7 +93,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       decoration: const InputDecoration(
                         labelText: "Harga",
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
@@ -105,7 +113,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       decoration: const InputDecoration(
                         labelText: "Deskripsi",
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       onChanged: (value) => description = value,
                       validator: (value) {
@@ -120,7 +129,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       decoration: const InputDecoration(
                         labelText: "Tipe",
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       value: type,
                       items: WisataType.values.map((WisataType type) {
@@ -138,11 +148,13 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 20),
                     const Text(
                       "Gambar Utama",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: const Icon(Icons.add_a_photo, size: 40, color: Colors.blueAccent),
+                        icon: const Icon(Icons.add_a_photo,
+                            size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
                         tooltip: 'Pilih Gambar Utama',
                       ),
@@ -163,11 +175,13 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 20),
                     const Text(
                       "Gambar Carousel",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: const Icon(Icons.collections, size: 40, color: Colors.green),
+                        icon: const Icon(Icons.collections,
+                            size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
                         tooltip: 'Pilih Gambar Carousel',
                       ),
@@ -176,7 +190,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           mainAxisSpacing: 8,
                           crossAxisSpacing: 8,
@@ -199,7 +214,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

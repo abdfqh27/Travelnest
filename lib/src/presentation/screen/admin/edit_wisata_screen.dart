@@ -53,7 +53,11 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
     final wisataProvider = Provider.of<WisataProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Wisata")),
+      appBar: AppBar(
+          title: Text(
+        "Edit Wisata",
+        style: Theme.of(context).textTheme.displayMedium,
+      )),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -72,7 +76,8 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                   children: [
                     const Text(
                       "Edit Wisata",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const Divider(),
                     TextFormField(
@@ -129,11 +134,13 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 24),
                     const Text(
                       "Gambar Utama",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: const Icon(Icons.add_a_photo, size: 40, color: Colors.blueAccent),
+                        icon: const Icon(Icons.add_a_photo,
+                            size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
                         tooltip: 'Pilih Gambar Utama',
                       ),
@@ -155,11 +162,13 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 24),
                     const Text(
                       "Gambar Carousel",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: IconButton(
-                        icon: const Icon(Icons.collections, size: 40, color: Colors.green),
+                        icon: const Icon(Icons.collections,
+                            size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
                         tooltip: 'Pilih Gambar Carousel',
                       ),
@@ -187,7 +196,8 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
