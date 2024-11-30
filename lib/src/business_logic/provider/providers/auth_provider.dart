@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
 import '../../../data/model/user_model.dart';
 import '../services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,11 +41,18 @@ class AuthProvider with ChangeNotifier {
     await fetchUserData();
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn(BuildContext context, String email, String password) async {
+    try {
     await _authService.signIn(email, password);
     await fetchUserData();
     _isLoggedIn = true;
     await _saveLoginStatus(true);
+
+    // Ambil data favorit untuk user yang baru login
+    context.read<WisataProvider>().fetchFavoritesForCurrentUser();
+  } catch (e) {
+    throw Exception("Login gagal: $e");
+  }
   }
 
   //dari firestore
@@ -121,8 +130,9 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  void signOut() {
-    _authService.signOut();
+  void signOut(BuildContext context) async {
+  _authService.signOut();
+  context.read<WisataProvider>().resetFavorites(); // Reset favorit saat logout
     _user = null;
     _isLoggedIn = false;
     _saveLoginStatus(false);

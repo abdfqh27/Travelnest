@@ -28,7 +28,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<WisataProvider>(
-          create: (context) => WisataProvider(),
+           create: (context) {
+            final provider = WisataProvider();
+            provider.fetchFavoritesForCurrentUser(); // Panggil fetchFavorites saat provider dibuat
+            return provider;
+          },
         ),
         ChangeNotifierProvider<CategoryProvider>(
           create: (context) => CategoryProvider(),

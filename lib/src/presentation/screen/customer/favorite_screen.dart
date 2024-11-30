@@ -23,25 +23,8 @@ class FavoriteScreen extends StatelessWidget {
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
-      body: FutureBuilder<void>(
-        future: wisataProvider.fetchFavoritesForCurrentUser(),
-        builder: (context, snapshot) {
-          // Tampilkan loading indicator saat data sedang diambil
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // Tampilkan error jika ada masalah saat pengambilan data
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                "Terjadi kesalahan saat memuat data favorit.",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            );
-          }
-
-          // Ambil daftar wisata favorit
+      body: Consumer<WisataProvider>(
+        builder: (context, wisataProvider, _) {
           final favoriteWisatas = wisataProvider.getFavoriteList;
 
           // Tampilkan UI sesuai dengan data favorit

@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage>
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     try {
       await authProvider.signIn(
+        context,
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );

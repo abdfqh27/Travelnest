@@ -160,7 +160,7 @@ class ProfileCustomerScreen extends StatelessWidget {
     );
 
     if (shouldLogout == true) {
-      authProvider.signOut();
+      authProvider.signOut(context);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),

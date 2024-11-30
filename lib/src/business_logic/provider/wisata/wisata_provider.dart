@@ -77,6 +77,8 @@ class WisataProvider with ChangeNotifier {
         .doc(userId)
         .collection('favorites')
         .get();
+   print("Favorites snapshot: ${snapshot.docs.map((doc) => doc.id).toList()}");
+
 
     // Buat daftar wisata dari dokumen di subkoleksi favorites
     final List<Wisata> userFavorites = [];
@@ -95,6 +97,13 @@ class WisataProvider with ChangeNotifier {
     print("Error fetching favorites for current user: $e");
   }
 }
+
+void resetFavorites() {
+  _state = const WisataState.initial([]);
+  _wisataList = [];
+  notifyListeners();
+}
+
 
 
 
@@ -289,7 +298,7 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
 
 
   // Menandai atau membatalkan favorit item
-  Future <void> toggleFavorite(Wisata wisata) async {
+  Future<void> toggleFavorite(Wisata wisata) async {
   final userId = _auth.currentUser?.uid;
   if (userId == null) {
     print("User is not logged in.");
@@ -311,17 +320,27 @@ Future<void> updateWisata(BuildContext context, Wisata updatedWisata, XFile? mai
     if (isFavorite) {
       // Jika sudah ada, hapus dari favorites
       await docRef.delete();
+
+      // Hapus dari state lokal
+      _state = _state.copyWith(
+        wisataList: _state.wisataList.where((w) => w.id != wisata.id).toList(),
+      );
     } else {
       // Jika belum ada, tambahkan ke favorites
       await docRef.set({'addedAt': FieldValue.serverTimestamp()});
+
+      // Tambahkan ke state lokal
+      _state = _state.copyWith(
+        wisataList: [..._state.wisataList, wisata],
+      );
     }
 
-    // Refresh daftar favorit setelah perubahan
-    await fetchFavoritesForCurrentUser();
+    notifyListeners(); // Perbarui UI
   } catch (e) {
     print("Error toggling favorite: $e");
   }
 }
+
 
 
 
