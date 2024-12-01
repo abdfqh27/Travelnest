@@ -61,9 +61,18 @@ class WisataListCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Wisata> filteredWisata = context.watch<CategoryProvider>().filteredWisataList;
-    final List<WisataCategory> categories = context.watch<CategoryProvider>().categories;
-    final List<Wisata> bestWisata = context.watch<WisataProvider>().state.wisataList;
+    final List<Wisata> filteredWisata =
+        context.watch<CategoryProvider>().filteredWisataList;
+    final List<WisataCategory> categories =
+        context.watch<CategoryProvider>().categories;
+    // final List<Wisata> bestWisata =
+    //     context.read<WisataProvider>().getNewestWisata();
+    
+    // Debugging: Pastikan data terbaru terpanggil
+    // print("Best Wisata List:");
+    // for (var wisata in bestWisata) {
+    //   print("Name: ${wisata.name}, Timestamp: ${wisata.timestamp.toDate()}");
+    // }
 
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.user;
@@ -103,21 +112,29 @@ class WisataListCustomerScreen extends StatelessWidget {
                     itemBuilder: (_, index) {
                       WisataCategory category = categories[index];
                       return GestureDetector(
-                        onTap: () => context.read<CategoryProvider>().filterItemByCategory(category),
+                        onTap: () => context
+                            .read<CategoryProvider>()
+                            .filterItemByCategory(category),
                         child: Container(
                           width: 100,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: category.isSelected ? LightThemeColor.accent : Colors.transparent,
-                            borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            color: category.isSelected
+                                ? LightThemeColor.accent
+                                : Colors.transparent,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
                             border: category.isSelected
                                 ? null
                                 : Border.all(color: LightThemeColor.accent),
                           ),
                           child: Text(
                             category.type.name.toCapital,
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
                                   color: category.isSelected
                                       ? Colors.white
                                       : LightThemeColor.accent,
@@ -126,7 +143,8 @@ class WisataListCustomerScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    separatorBuilder: (_, __) => const Padding(padding: EdgeInsets.only(right: 15)),
+                    separatorBuilder: (_, __) =>
+                        const Padding(padding: EdgeInsets.only(right: 15)),
                   ),
                 ),
               ),
@@ -137,7 +155,10 @@ class WisataListCustomerScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Data wisata tidak tersedia",
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
                                 color: Colors.grey,
                               ),
                         ),
@@ -161,7 +182,10 @@ class WisataListCustomerScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 20),
                       child: Text(
                         "See all",
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
                               color: LightThemeColor.accent,
                             ),
                       ),
@@ -169,9 +193,46 @@ class WisataListCustomerScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              WisataListView(
-                wisatas: bestWisata,
-                isAdmin: false,
+              // Gunakan StreamBuilder untuk Best Wisata
+              StreamBuilder<List<Wisata>>(
+                stream: context.read<WisataProvider>().bestWisataStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "Failed to load best wisata!",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(color: Colors.red),
+                      ),
+                    );
+                  }
+                  final bestWisata = snapshot.data ?? [];
+                  if (bestWisata.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: Center(
+                        child: Text(
+                          "No best wisata available",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(color: Colors.grey),
+                        ),
+                      ),
+                    );
+                  }
+                  return WisataListView(
+                    wisatas: bestWisata,
+                    isAdmin: false,
+                  );
+                },
               ),
             ],
           ),

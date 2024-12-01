@@ -140,7 +140,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   Positioned(
                     left: 10,
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_back_ios, color: Colors.white),
                       onPressed: _previousPage,
                     ),
                   ),
@@ -148,7 +149,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   Positioned(
                     right: 10,
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      icon: const Icon(Icons.arrow_forward_ios,
+                          color: Colors.white),
                       onPressed: _nextPage,
                     ),
                   ),
@@ -186,12 +188,11 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        currentWisata.name,
-                        style: Theme.of(context).textTheme
-                        .displayLarge
-                        ?.copyWith(color: LightThemeColor.accent)
-                      ),
+                      Text(currentWisata.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge
+                              ?.copyWith(color: LightThemeColor.accent)),
                       IconButton(
                         icon: Icon(
                           currentWisata.isFavorite
@@ -206,7 +207,8 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
 
                           // Perbarui state dengan data terbaru
                           setState(() {
-                            currentWisata = wisataProvider.wisataList.firstWhere(
+                            currentWisata =
+                                wisataProvider.wisataList.firstWhere(
                               (w) => w.id == currentWisata.id,
                               orElse: () => currentWisata,
                             );
@@ -223,6 +225,30 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                         .textTheme
                         .displayMedium
                         ?.copyWith(color: LightThemeColor.accent),
+                  ),
+                  const SizedBox(height: 15),
+                  // Lokasi dengan Ikon Lokasi
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        color: LightThemeColor.accent, // Ikon lokasi dengan warna merah
+                        size: 24,
+                      ),
+                      const SizedBox(
+                          width: 8), // Spasi kecil antara ikon dan teks
+                      Expanded(
+                        child: Text(
+                          currentWisata.location, // Lokasi wisata
+                          style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: LightThemeColor.accent),
+                          overflow: TextOverflow
+                              .ellipsis, // Batasi teks jika terlalu panjang
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 15),
                   Text(

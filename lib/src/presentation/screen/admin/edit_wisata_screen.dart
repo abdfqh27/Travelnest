@@ -19,6 +19,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
   late String name;
   late double price;
   late String description;
+  late String location;
   late WisataType type;
   XFile? _mainImageFile;
   List<XFile> _carouselImages = [];
@@ -29,6 +30,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
     name = widget.wisata.name;
     price = widget.wisata.price;
     description = widget.wisata.description;
+    location = widget.wisata.location;
     type = widget.wisata.type;
   }
 
@@ -102,6 +104,18 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
                       validator: (value) => value == null || value.isEmpty
                           ? "Harga diperlukan"
+                          : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: location, // Tampilkan lokasi awal
+                      decoration: const InputDecoration(
+                        labelText: "Lokasi",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) => location = value, // Perbarui lokasi
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Lokasi diperlukan"
                           : null,
                     ),
                     const SizedBox(height: 16),
@@ -208,6 +222,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                               name: name,
                               price: price,
                               description: description,
+                              location: location,
                               type: type,
                             );
                             await wisataProvider.updateWisata(

@@ -14,6 +14,8 @@ class Wisata extends Equatable {
   final int quantity;
   final bool isFavorite;
   final String description;
+  final String location; // Lokasi wisata
+  final Timestamp timestamp; // Waktu penambahan atau pembaruan
   final double score;
   final WisataType type;
   final int voter;
@@ -29,6 +31,8 @@ class Wisata extends Equatable {
     this.quantity = 1,
     this.isFavorite = false,
     required this.description,
+    required this.location,
+    required this.timestamp,
     required this.score,
     required this.type,
     required this.voter,
@@ -45,6 +49,8 @@ class Wisata extends Equatable {
       'quantity': quantity,
       'isFavorite': isFavorite,
       'description': description,
+      'location': location,
+      'timestamp': timestamp,
       'score': score,
       'type': type.toString().split('.').last, // Simpan type sebagai String
       'voter': voter,
@@ -67,6 +73,8 @@ class Wisata extends Equatable {
       quantity: data['quantity'] ?? 1,
       isFavorite: data['isFavorite'] ?? false,
       description: data['description'],
+      location: data['location'] ?? '',
+      timestamp: data['timestamp'] ?? Timestamp.now(),
       // Konversi skor ke double jika diperlukan
       score: (data['score'] is int)
           ? (data['score'] as int).toDouble()
@@ -87,6 +95,8 @@ class Wisata extends Equatable {
         quantity,
         isFavorite,
         description,
+        location,
+        timestamp,
         score,
         type,
         voter,
@@ -103,6 +113,8 @@ class Wisata extends Equatable {
     int? quantity,
     bool? isFavorite,
     String? description,
+    String? location,
+    Timestamp? timestamp,
     double? score,
     WisataType? type,
     int? voter,
@@ -117,6 +129,8 @@ class Wisata extends Equatable {
       quantity: quantity ?? this.quantity,
       isFavorite: isFavorite ?? this.isFavorite,
       description: description ?? this.description,
+      location: location ?? this.location, // Perbarui location
+      timestamp: timestamp ?? this.timestamp, // Perbarui timestamp
       score: score ?? this.score,
       type: type ?? this.type,
       voter: voter ?? this.voter,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
   String name = '';
   double price = 0;
   String description = '';
+  String location = '';
   WisataType type = WisataType.gunung; // Default tipe wisata
   XFile? _mainImageFile;
   List<XFile> _carouselImages = []; // List untuk menyimpan gambar carousel
@@ -104,6 +106,22 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                         }
                         if (double.tryParse(value) == null) {
                           return "Harga tidak valid";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Lokassi",
+                        border: OutlineInputBorder(),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                      ),
+                      onChanged: (value) => location = value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Lokasi diperlukan";
                         }
                         return null;
                       },
@@ -229,6 +247,8 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                               name: name,
                               price: price,
                               description: description,
+                              location: location,
+                              timestamp: Timestamp.now(),
                               score: 0,
                               type: type,
                               voter: 0,

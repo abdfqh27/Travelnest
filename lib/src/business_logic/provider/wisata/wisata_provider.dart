@@ -54,6 +54,32 @@ class WisataProvider with ChangeNotifier {
   });
 }
 
+// Fungsi untuk mendapatkan 5 wisata terbaru berdasarkan timestamp
+Stream<List<Wisata>> get bestWisataStream {
+  return _firestore
+      .collection('wisata')
+      .orderBy('timestamp', descending: true) // Urutkan berdasarkan timestamp
+      .limit(5) // Ambil hanya 5 data terakhir
+      .snapshots()
+      .map((snapshot) {
+    // Debugging: Print jumlah dokumen yang diambil
+    print("Debug: Received ${snapshot.docs.length} documents from Firestore.");
+    List<Wisata> bestWisataList = snapshot.docs.map((doc) {
+      // Debugging: Print nama setiap wisata yang diambil
+      final wisata = Wisata.fromFirestore(doc);
+      print("Debug: Wisata - Name: ${wisata.name}, Timestamp: ${wisata.timestamp.toDate()}");
+      return wisata;
+    }).toList();
+
+    // Debugging: Print seluruh daftar wisata terbaik
+    print("Debug: Complete Best Wisata List: ${bestWisataList.map((w) => w.name).toList()}");
+    return bestWisataList;
+  });
+}
+
+
+
+
 
   // Metode untuk mengambil data wisata dari Firestore
    Future<void> fetchWisata() async {
@@ -143,7 +169,7 @@ void resetFavorites() {
   }
 
     // Tambahkan wisata ke Firestore dengan URL gambar dari Firebase Storage
-  final newWisata = wisata.copyWith(image: mainImageUrl, carouselImages: carouselImageUrls);
+  final newWisata = wisata.copyWith(image: mainImageUrl, carouselImages: carouselImageUrls, timestamp: Timestamp.now(),);
   final docRef = await _firestore.collection('wisata').add(newWisata.toMap());
   //update state wisata provider
     _state = _state.copyWith(
