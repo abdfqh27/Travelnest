@@ -14,11 +14,11 @@ class CategoryProvider with ChangeNotifier {
   List<Wisata> get filteredWisataList => _filteredWisataList;
 
   CategoryProvider() {
-    initializeCategories(); // Tambahkan kategori default saat provider dibuat
-    fetchAllWisata();
+    initializeCategories();
+    _listenToWisataChanges(); // Dengarkan perubahan real-time
   }
 
-  // Method untuk inisialisasi kategori default
+  /// Inisialisasi kategori default
   void initializeCategories() {
     _categories = [
       const WisataCategory(type: WisataType.semua, isSelected: true), // Default kategori "Semua"
@@ -30,60 +30,65 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Mengambil semua data wisata dari Firestore
-  Future<void> fetchAllWisata() async {
-    try {
-      final snapshot = await _firestore.collection('wisata').get();
-      _allWisataList = snapshot.docs.map((doc) => Wisata.fromFirestore(doc)).toList();
-      _filteredWisataList = _allWisataList; // Tampilkan semua data sebagai default
-      notifyListeners();
-    } catch (e) {
-      print("Error fetching wisata: $e");
-    }
+  /// Dengarkan perubahan real-time pada koleksi wisata di Firestore
+  void _listenToWisataChanges() {
+    _firestore.collection('wisata').snapshots().listen((snapshot) {
+      // Perbarui daftar semua wisata
+      _allWisataList = snapshot.docs
+          .map((doc) => Wisata.fromFirestore(doc).copyWith(id: doc.id))
+          .toList();
+
+      // Terapkan filter berdasarkan kategori yang sedang aktif
+      _applyCurrentFilter();
+    });
   }
 
-  // Filter item berdasarkan kategori yang dipilih
-  void filterItemByCategory(WisataCategory selectedCategory) {
-    // Update kategori yang dipilih
-    _categories = _categories.map((category) {
-      return category.copyWith(isSelected: category == selectedCategory);
-    }).toList();
+  /// Terapkan filter berdasarkan kategori yang sedang aktif
+  void _applyCurrentFilter() {
+    final selectedCategory =
+        _categories.firstWhere((category) => category.isSelected);
 
-    // Filter wisata berdasarkan kategori
     if (selectedCategory.type == WisataType.semua) {
-      _filteredWisataList = _allWisataList; // Tampilkan semua data
+      _filteredWisataList = _allWisataList;
     } else {
       _filteredWisataList = _allWisataList
           .where((wisata) => wisata.type == selectedCategory.type)
           .toList();
     }
 
-    notifyListeners();
+    notifyListeners(); // Beritahu UI untuk memperbarui tampilan
   }
 
+  /// Filter item berdasarkan kategori yang dipilih
+  void filterItemByCategory(WisataCategory selectedCategory) {
+    // Perbarui status kategori yang dipilih
+    _categories = _categories.map((category) {
+      return category.copyWith(isSelected: category == selectedCategory);
+    }).toList();
+
+    // Terapkan filter berdasarkan kategori baru
+    _applyCurrentFilter();
+  }
+
+  /// Tambahkan wisata baru ke kategori
   void addWisata(Wisata newWisata) {
-  _allWisataList.add(newWisata); // Tambahkan wisata ke daftar semua wisata
-  filterItemByCategory(_categories.firstWhere((category) => category.isSelected)); // Perbarui filter berdasarkan kategori yang sedang dipilih
-  notifyListeners(); // Beri tahu listener bahwa data telah berubah
-}
-
-
-  // Fungsi untuk memperbarui data wisata
-  void updateWisata(Wisata updatedWisata) {
-  final index = _allWisataList.indexWhere((wisata) => wisata.id == updatedWisata.id);
-  if (index != -1) {
-    _allWisataList[index] = updatedWisata; // Perbarui wisata di daftar semua wisata
-    filterItemByCategory(_categories.firstWhere((category) => category.isSelected)); // Perbarui filter berdasarkan kategori yang sedang dipilih
-    notifyListeners(); // Beri tahu listener bahwa data telah berubah
+    _allWisataList.add(newWisata); // Tambahkan wisata baru
+    _applyCurrentFilter(); // Terapkan filter ulang
   }
-}
 
+  /// Perbarui data wisata
+  void updateWisata(Wisata updatedWisata) {
+    final index = _allWisataList
+        .indexWhere((wisata) => wisata.id == updatedWisata.id);
+    if (index != -1) {
+      _allWisataList[index] = updatedWisata; // Perbarui data wisata
+      _applyCurrentFilter(); // Terapkan filter ulang
+    }
+  }
 
-  // Fungsi untuk menghapus wisata
+  /// Hapus wisata
   void deleteWisata(String wisataId) {
     _allWisataList.removeWhere((wisata) => wisata.id == wisataId); // Hapus wisata
-    filterItemByCategory(
-      _categories.firstWhere((category) => category.isSelected), // Perbarui filter
-    );
+    _applyCurrentFilter(); // Terapkan filter ulang
   }
 }
