@@ -5,6 +5,9 @@ class AppAsset {
   static const githubImage = "assets/images/github_pic.png";
   static const emptyCart = "assets/images/Keranjang.png";
   static const emptyFavorite = "assets/images/Suka.png";
+  static const dana = "assets/images/dana.jpeg";
+  static const barcode = "assets/images/barcode.png";
+  static const travelnest = "assets/images/travelnest.png";
 
   // Tertinggi
   static const ciremai1 = "assets/images/Jawa-Barat/Ciremai/Ciremai.jpeg";
