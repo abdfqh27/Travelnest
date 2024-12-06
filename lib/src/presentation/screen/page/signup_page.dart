@@ -11,6 +11,7 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SignUpPageState createState() => _SignUpPageState();
 }
 
@@ -19,9 +20,13 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController jeniskelaminController = TextEditingController();
+  TextEditingController nohpController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
   XFile? _image;
   bool _isLoading = false;
+  DateTime? selectedBirthDate;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -29,6 +34,23 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       _image = pickedFile;
     });
+  }
+
+  Future<void> _selectBirthDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900), // Batas awal tanggal
+      lastDate: DateTime.now(), // Batas akhir tanggal
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedBirthDate = pickedDate;
+        birthDateController.text =
+            "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}"; // Format tanggal
+      });
+    }
   }
 
   Future<void> _signUp() async {
@@ -40,8 +62,24 @@ class _SignUpPageState extends State<SignUpPage> {
       String email = emailController.text;
       String password = passwordController.text;
       String name = nameController.text;
+      String jeniskelamin = jeniskelaminController.text;
+      String nohp = nohpController.text;
       String address = addressController.text;
       String photoUrl = '';
+      DateTime? birthDate = selectedBirthDate;
+
+      if (birthDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select your birth date'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
 
       try {
         if (_image != null) {
@@ -56,13 +94,30 @@ class _SignUpPageState extends State<SignUpPage> {
           photoUrl = await storageRef.getDownloadURL();
         }
 
-        await Provider.of<AuthProvider>(context, listen: false)
-            .signUp(email, password, name, address, photoUrl);
+        // ignore: use_build_context_synchronously
+        await Provider.of<AuthProvider>(context, listen: false).signUp(email,
+            password, name, jeniskelamin, nohp, address, photoUrl, birthDate);
+
+        // Fetch user data after registration
+        await Provider.of<AuthProvider>(context, listen: false).fetchUserData();
+        final userModel =
+            Provider.of<AuthProvider>(context, listen: false).user;
+
+        if (userModel != null) {
+          final registrationTime = userModel.createdAt;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Registered on: $registrationTime'),
+              backgroundColor: Colors.blue,
+            ),
+          );
+        }
 
         setState(() {
           _isLoading = false;
         });
 
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } catch (e) {
@@ -70,6 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
           _isLoading = false;
         });
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Terjadi kesalahan: $e'),
@@ -225,6 +281,108 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 15),
                 TextFormField(
+                  controller: jeniskelaminController,
+                  decoration: InputDecoration(
+                    labelText: 'Jenis Kelamin',
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                  ),
+                  style: const TextStyle(color: Colors.black),
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Please enter your jenis kelamin'
+                      : null,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  controller: nohpController,
+                  decoration: InputDecoration(
+                    labelText: 'No Hp',
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                  ),
+                  style: const TextStyle(color: Colors.black),
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Please enter your No Hp'
+                      : null,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  controller: birthDateController,
+                  readOnly: true,
+                  onTap: _selectBirthDate,
+                  decoration: InputDecoration(
+                    labelText: 'Birth Date',
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.red, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                    hintText: 'Select your birth date',
+                    suffixIcon: IconButton(
+                      icon:
+                          const Icon(Icons.calendar_today, color: Colors.grey),
+                      onPressed:
+                          _selectBirthDate, // Panggil fungsi pemilih tanggal
+                    ),
+                  ),
+                  style: const TextStyle(color: Colors.black),
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Please select your birth date'
+                      : null,
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
                   controller: addressController,
                   decoration: InputDecoration(
                     labelText: 'Address',
@@ -262,7 +420,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: ElevatedButton(
                           onPressed: _signUp,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF5A189A),
+                            backgroundColor: const Color(0xFF5A189A),
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),

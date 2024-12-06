@@ -2,19 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:wisata_app/src/presentation/screen/admin/my_profile_admin_screen.dart';
 import 'package:wisata_app/src/presentation/screen/page/edit_profile.dart';
-import 'package:wisata_app/src/presentation/screen/customer/my_profile_customer_screen.dart';
 import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
-import 'package:wisata_app/src/presentation/widget/profil_list_item.dart';
 import '../../../../core/app_asset.dart';
 import '../../../business_logic/provider/providers/auth_provider.dart';
 import '../../../../core/info_cart.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
-class ProfileAdminScreen extends StatelessWidget {
-  const ProfileAdminScreen({super.key});
+class MyProfileCustomerScreen extends StatelessWidget {
+  const MyProfileCustomerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,39 +25,6 @@ class ProfileAdminScreen extends StatelessWidget {
           DateFormat('d MMMM yyyy'); // Format: "6 Desember 2024"
       joinedDate = "${formatter.format(user!.createdAt!)}";
     }
-
-    final List<Map<String, dynamic>> profileItems = [
-      {
-        'icon': Icons.person,
-        'text': 'Edit Profile',
-        'onTap': (BuildContext context) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MyProfileAdminScreen()),
-          );
-        },
-      },
-      {
-        'icon': Icons.lock,
-        'text': 'Change Password',
-        'onTap': null,
-      },
-      {
-        'icon': Icons.notifications,
-        'text': 'Notifications',
-        'onTap': null,
-      },
-      {
-        'icon': Icons.settings,
-        'text': 'Settings',
-        'onTap': null,
-      },
-      {
-        'icon': Icons.help,
-        'text': 'Help & Support',
-        'onTap': null,
-      },
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -124,7 +88,7 @@ class ProfileAdminScreen extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                'Admin',
+                'Customer',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[500],
@@ -151,18 +115,51 @@ class ProfileAdminScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 30),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: profileItems.length,
-                itemBuilder: (context, index) {
-                  final item = profileItems[index];
-                  return ProfileListItem(
-                    icon: item['icon'],
-                    text: item['text'],
-                    onTap: () => item['onTap'](context),
+              InfoCard(
+                icon: Icons.email,
+                label: "Email",
+                value: user?.email ?? "Email not available",
+              ),
+              const SizedBox(height: 10),
+              InfoCard(
+                icon: Icons.person_3_rounded,
+                label: "Jenis Kelamin",
+                value: user?.jeniskelamin ?? "Jenis not available",
+              ),
+              const SizedBox(height: 10),
+              InfoCard(
+                icon: Icons.phone,
+                label: "No Hp",
+                value: user?.nohp ?? "No Hp not available",
+              ),
+              const SizedBox(height: 10),
+              InfoCard(
+                icon: Icons.location_on,
+                label: "Address",
+                value: user?.address ?? "Address not provided",
+              ),
+              const SizedBox(height: 10),
+              const SizedBox(height: 35),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfilePage()),
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5A189A),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -200,8 +197,10 @@ class ProfileAdminScreen extends StatelessWidget {
     );
 
     if (shouldLogout == true) {
+      // ignore: use_build_context_synchronously
       authProvider.signOut(context);
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),
       );

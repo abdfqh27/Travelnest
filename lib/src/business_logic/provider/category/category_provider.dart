@@ -91,4 +91,23 @@ class CategoryProvider with ChangeNotifier {
     _allWisataList.removeWhere((wisata) => wisata.id == wisataId); // Hapus wisata
     _applyCurrentFilter(); // Terapkan filter ulang
   }
+
+  // Fungsi untuk mencari wisata berdasarkan nama
+  void searchWisata(String query) {
+    if (query.isEmpty) {
+      _filteredWisataList = _allWisataList;
+    } else {
+      _filteredWisataList = _allWisataList
+          .where((wisata) => wisata.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+   // Fungsi untuk mengatur wisata list dari API atau data statis
+  void setWisataList(List<Wisata> wisatas) {
+    _allWisataList = wisatas;
+    _filteredWisataList = wisatas; // Awalnya tampilkan semua wisata
+    notifyListeners();
+  }
 }

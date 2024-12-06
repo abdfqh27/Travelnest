@@ -9,13 +9,17 @@ class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
+  late TextEditingController _jeniskelaminController;
+  late TextEditingController _nohpController;
   late TextEditingController _addressController;
+  DateTime? _selectedBirthDate;
   File? _newPhoto;
 
   @override
@@ -24,12 +28,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final user = Provider.of<AuthProvider>(context, listen: false).user;
 
     _nameController = TextEditingController(text: user?.name ?? "");
+    _jeniskelaminController =
+        TextEditingController(text: user?.jeniskelamin ?? "");
+    _nohpController = TextEditingController(text: user?.nohp ?? "");
+    _selectedBirthDate = user?.birthDate;
     _addressController = TextEditingController(text: user?.address ?? "");
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _jeniskelaminController.dispose();
+    _nohpController.dispose();
     _addressController.dispose();
     super.dispose();
   }
@@ -40,6 +50,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (pickedFile != null) {
       setState(() {
         _newPhoto = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _selectBirthDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedBirthDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _selectedBirthDate = pickedDate;
       });
     }
   }
@@ -72,6 +97,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     if (shouldSave == true) {
       _saveProfileChanges();
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); // ke profil
     }
   }
@@ -81,6 +107,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await authProvider.updateUserProfile(
         _nameController.text,
+        _jeniskelaminController.text,
+        _nohpController.text,
+        _selectedBirthDate,
         _addressController.text,
         _newPhoto,
       );
@@ -127,6 +156,62 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ? 'Please enter your name'
                       : null;
                 },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _jeniskelaminController,
+                decoration: const InputDecoration(
+                  labelText: "Jenis Kelamin",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  return value == null || value.isEmpty
+                      ? 'Please enter your gender'
+                      : null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _nohpController,
+                decoration: const InputDecoration(
+                  labelText: "No Hp",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  return value == null || value.isEmpty
+                      ? 'Please enter your no hp'
+                      : null;
+                },
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: _selectBirthDate,
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    controller: TextEditingController(
+                      text: _selectedBirthDate != null
+                          ? "${_selectedBirthDate!.day}/${_selectedBirthDate!.month}/${_selectedBirthDate!.year}"
+                          : "",
+                    ),
+                    decoration: InputDecoration(
+                      labelText: "Birth Date",
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.blue, // Ubah warna ikon di sini
+                        ),
+                        onPressed:
+                            _selectBirthDate, // Panggil fungsi pemilih tanggal
+                      ),
+                    ),
+                    validator: (value) {
+                      return value == null || value.isEmpty
+                          ? 'Please select your birth date'
+                          : null;
+                    },
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               TextFormField(

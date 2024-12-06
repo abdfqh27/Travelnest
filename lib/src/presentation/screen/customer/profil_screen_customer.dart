@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:wisata_app/src/presentation/screen/admin/my_profile_admin_screen.dart';
 import 'package:wisata_app/src/presentation/screen/page/edit_profile.dart';
 import 'package:wisata_app/src/presentation/screen/customer/my_profile_customer_screen.dart';
 import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
@@ -13,8 +12,8 @@ import '../../../../core/info_cart.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
-class ProfileAdminScreen extends StatelessWidget {
-  const ProfileAdminScreen({super.key});
+class ProfileCustomerScreen extends StatelessWidget {
+  const ProfileCustomerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class ProfileAdminScreen extends StatelessWidget {
         'onTap': (BuildContext context) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MyProfileAdminScreen()),
+            MaterialPageRoute(builder: (context) => const MyProfileCustomerScreen()),
           );
         },
       },
@@ -124,7 +123,7 @@ class ProfileAdminScreen extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                'Admin',
+                'Customer',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[500],

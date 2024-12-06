@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
@@ -35,9 +36,9 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp(String email, String password, String name,
-      String address, String? photoUrl) async {
-    await _authService.signUp(email, password, name, address, photoUrl);
+  Future<void> signUp(String email, String password, String name, String jeniskelamin, String nohp,
+      String address, String? photoUrl,  DateTime? birthDate) async {
+    await _authService.signUp(email, password, name, jeniskelamin, nohp, address, photoUrl, birthDate);
     await fetchUserData();
   }
 
@@ -49,9 +50,10 @@ class AuthProvider with ChangeNotifier {
     await _saveLoginStatus(true);
 
     // Ambil data favorit untuk user yang baru login
+    // ignore: use_build_context_synchronously
     context.read<WisataProvider>().fetchFavoritesForCurrentUser();
   } catch (e) {
-    throw Exception("Login gagal: $e");
+     throw Exception("Invalid email or password");
   }
   }
 
@@ -97,7 +99,7 @@ class AuthProvider with ChangeNotifier {
   // }
 
   Future<void> updateUserProfile(
-      String newName, String newAddress, File? newPhoto) async {
+      String newName, String newJenisKelamin, String newNoHp, DateTime? newBirthDate, String newAddress, File? newPhoto) async {
     try {
       String? updatedPhotoUrl = _user?.photoUrl;
 
@@ -117,16 +119,18 @@ class AuthProvider with ChangeNotifier {
       if (_user != null) {
         // Update user profile data in Firestore
         await _authService.updateUserProfile(
-            _user!.id, newName, newAddress, updatedPhotoUrl);
+            _user!.id, newName,newJenisKelamin,newNoHp,newBirthDate, newAddress, updatedPhotoUrl);
 
         // Update the local user data
         _user = _user!.copyWith(
-            name: newName, address: newAddress, photoUrl: updatedPhotoUrl);
+            name: newName,jeniskelamin: newJenisKelamin, nohp: newNoHp, birthDate: newBirthDate, address: newAddress, photoUrl: updatedPhotoUrl);
 
         notifyListeners(); // Notify listeners to update the UI
       }
     } catch (e) {
-      print("Error updating profile: $e");
+      if (kDebugMode) {
+        print("Error updating profile: $e");
+      }
     }
   }
 

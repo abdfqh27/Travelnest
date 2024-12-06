@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import '../../../data/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +15,8 @@ class AuthService {
     await _auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<User?> signUp(String email, String password, String name,
-      String address, String? photoUrl) async {
+  Future<User?> signUp(String email, String password, String name, String jeniskelamin, String nohp,
+      String address, String? photoUrl, DateTime? birthDate) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -28,14 +29,20 @@ class AuthService {
       await _firestore.collection('users').doc(user?.uid).set({
         'email': email,
         'name': name,
+        'jeniskelamin': jeniskelamin,
+        'nohp': nohp,
         'address': address,
         'photoUrl': photoUrl,
         'role': 'user', // default
+        'birthDate': birthDate?.toIso8601String(),
+        'createdAt': FieldValue.serverTimestamp(),
       });
 
       return user;
     } catch (e) {
-      print("Sign Up Error: ${e.toString()}");
+      if (kDebugMode) {
+        print("Sign Up Error: ${e.toString()}");
+      }
       return null;
     }
   }
@@ -54,9 +61,12 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      await saveLoginStatus(true);
       return result.user;
     } catch (e) {
-      print("Sign In Error: ${e.toString()}");
+      if (kDebugMode) {
+        print("Sign In Error: ${e.toString()}");
+      }
       return null;
     }
   }
@@ -74,16 +84,21 @@ class AuthService {
   }
 
   // Update user profile data
-  Future<void> updateUserProfile(String userId, String newName,
+  Future<void> updateUserProfile(String userId, String newName, String newJenisKelamin, String newNoHp, DateTime? newBirthDate,
       String newAddress, String? newPhotoUrl) async {
     try {
       await _firestore.collection('users').doc(userId).update({
         'name': newName,
+        'jeniskelamin': newJenisKelamin,
+        'nohp': newNoHp,
+        'birthDate': newBirthDate?.toIso8601String(),
         'address': newAddress,
         'photoUrl': newPhotoUrl,
       });
     } catch (e) {
-      print("Error updating profile: $e");
+      if (kDebugMode) {
+        print("Error updating profile: $e");
+      }
     }
   }
 
@@ -91,6 +106,21 @@ class AuthService {
   Future<void> updateUserName(String uid, String newName) async {
     await _firestore.collection('users').doc(uid).update({'name': newName});
   }
+
+  // Update user's jenis kelamin
+  Future<void> updateJenisKelamin(String uid, String newJenisKelamin) async {
+    await _firestore.collection('users').doc(uid).update({'jeniskelamin': newJenisKelamin});
+  }
+
+  // Update user's no hp
+  Future<void> updateNoHp(String uid, String newNoHp) async {
+    await _firestore.collection('users').doc(uid).update({'nohp': newNoHp});
+  }
+
+  // Update user's birthdate
+Future<void> updateBirthDate(String uid, DateTime newBirthdate) async {
+  await _firestore.collection('users').doc(uid).update({'birthDate': newBirthdate.toIso8601String()});
+}
 
   // Update user's email
   Future<void> updateUserEmail(String uid, String newEmail) async {
@@ -127,7 +157,9 @@ class AuthService {
     try {
       await _storage.refFromURL(photoUrl).delete();
     } catch (e) {
-      print("Error deleting old photo: $e");
+      if (kDebugMode) {
+        print("Error deleting old photo: $e");
+      }
     }
   }
 
