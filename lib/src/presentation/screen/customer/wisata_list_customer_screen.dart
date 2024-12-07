@@ -1,5 +1,6 @@
 // src/presentation/screen/customer/wisata_list_customer_screen.dart
 import 'package:badges/badges.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Badge;
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -46,14 +47,19 @@ class WisataListCustomerScreen extends StatelessWidget {
     );
   }
 
-  Widget _searchBar() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+  Widget _searchBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search wisata',
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
+        onChanged: (query) {
+          // Memanggil fungsi searchWisata pada provider saat teks berubah
+          context.read<CategoryProvider>().searchWisata(query);
+        },
+        decoration: const InputDecoration(
+          hintText: 'Search wisata by name...',
+          prefixIcon: Icon(Icons.search),
           contentPadding: EdgeInsets.all(20),
+          border: OutlineInputBorder(),
         ),
       ),
     );
@@ -78,7 +84,9 @@ class WisataListCustomerScreen extends StatelessWidget {
     final user = authProvider.user;
 
     // Debugging print statement
-    print("Current User: ${user?.name}");
+    if (kDebugMode) {
+      print("Current User: ${user?.name}");
+    }
 
     return Scaffold(
       appBar: _appBar(context),
@@ -96,7 +104,7 @@ class WisataListCustomerScreen extends StatelessWidget {
                 "Discover and book the best \ntravel experiences around you!",
                 style: Theme.of(context).textTheme.displayLarge,
               ).fadeAnimation(0.4),
-              _searchBar(),
+              _searchBar(context),
               Text(
                 "Available for you",
                 style: Theme.of(context).textTheme.displaySmall,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/core/app_color.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/presentation/screen/customer/kebijakan_screen.dart';
 import 'package:wisata_app/src/business_logic/provider/pesanan/pesanan_provider.dart';
 import 'package:wisata_app/src/presentation/screen/customer/pembayaran_berhasil_screen.dart';
@@ -15,7 +18,7 @@ class DetailPesananScreen extends StatelessWidget {
   final String tanggalKunjungan;
 
   const DetailPesananScreen({
-    Key? key,
+    super.key,
     required this.namaWisata,
     required this.hargaTiket,
     required this.namaPemesan,
@@ -23,7 +26,7 @@ class DetailPesananScreen extends StatelessWidget {
     required this.nomorTelepon,
     required this.alamat,
     required this.tanggalKunjungan,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +34,9 @@ class DetailPesananScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Pembayaran",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
       body: SingleChildScrollView(
@@ -41,10 +44,12 @@ class DetailPesananScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
                 "Detail Pemesanan",
                 style: TextStyle(
-                color: Colors.white,
+                color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -54,24 +59,30 @@ class DetailPesananScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12), // Border radius 12
               ),
-              color: const Color(0xFF1F1F30), // Warna latar belakang card
+              color: context.read<ThemeProvider>().isLightTheme
+                          ? LightThemeColor.primaryDark
+                          : DarkThemeColor.primaryLight, // Warna latar belakang card
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildDetailItem("Nama Wisata", namaWisata),
-                    _buildDetailItem("Nama Pemesan", namaPemesan),
-                    _buildDetailItem("NIK", nik),
-                    _buildDetailItem("No. Handphone", nomorTelepon),
-                    _buildDetailItem("Alamat", alamat),
-                    _buildDetailItem("Tanggal", tanggalKunjungan),
-                    const Divider(color: Color(0xFF9159C1), thickness: 1),
+                    _buildDetailItem(context, "Nama Wisata", namaWisata),
+                    _buildDetailItem(context,"Nama Pemesan", namaPemesan),
+                    _buildDetailItem(context,"NIK", nik),
+                    _buildDetailItem(context,"No. Handphone", nomorTelepon),
+                    _buildDetailItem(context,"Alamat", alamat),
+                    _buildDetailItem(context,"Tanggal", tanggalKunjungan),
+                    Divider(color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white, thickness: 1),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Metode Pembayaran",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -84,10 +95,12 @@ class DetailPesananScreen extends StatelessWidget {
                         width: 40,
                         height: 40,
                       ),
-                      title: const Text(
+                      title: Text(
                         "Dana",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -98,17 +111,21 @@ class DetailPesananScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Total Pembayaran",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                             fontSize: 14,
                           ),
                         ),
                         Text(
                           hargaTiket, // Nilai dari variabel hargaTiket
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -145,6 +162,7 @@ class DetailPesananScreen extends StatelessWidget {
 
                     // Navigasi ke halaman konfirmasi pembayaran
                     Navigator.pushReplacement(
+                      // ignore: use_build_context_synchronously
                       context,
                       MaterialPageRoute(
                         builder: (_) => KonfirmasiPembayaranScreen(
@@ -154,6 +172,7 @@ class DetailPesananScreen extends StatelessWidget {
                       ),
                     );
                   } catch (e) {
+                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Gagal menyimpan pesanan: $e"),
@@ -184,7 +203,7 @@ class DetailPesananScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailItem(String label, String value) {
+  Widget _buildDetailItem(BuildContext context, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -192,16 +211,20 @@ class DetailPesananScreen extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),

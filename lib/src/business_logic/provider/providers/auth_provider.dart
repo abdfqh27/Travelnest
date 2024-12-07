@@ -96,7 +96,7 @@ class AuthProvider with ChangeNotifier {
   //         name: newName, address: newAddress, photoUrl: updatedPhotoUrl);
   //     notifyListeners();
   //   }
-  // }
+  // }s
 
   Future<void> updateUserProfile(
       String newName, String newJenisKelamin, String newNoHp, DateTime? newBirthDate, String newAddress, File? newPhoto) async {
@@ -131,6 +131,15 @@ class AuthProvider with ChangeNotifier {
       if (kDebugMode) {
         print("Error updating profile: $e");
       }
+    }
+  }
+
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+    try {
+      await _authService.changePassword(oldPassword, newPassword);
+    } catch (e) {
+      print("Error saat mengganti password: $e");
+      throw Exception("Gagal mengganti password: ${e.toString()}");
     }
   }
 

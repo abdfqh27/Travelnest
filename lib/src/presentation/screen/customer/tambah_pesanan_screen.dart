@@ -7,7 +7,7 @@ import 'package:wisata_app/src/presentation/screen/customer/detail_pesanan_scree
 import 'package:intl/intl.dart'; // Untuk memformat tanggal
 
 class TambahPesananScreen extends StatefulWidget {
-  const TambahPesananScreen({Key? key, required this.wisata}) : super(key: key);
+  const TambahPesananScreen({super.key, required this.wisata});
 
   final Wisata wisata;
 
@@ -57,9 +57,9 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Form Pemesanan",
-          style: TextStyle(color: Colors.white), // Warna teks putih
+          style: Theme.of(context).textTheme.displayMedium, // Warna teks putih
         ),
       ),
       body: Padding(
@@ -184,7 +184,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8), // Border radius 8
                       ),
-                      backgroundColor: Color(0xFF5A189A), // Warna tombol (contoh)
+                      backgroundColor: const Color(0xFF5A189A), // Warna tombol (contoh)
                       padding: const EdgeInsets.symmetric(vertical: 16), // Padding vertikal
                     ),
                     child: const Text("Lanjutkan",

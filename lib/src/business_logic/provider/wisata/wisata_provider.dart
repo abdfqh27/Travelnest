@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter/foundation.dart' show ChangeNotifier, kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import intl package for currency formatting
 import 'package:provider/provider.dart';
@@ -63,16 +65,22 @@ Stream<List<Wisata>> get bestWisataStream {
       .snapshots()
       .map((snapshot) {
     // Debugging: Print jumlah dokumen yang diambil
-    print("Debug: Received ${snapshot.docs.length} documents from Firestore.");
+    if (kDebugMode) {
+      print("Debug: Received ${snapshot.docs.length} documents from Firestore.");
+    }
     List<Wisata> bestWisataList = snapshot.docs.map((doc) {
       // Debugging: Print nama setiap wisata yang diambil
       final wisata = Wisata.fromFirestore(doc);
-      print("Debug: Wisata - Name: ${wisata.name}, Timestamp: ${wisata.timestamp.toDate()}");
+      if (kDebugMode) {
+        print("Debug: Wisata - Name: ${wisata.name}, Timestamp: ${wisata.timestamp.toDate()}");
+      }
       return wisata;
     }).toList();
 
     // Debugging: Print seluruh daftar wisata terbaik
-    print("Debug: Complete Best Wisata List: ${bestWisataList.map((w) => w.name).toList()}");
+    if (kDebugMode) {
+      print("Debug: Complete Best Wisata List: ${bestWisataList.map((w) => w.name).toList()}");
+    }
     return bestWisataList;
   });
 }
@@ -94,7 +102,9 @@ Stream<List<Wisata>> get bestWisataStream {
     await fetchFavoritesForCurrentUser();
     notifyListeners();
   } catch (e) {
-    print("Error fetching wisata: $e");
+    if (kDebugMode) {
+      print("Error fetching wisata: $e");
+    }
   }
 }
 
@@ -109,7 +119,9 @@ Stream<List<Wisata>> get bestWisataStream {
         .doc(userId)
         .collection('favorites')
         .get();
-   print("Favorites snapshot: ${snapshot.docs.map((doc) => doc.id).toList()}");
+   if (kDebugMode) {
+     print("Favorites snapshot: ${snapshot.docs.map((doc) => doc.id).toList()}");
+   }
 
 
     // Buat daftar wisata dari dokumen di subkoleksi favorites
@@ -126,7 +138,9 @@ Stream<List<Wisata>> get bestWisataStream {
     _state = _state.copyWith(wisataList: userFavorites);
     notifyListeners();
   } catch (e) {
-    print("Error fetching favorites for current user: $e");
+    if (kDebugMode) {
+      print("Error fetching favorites for current user: $e");
+    }
   }
 }
 
@@ -140,6 +154,7 @@ void resetFavorites() {
 
 
    // Fungsi untuk mengunggah beberapa gambar dan mendapatkan URL-nya
+  // ignore: unused_element
   Future<List<String>> _uploadImages(List<XFile> images) async {
     List<String> imageUrls = [];
     for (XFile image in images) {
@@ -197,6 +212,7 @@ void resetFavorites() {
     notifyListeners();
 
     // Sinkronisasi dengan CategoryProvider
+    // ignore: use_build_context_synchronously
     context.read<CategoryProvider>().addWisata(wisataWithId);
 
     // Tampilkan notifikasi sukses
@@ -207,7 +223,9 @@ void resetFavorites() {
       ),
     );
   } catch (e) {
-    print("Error adding wisata: $e");
+    if (kDebugMode) {
+      print("Error adding wisata: $e");
+    }
   }
 } 
 
@@ -281,7 +299,9 @@ Future<void> updateWisata(
       ),
     );
   } catch (e) {
-    print("Error updating wisata: $e");
+    if (kDebugMode) {
+      print("Error updating wisata: $e");
+    }
   }
 }
 
@@ -320,7 +340,9 @@ Future<void> updateWisata(
       ),
     );
   } catch (e) {
-    print("Error deleting wisata: $e");
+    if (kDebugMode) {
+      print("Error deleting wisata: $e");
+    }
   }
 }
 
@@ -356,7 +378,9 @@ Future<void> updateWisata(
   Future<void> toggleFavorite(Wisata wisata) async {
   final userId = _auth.currentUser?.uid;
   if (userId == null) {
-    print("User is not logged in.");
+    if (kDebugMode) {
+      print("User is not logged in.");
+    }
     return;
   }
 
@@ -392,7 +416,9 @@ Future<void> updateWisata(
 
     notifyListeners(); // Perbarui UI
   } catch (e) {
-    print("Error toggling favorite: $e");
+    if (kDebugMode) {
+      print("Error toggling favorite: $e");
+    }
   }
 }
 

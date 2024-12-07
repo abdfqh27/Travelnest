@@ -11,6 +11,7 @@ class TambahWisataScreen extends StatefulWidget {
   const TambahWisataScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TambahWisataScreenState createState() => _TambahWisataScreenState();
 }
 
@@ -263,6 +264,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                             );
 
                             // Navigasi kembali setelah sukses
+                            // ignore: use_build_context_synchronously
                             Navigator.pop(context);
                           }
                         },

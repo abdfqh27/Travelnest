@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/core/app_color.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'detail_pesanan_screen.dart';
 
 class KebijakanScreen extends StatelessWidget {
@@ -11,7 +14,7 @@ class KebijakanScreen extends StatelessWidget {
   final String tanggalKunjungan;
 
   const KebijakanScreen({
-    Key? key,
+    super.key,
     required this.namaWisata,
     required this.hargaTiket,
     required this.namaPemesan,
@@ -19,15 +22,15 @@ class KebijakanScreen extends StatelessWidget {
     required this.nomorTelepon,
     required this.alamat,
     required this.tanggalKunjungan,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Ketentuan dan Kebijakan",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
       body: Padding(
@@ -38,7 +41,9 @@ class KebijakanScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1F1F30),
+                  color: context.read<ThemeProvider>().isLightTheme
+                          ? LightThemeColor.primaryDark
+                          : DarkThemeColor.primaryLight,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16.0),

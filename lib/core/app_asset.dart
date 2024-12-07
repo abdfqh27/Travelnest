@@ -9,6 +9,9 @@ class AppAsset {
   static const barcode = "assets/images/barcode.png";
   static const travelnest = "assets/images/travelnest.png";
 
+  //team
+  static const mujahid = "assets/images/team/Mujahid.jpg";
+
   // Tertinggi
   static const ciremai1 = "assets/images/Jawa-Barat/Ciremai/Ciremai.jpeg";
   static const ciremai2 = "assets/images/Jawa-Barat/Ciremai/Ciremai-1.jpeg";
@@ -28,10 +31,14 @@ class AppAsset {
 
   // Jawa Barat
   static const pangrango1 = "assets/images/Jawa-Barat/Pangrango/Pangrango.jpeg";
-  static const pangrango2 = "assets/images/Jawa-Barat/Pangrango/Pangrango-1.jpeg";
-  static const pangrango3 = "assets/images/Jawa-Barat/Pangrango/Pangrango-2.jpeg";
-  static const pangrango4 = "assets/images/Jawa-Barat/Pangrango/Pangrango-3.jpeg";
-  static const pangrango5 = "assets/images/Jawa-Barat/Pangrango/Pangrango-4.jpeg";
+  static const pangrango2 =
+      "assets/images/Jawa-Barat/Pangrango/Pangrango-1.jpeg";
+  static const pangrango3 =
+      "assets/images/Jawa-Barat/Pangrango/Pangrango-2.jpeg";
+  static const pangrango4 =
+      "assets/images/Jawa-Barat/Pangrango/Pangrango-3.jpeg";
+  static const pangrango5 =
+      "assets/images/Jawa-Barat/Pangrango/Pangrango-4.jpeg";
   static const gede1 = "assets/images/Jawa-Barat/Gede/Gede.jpeg";
   static const gede2 = "assets/images/Jawa-Barat/Gede/Gede-1.jpeg";
   static const gede3 = "assets/images/Jawa-Barat/Gede/Gede-2.jpeg";
@@ -42,11 +49,16 @@ class AppAsset {
   static const cikuray3 = "assets/images/Jawa-Barat/Cikuray/Cikuray-2.jpeg";
   static const cikuray4 = "assets/images/Jawa-Barat/Cikuray/Cikuray-3.jpeg";
   static const cikuray5 = "assets/images/Jawa-Barat/Cikuray/Cikuray-4.jpeg";
-  static const papandayan1 = "assets/images/Jawa-Barat/Papandayan/Papandayan.jpeg";
-  static const papandayan2 = "assets/images/Jawa-Barat/Papandayan/Papandayan-1.jpeg";
-  static const papandayan3 = "assets/images/Jawa-Barat/Papandayan/Papandayan-2.jpeg";
-  static const papandayan4 = "assets/images/Jawa-Barat/Papandayan/Papandayan-3.jpeg";
-  static const papandayan5 = "assets/images/Jawa-Barat/Papandayan/Papandayan-4.jpeg";
+  static const papandayan1 =
+      "assets/images/Jawa-Barat/Papandayan/Papandayan.jpeg";
+  static const papandayan2 =
+      "assets/images/Jawa-Barat/Papandayan/Papandayan-1.jpeg";
+  static const papandayan3 =
+      "assets/images/Jawa-Barat/Papandayan/Papandayan-2.jpeg";
+  static const papandayan4 =
+      "assets/images/Jawa-Barat/Papandayan/Papandayan-3.jpeg";
+  static const papandayan5 =
+      "assets/images/Jawa-Barat/Papandayan/Papandayan-4.jpeg";
 
   // Jawa Tengah
   static const merbabu1 = "assets/images/Jawa-Tengah/Merbabu/Merbabu.jpeg";
@@ -90,5 +102,4 @@ class AppAsset {
   static const bromo3 = "assets/images/Jawa-Timur/Bromo/Bromo-2.jpeg";
   static const bromo4 = "assets/images/Jawa-Timur/Bromo/Bromo-3.jpeg";
   static const bromo5 = "assets/images/Jawa-Timur/Bromo/Bromo-4.jpeg";
-
 }

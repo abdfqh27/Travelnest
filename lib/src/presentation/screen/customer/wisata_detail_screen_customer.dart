@@ -7,6 +7,7 @@ import 'package:wisata_app/core/app_extension.dart';
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
+import 'package:wisata_app/src/presentation/screen/customer/tambah_pesanan_screen.dart';
 
 String formatRupiah(double amount) {
   return 'Rp ${amount.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')}';
@@ -21,6 +22,7 @@ class WisataDetailScreenCustomer extends StatefulWidget {
   final Wisata wisata;
 
   @override
+  // ignore: library_private_types_in_public_api
   _WisataDetailScreenState createState() => _WisataDetailScreenState();
 }
 
@@ -266,7 +268,12 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                     width: double.infinity,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () => wisataProvider.addToCart(currentWisata),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => TambahPesananScreen(wisata: widget.wisata),
+                          ),
+                      ),
                       child: const Text("Pesan Wisata"),
                     ),
                   ),

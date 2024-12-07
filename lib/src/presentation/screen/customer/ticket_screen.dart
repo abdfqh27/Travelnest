@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/core/app_color.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 import 'package:wisata_app/src/presentation/screen/customer/ticket_detail_screen.dart';
 
 class TicketScreen extends StatelessWidget {
-  const TicketScreen({Key? key}) : super(key: key);
+  const TicketScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +15,20 @@ class TicketScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Ticket Screen",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
       body: currentUser == null
-          ? const Center(
+          ? Center(
               child: Text(
                 "User tidak ditemukan.",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: context.read<ThemeProvider>().isLightTheme
+                      ? Colors.black
+                      : Colors.white,
+                ),
               ),
             )
           : StreamBuilder<QuerySnapshot>(
@@ -35,11 +42,13 @@ class TicketScreen extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "Tidak ada data pesanan.",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  return Center(
+                    child: Text("Tidak ada data pesanan.",
+                        style: TextStyle(
+                          color: context.read<ThemeProvider>().isLightTheme
+                              ? Colors.black
+                              : Colors.white,
+                        )),
                   );
                 }
 
@@ -57,7 +66,8 @@ class TicketScreen extends StatelessWidget {
                     final alamat = pesanan['alamat'] ?? '';
                     final tanggalKunjungan = pesanan['tanggalKunjungan'] ?? '';
                     final documentId = pesanan.id; // Mengambil document ID
-                    final kodePemesanan = documentId.substring(0, 5); // 5 karakter pertama
+                    final kodePemesanan =
+                        documentId.substring(0, 5); // 5 karakter pertama
 
                     return GestureDetector(
                       onTap: () {
@@ -66,7 +76,7 @@ class TicketScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => TicketDetailScreen(
                               namaWisata: namaWisata,
-                              kodePemesanan: kodePemesanan, 
+                              kodePemesanan: kodePemesanan,
                               namaPemesan: namaPemesan,
                               nik: nik,
                             ),
@@ -79,7 +89,9 @@ class TicketScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          color: const Color(0xFF1F1F30),
+                          color: context.read<ThemeProvider>().isLightTheme
+                              ? LightThemeColor.primaryDark
+                              : DarkThemeColor.primaryLight,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
@@ -87,18 +99,23 @@ class TicketScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   namaWisata,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: context
+                                            .read<ThemeProvider>()
+                                            .isLightTheme
+                                        ? Colors.black
+                                        : Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                _buildDetailRow("Kode Pemesanan: $kodePemesanan", ""),
-                                _buildDetailRow("$namaPemesan", nik),
-                                _buildDetailRow(nomorTelepon, ""),
-                                _buildDetailRow(alamat, ""),
-                                _buildDetailRow(tanggalKunjungan, hargaTiket),
+                                _buildDetailRow(
+                                    context, "Kode Pemesanan: $kodePemesanan", ""),
+                                _buildDetailRow(context, "$namaPemesan", nik),
+                                _buildDetailRow(context, nomorTelepon, ""),
+                                _buildDetailRow(context, alamat, ""),
+                                _buildDetailRow(context, tanggalKunjungan, hargaTiket),
                               ],
                             ),
                           ),
@@ -107,13 +124,12 @@ class TicketScreen extends StatelessWidget {
                     );
                   },
                 );
-
               },
             ),
     );
   }
 
-  Widget _buildDetailRow(String left, String right) {
+  Widget _buildDetailRow(BuildContext context, String left, String right) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -122,8 +138,10 @@ class TicketScreen extends StatelessWidget {
           Expanded(
             child: Text(
               left,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                 fontSize: 14,
               ),
               overflow: TextOverflow.ellipsis,
@@ -132,8 +150,10 @@ class TicketScreen extends StatelessWidget {
           Expanded(
             child: Text(
               right,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                 fontSize: 14,
                 /* fontWeight: FontWeight.bold, */
               ),

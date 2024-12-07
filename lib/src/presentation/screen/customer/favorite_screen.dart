@@ -18,6 +18,7 @@ class FavoriteScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Favorite Screen",
           style: Theme.of(context).textTheme.displayMedium,
@@ -64,7 +65,7 @@ class FavoriteScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         trailing: IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             AppIcon.heart,
                             color: Colors.redAccent,
                           ),

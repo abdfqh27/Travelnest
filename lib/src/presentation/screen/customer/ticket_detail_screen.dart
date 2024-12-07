@@ -10,26 +10,24 @@ class TicketDetailScreen extends StatelessWidget {
   final String logoImage;
 
   const TicketDetailScreen({
-    Key? key,
+    super.key,
     required this.namaWisata,
     required this.kodePemesanan,
     required this.namaPemesan,
     required this.nik,
     this.barcodeImage = AppAsset.barcode,
     this.logoImage = AppAsset.travelnest,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Tiket",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
-        backgroundColor: const Color(0xFF1F1F30),
       ),
-      backgroundColor: const Color(0xFF1F1F30),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(

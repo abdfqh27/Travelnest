@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:wisata_app/src/presentation/screen/page/about.dart';
 import 'package:wisata_app/src/presentation/screen/page/edit_profile.dart';
 import 'package:wisata_app/src/presentation/screen/customer/my_profile_customer_screen.dart';
+import 'package:wisata_app/src/presentation/screen/page/help_and_support.dart';
 import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
+import 'package:wisata_app/src/presentation/widget/change_password.dart';
 import 'package:wisata_app/src/presentation/widget/profil_list_item.dart';
 import '../../../../core/app_asset.dart';
 import '../../../business_logic/provider/providers/auth_provider.dart';
@@ -35,14 +38,21 @@ class ProfileCustomerScreen extends StatelessWidget {
         'onTap': (BuildContext context) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MyProfileCustomerScreen()),
+            MaterialPageRoute(
+                builder: (context) => const MyProfileCustomerScreen()),
           );
         },
       },
       {
         'icon': Icons.lock,
         'text': 'Change Password',
-        'onTap': null,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ChangePasswordScreen()),
+          );
+        },
       },
       {
         'icon': Icons.notifications,
@@ -50,14 +60,24 @@ class ProfileCustomerScreen extends StatelessWidget {
         'onTap': null,
       },
       {
-        'icon': Icons.settings,
-        'text': 'Settings',
-        'onTap': null,
+        'icon': Icons.info,
+        'text': 'About',
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AboutPage()),
+          );
+        },
       },
       {
         'icon': Icons.help,
         'text': 'Help & Support',
-        'onTap': null,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HelpAndSupportPage()),
+          );
+        },
       },
     ];
 

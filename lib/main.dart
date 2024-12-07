@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
             },
           ),
           theme: themeProvider.state.theme,
-          home: SplashScreen(), // Sesuaikan untuk admin atau customer
+          home: const SplashScreen(), // Sesuaikan untuk admin atau customer
         ),
       ),
     );

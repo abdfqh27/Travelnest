@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/core/app_color.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class KonfirmasiPembayaranScreen extends StatelessWidget {
   final String totalPembayaran;
   final String tanggal;
 
   const KonfirmasiPembayaranScreen({
-    Key? key,
+    super.key,
     required this.totalPembayaran,
     required this.tanggal,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1F1F30),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1F1F30),
+        automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Pembayaran Berhasil",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
       body: SingleChildScrollView(
@@ -35,43 +33,49 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 80),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               "Payment Notification Sent",
               style: TextStyle(
-                color: Colors.white,
+                color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black
+                          : Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               "Check your Dana Account to make payment",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white70,
+                color: context.read<ThemeProvider>().isLightTheme
+                          ? Colors.black87
+                          : Colors.white70,
                 fontSize: 14,
               ),
             ),
             const SizedBox(height: 16),
             Card(
-              color: const Color(0xFF292940),
+              color: context.read<ThemeProvider>().isLightTheme
+                          ? LightThemeColor.primaryDark
+                          : DarkThemeColor.primaryLight,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Complete payment immediately on DANA application in 55 seconds",
                       style: TextStyle(
                         color: Color(0xFF7B7B7B),
                         fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
+                    SizedBox(height: 16),
+                    Text(
                       "How to Pay With DANA",
                       style: TextStyle(
                         color: Color(0xFF7B7B7B),
@@ -79,8 +83,8 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       "1. Open the DANA application and log in with your registered phone number (example: 08123456789).\n"
                       "2. Tap on the 'Payment Notification' displayed on your DANA app homepage to view the payment details.\n"
                       "3. Confirm the payment and ensure it is completed within the specified time limit to avoid transaction timeout.\n"
@@ -96,7 +100,9 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Card(
-              color: const Color(0xFF292940),
+              color: context.read<ThemeProvider>().isLightTheme
+                          ? LightThemeColor.primaryDark
+                          : DarkThemeColor.primaryLight,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

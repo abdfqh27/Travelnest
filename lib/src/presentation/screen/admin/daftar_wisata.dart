@@ -15,6 +15,7 @@ class DaftarWisataScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Daftar Wisata",
           style: Theme.of(context).textTheme.displayMedium,

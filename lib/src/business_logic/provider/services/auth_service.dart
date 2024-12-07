@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -162,6 +163,77 @@ Future<void> updateBirthDate(String uid, DateTime newBirthdate) async {
       }
     }
   }
+
+  Future<void> refreshToken() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await user.reload(); // Memperbarui token pengguna
+    }
+  }
+
+  Future<bool> hasInternetConnection() async {
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+  } catch (_) {
+    return false; // Tidak ada koneksi
+  }
+}
+
+  // Fungsi untuk mengganti password
+  Future<void> changePassword(String oldPassword, String newPassword) async {
+  User? user = _auth.currentUser;
+
+  if (user == null) {
+    throw Exception("Pengguna tidak ditemukan.");
+  }
+
+  String email = user.email ?? "";
+
+  try {
+    // Periksa koneksi internet menggunakan metode alternatif
+    bool isConnected = await hasInternetConnection();
+    if (!isConnected) {
+      throw Exception("Tidak ada koneksi internet.");
+    }
+    print("Koneksi internet aktif.");
+
+    print("Merefresh token...");
+    await user.reload(); // Refresh token pengguna
+    print("Token diperbarui.");
+
+    print("Memulai login ulang...");
+    // Login ulang dengan password lama untuk verifikasi
+    await _auth.signInWithEmailAndPassword(email: email, password: oldPassword)
+        .timeout(const Duration(seconds: 30), onTimeout: () {
+      throw Exception("Login ulang timeout. Periksa koneksi internet Anda.");
+    });
+    print("Login ulang berhasil.");
+
+    print("Mengganti password...");
+    // Ganti password baru
+    await user.updatePassword(newPassword)
+        .timeout(const Duration(seconds: 30), onTimeout: () {
+      throw Exception("Update password timeout. Periksa koneksi internet Anda.");
+    });
+    print("Password berhasil diganti.");
+  } catch (e) {
+    print("Error: $e");
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'wrong-password':
+          throw Exception("Password lama salah.");
+        case 'weak-password':
+          throw Exception("Password baru terlalu lemah.");
+        default:
+          throw Exception("Terjadi kesalahan: ${e.message}");
+      }
+    } else {
+      throw Exception("Kesalahan tidak dikenal: $e");
+    }
+  }
+}
+
 
   // Sign out the user
  void signOut() async {

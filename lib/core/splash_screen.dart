@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wisata_app/core/app_asset.dart';
 import 'package:wisata_app/core/root_screen.dart';
 //import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
 //import './root_screen.dart';
@@ -19,8 +20,8 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: LottieBuilder.asset(
-                  'assets/images/lottie/AnimationSplash.json',
+                child: Image.asset(
+                  AppAsset.travelnest,
                   width: splashIconSize,
                   height: splashIconSize,
                 ),

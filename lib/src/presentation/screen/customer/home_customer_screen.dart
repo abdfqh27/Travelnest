@@ -1,4 +1,6 @@
-import 'profile_customer_screen.dart';
+import 'package:wisata_app/src/presentation/screen/customer/profil_screen_customer.dart';
+
+import 'my_profile_customer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:wisata_app/core/app_data.dart';
@@ -12,7 +14,7 @@ class HomeCustomerScreen extends HookWidget {
 
   final List<Widget> screen = [
     const WisataListCustomerScreen(),
-    const CartScreen(),
+    const TicketScreen(),
     const FavoriteScreen(),
     const ProfileCustomerScreen()
   ];

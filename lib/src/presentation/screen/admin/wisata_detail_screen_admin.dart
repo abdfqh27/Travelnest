@@ -21,6 +21,7 @@ class WisataDetailScreenAdmin extends StatefulWidget {
   final Wisata wisata;
 
   @override
+  // ignore: library_private_types_in_public_api
   _WisataDetailScreenState createState() => _WisataDetailScreenState();
 }
 
@@ -193,28 +194,28 @@ class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
                               .textTheme
                               .displayLarge
                               ?.copyWith(color: LightThemeColor.accent)),
-                      IconButton(
-                        icon: Icon(
-                          currentWisata.isFavorite
-                              ? FontAwesomeIcons.solidHeart
-                              : FontAwesomeIcons.heart,
-                          color: currentWisata.isFavorite
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        onPressed: () async {
-                          wisataProvider.toggleFavorite(currentWisata);
+                      // IconButton(
+                      //   icon: Icon(
+                      //     currentWisata.isFavorite
+                      //         ? FontAwesomeIcons.solidHeart
+                      //         : FontAwesomeIcons.heart,
+                      //     color: currentWisata.isFavorite
+                      //         ? Colors.red
+                      //         : Colors.grey,
+                      //   ),
+                      //   onPressed: () async {
+                      //     wisataProvider.toggleFavorite(currentWisata);
 
-                          // Perbarui state dengan data terbaru
-                          setState(() {
-                            currentWisata =
-                                wisataProvider.wisataList.firstWhere(
-                              (w) => w.id == currentWisata.id,
-                              orElse: () => currentWisata,
-                            );
-                          });
-                        },
-                      ),
+                      //     // Perbarui state dengan data terbaru
+                      //     setState(() {
+                      //       currentWisata =
+                      //           wisataProvider.wisataList.firstWhere(
+                      //         (w) => w.id == currentWisata.id,
+                      //         orElse: () => currentWisata,
+                      //       );
+                      //     });
+                      //   },
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 15),
@@ -265,10 +266,10 @@ class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
                   SizedBox(
                     width: double.infinity,
                     height: 45,
-                    child: ElevatedButton(
-                      onPressed: () => wisataProvider.addToCart(currentWisata),
-                      child: const Text("Pesan Wisata"),
-                    ),
+                    // child: ElevatedButton(
+                    //   onPressed: () => wisataProvider.addToCart(currentWisata),
+                    //   child: const Text("Pesan Wisata"),
+                    // ),
                   ),
                 ],
               ),

@@ -68,14 +68,17 @@ class ForgotPasswordPage extends StatelessWidget {
                   final authProvider =
                       Provider.of<AuthProvider>(context, listen: false);
                   await authProvider.resetPassword(email);
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content:
                           Text('Password reset link has been sent to $email.'),
                     ),
                   );
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context); // Kembali ke halaman login
                 } catch (e) {
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error: $e')),
                   );

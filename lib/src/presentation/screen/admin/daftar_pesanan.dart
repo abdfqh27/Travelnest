@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/pesanan/pesanan_provider.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class DaftarPesananScreen extends StatelessWidget {
-  const DaftarPesananScreen({Key? key}) : super(key: key);
+  const DaftarPesananScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,11 +13,10 @@ class DaftarPesananScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Daftar Pesanan",
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
-        backgroundColor: const Color(0xFF1F1F30),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: pesananProvider.getSemuaPesanan(),
@@ -50,7 +52,9 @@ class DaftarPesananScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  color: const Color(0xFF1F1F30),
+                  color: context.read<ThemeProvider>().isLightTheme
+                              ? LightThemeColor.primaryDark
+                              : DarkThemeColor.primaryLight,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -58,18 +62,20 @@ class DaftarPesananScreen extends StatelessWidget {
                       children: [
                         Text(
                           namaWisata,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: context.read<ThemeProvider>().isLightTheme
+                              ? Colors.black
+                              : Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        _buildDetailRow("Kode Pemesanan: $kodePemesanan", ""),
-                        _buildDetailRow(namaPemesan, nik),
-                        _buildDetailRow(nomorTelepon, ""),
-                        _buildDetailRow(alamat, ""),
-                        _buildDetailRow(tanggalKunjungan, hargaTiket),
+                        _buildDetailRow(context, "Kode Pemesanan: $kodePemesanan", ""),
+                        _buildDetailRow(context, namaPemesan, nik),
+                        _buildDetailRow(context, nomorTelepon, ""),
+                        _buildDetailRow(context, alamat, ""),
+                        _buildDetailRow(context, tanggalKunjungan, hargaTiket),
                       ],
                     ),
                   ),
@@ -82,7 +88,7 @@ class DaftarPesananScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String left, String right) {
+  Widget _buildDetailRow(BuildContext context, String left, String right) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -91,8 +97,10 @@ class DaftarPesananScreen extends StatelessWidget {
           Expanded(
             child: Text(
               left,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.read<ThemeProvider>().isLightTheme
+                              ? Colors.black
+                              : Colors.white,
                 fontSize: 14,
               ),
               overflow: TextOverflow.ellipsis,
@@ -101,8 +109,10 @@ class DaftarPesananScreen extends StatelessWidget {
           Expanded(
             child: Text(
               right,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: context.read<ThemeProvider>().isLightTheme
+                              ? Colors.black
+                              : Colors.white,
                 fontSize: 14,
               ),
               textAlign: TextAlign.end,

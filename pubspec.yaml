@@ -49,6 +49,9 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.3.3
   simple_animations: ^5.0.2
+  flutter_screenutil: ^5.9.3
+  line_awesome_flutter: ^3.0.1
+  connectivity_plus: ^6.1.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -84,6 +87,10 @@ flutter:
     - assets/images/Jawa-Timur/Bromo/
     - assets/images/lottie/AnimationSplash.json
     - assets/images/lottie/walk.json
+    - assets/images/dana.jpeg
+    - assets/images/barcode.png
+    - assets/images/travelnest.png
+    - assets/images/team/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

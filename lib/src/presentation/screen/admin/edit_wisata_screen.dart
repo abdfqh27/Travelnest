@@ -11,6 +11,7 @@ class EditWisataScreen extends StatefulWidget {
   const EditWisataScreen({super.key, required this.wisata});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditWisataScreenState createState() => _EditWisataScreenState();
 }
 
@@ -233,6 +234,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                             );
 
                             // Kembali ke layar sebelumnya dan berikan nilai true
+                            // ignore: use_build_context_synchronously
                             Navigator.pop(context, true);
                           }
                         },
