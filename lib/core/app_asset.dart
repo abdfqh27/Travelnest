@@ -11,6 +11,10 @@ class AppAsset {
 
   //team
   static const mujahid = "assets/images/team/Mujahid.jpg";
+  static const faqih = "assets/images/team/Faqih.jpg";
+  static const aufa = "assets/images/team/Aufa.jpg";
+  static const fahmi = "assets/images/team/Fahmi.jpg";
+  static const rahma = "assets/images/team/Rahma.jpg";
 
   // Tertinggi
   static const ciremai1 = "assets/images/Jawa-Barat/Ciremai/Ciremai.jpeg";

@@ -155,7 +155,7 @@ class ProfileCustomerScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Bergabung', // Baris pertama
+                    'Joined Since', // Baris pertama
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[500],
@@ -196,13 +196,13 @@ class ProfileCustomerScreen extends StatelessWidget {
     final shouldLogout = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text("Apakah Anda yakin ingin keluar?"),
-        content: const Text("Pastikan semua data sudah aman tersimpan"),
+        title: const Text("Are you sure you want to logout?"),
+        content: const Text("Make sure all data is stored safely"),
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(context, false),
             child: const Text(
-              "Tidak",
+              "Cancel",
               style: TextStyle(color: Colors.blueAccent),
             ),
           ),
@@ -210,7 +210,7 @@ class ProfileCustomerScreen extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
-              "Ya",
+              "Yes",
               style: TextStyle(color: Colors.blueAccent),
             ),
           ),

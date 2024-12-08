@@ -41,7 +41,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       title: Text(
-        "Wisata Detail",
+        "Tour Details",
         style: TextStyle(
           color: context.read<ThemeProvider>().isLightTheme
               ? Colors.black
@@ -253,7 +253,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    "Deskripsi:",
+                    "Description:",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 10),
@@ -263,7 +263,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenAdmin> {
                   ),
                   const SizedBox(height: 20),
                   // Add to Cart Button
-                  SizedBox(
+                  const SizedBox(
                     width: double.infinity,
                     height: 45,
                     // child: ElevatedButton(

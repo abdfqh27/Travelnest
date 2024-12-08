@@ -31,16 +31,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             _newPasswordController.text,
           )
           .timeout(const Duration(seconds: 30), onTimeout: () {
-        throw Exception("Proses terlalu lama. Coba lagi nanti.");
+        throw Exception("Process is taking too long. Please try again later.");
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Password berhasil diubah!")),
+        const SnackBar(content: Text("Password changed successfully!")),
       );
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Gagal mengganti password: $e")),
+        SnackBar(content: Text("Failed to change password: $e")),
       );
     } finally {
       setState(() {
@@ -64,7 +64,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Ganti Password")),
+      appBar: AppBar(
+          title: Text(
+        "Change Password",
+        style: Theme.of(context).textTheme.displayMedium,
+      )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -75,11 +79,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 controller: _oldPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: "Password Lama",
+                  labelText: "Old Password",
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Password lama tidak boleh kosong.";
+                    return "The old password cannot be empty.";
                   }
                   return null;
                 },
@@ -89,14 +93,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 controller: _newPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: "Password Baru",
+                  labelText: "New Password",
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Password baru tidak boleh kosong.";
+                    return "The new password cannot be empty.";
                   }
                   if (value.length < 6) {
-                    return "Password baru harus minimal 6 karakter.";
+                    return "New password must be at least 6 characters.";
                   }
                   return null;
                 },
@@ -106,14 +110,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 controller: _confirmPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: "Konfirmasi Password Baru",
+                  labelText: "Confirm New Password",
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Konfirmasi password tidak boleh kosong.";
+                    return "Confirmation password cannot be empty.";
                   }
                   if (value != _newPasswordController.text) {
-                    return "Password baru dan konfirmasi tidak cocok.";
+                    return "New password and confirmation do not match.";
                   }
                   return null;
                 },
@@ -123,7 +127,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: _handleChangePassword,
-                      child: const Text("Ganti Password"),
+                      child: const Text("Change Password"),
                     ),
             ],
           ),

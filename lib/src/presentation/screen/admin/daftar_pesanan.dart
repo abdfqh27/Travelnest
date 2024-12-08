@@ -14,7 +14,7 @@ class DaftarPesananScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Daftar Pesanan",
+          "Order List",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
@@ -26,7 +26,7 @@ class DaftarPesananScreen extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Belum ada tiket yang dipesan."));
+            return const Center(child: Text("No tickets have been booked yet."));
           }
 
           final dataPesanan = snapshot.data!;
@@ -71,7 +71,7 @@ class DaftarPesananScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        _buildDetailRow(context, "Kode Pemesanan: $kodePemesanan", ""),
+                        _buildDetailRow(context, "Order Code: $kodePemesanan", ""),
                         _buildDetailRow(context, namaPemesan, nik),
                         _buildDetailRow(context, nomorTelepon, ""),
                         _buildDetailRow(context, alamat, ""),

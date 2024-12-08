@@ -35,7 +35,7 @@ class DetailPesananScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Pembayaran",
+          "Payment",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
@@ -45,7 +45,7 @@ class DetailPesananScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                "Detail Pemesanan",
+                "Order Details",
                 style: TextStyle(
                 color: context.read<ThemeProvider>().isLightTheme
                           ? Colors.black
@@ -67,18 +67,18 @@ class DetailPesananScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildDetailItem(context, "Nama Wisata", namaWisata),
-                    _buildDetailItem(context,"Nama Pemesan", namaPemesan),
+                    _buildDetailItem(context, "Tour Name", namaWisata),
+                    _buildDetailItem(context,"Booker Name", namaPemesan),
                     _buildDetailItem(context,"NIK", nik),
                     _buildDetailItem(context,"No. Handphone", nomorTelepon),
-                    _buildDetailItem(context,"Alamat", alamat),
-                    _buildDetailItem(context,"Tanggal", tanggalKunjungan),
+                    _buildDetailItem(context,"Addres", alamat),
+                    _buildDetailItem(context,"Date", tanggalKunjungan),
                     Divider(color: context.read<ThemeProvider>().isLightTheme
                           ? Colors.black
                           : Colors.white, thickness: 1),
                     const SizedBox(height: 8),
                     Text(
-                      "Metode Pembayaran",
+                      "Payment Method",
                       style: TextStyle(
                         color: context.read<ThemeProvider>().isLightTheme
                           ? Colors.black
@@ -112,7 +112,7 @@ class DetailPesananScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Total Pembayaran",
+                          "Total Payment",
                           style: TextStyle(
                             color: context.read<ThemeProvider>().isLightTheme
                           ? Colors.black
@@ -175,7 +175,7 @@ class DetailPesananScreen extends StatelessWidget {
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Gagal menyimpan pesanan: $e"),
+                        content: Text("Failed to save order: $e"),
                       ),
                     );
                   }
@@ -188,7 +188,7 @@ class DetailPesananScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
-                  "Bayar Sekarang",
+                  "Pay Now",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

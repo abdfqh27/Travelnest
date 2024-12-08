@@ -17,7 +17,7 @@ class DaftarWisataScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "Daftar Wisata",
+          "Tourist List",
           style: Theme.of(context).textTheme.displayMedium,
         ),
         actions: [
@@ -35,7 +35,7 @@ class DaftarWisataScreen extends StatelessWidget {
               if (result == true && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("Wisata berhasil ditambahkan"),
+                    content: Text("Tour successfully added"),
                     backgroundColor: Colors.green,
                   ),
                 );
@@ -56,7 +56,7 @@ class DaftarWisataScreen extends StatelessWidget {
           if (snapshot.hasError) {
             return const Center(
               child: Text(
-                "Terjadi kesalahan, coba lagi.",
+                "An error occurred, please try again.",
                 style: TextStyle(fontSize: 16, color: Colors.red),
               ),
             );
@@ -65,7 +65,7 @@ class DaftarWisataScreen extends StatelessWidget {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
               child: Text(
-                "Belum ada data wisata",
+                "There is no tourism data yet",
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             );
@@ -130,7 +130,7 @@ class DaftarWisataScreen extends StatelessWidget {
                           if (result == true && context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Wisata berhasil diperbarui"),
+                                content: Text("Tour successfully updated"),
                                 backgroundColor: Colors.green,
                               ),
                             );
@@ -144,13 +144,13 @@ class DaftarWisataScreen extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text("Hapus Wisata"),
+                              title: const Text("Delete Tour"),
                               content: const Text(
-                                  "Apakah Anda yakin ingin menghapus wisata ini?"),
+                                  "Are you sure you want to delete this tour?"),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Text("Batal"),
+                                  child: const Text("Cancel"),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -162,13 +162,13 @@ class DaftarWisataScreen extends StatelessWidget {
                                           .showSnackBar(
                                         const SnackBar(
                                           content:
-                                              Text("Wisata berhasil dihapus"),
+                                              Text("Tour successfully deleted"),
                                           backgroundColor: Colors.red,
                                         ),
                                       );
                                     }
                                   },
-                                  child: const Text("Hapus"),
+                                  child: const Text("Delete"),
                                 ),
                               ],
                             ),

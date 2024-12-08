@@ -283,7 +283,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextFormField(
                   controller: jeniskelaminController,
                   decoration: InputDecoration(
-                    labelText: 'Jenis Kelamin',
+                    labelText: 'Gender',
                     filled: true,
                     fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
@@ -307,7 +307,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   style: const TextStyle(color: Colors.black),
                   validator: (value) => value == null || value.isEmpty
-                      ? 'Please enter your jenis kelamin'
+                      ? 'Please enter your Gender'
                       : null,
                 ),
                 const SizedBox(height: 15),

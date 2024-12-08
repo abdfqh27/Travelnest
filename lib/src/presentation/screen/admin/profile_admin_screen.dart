@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/src/presentation/screen/admin/my_profile_admin_screen.dart';
+import 'package:wisata_app/src/presentation/screen/page/about.dart';
 import 'package:wisata_app/src/presentation/screen/page/edit_profile.dart';
 import 'package:wisata_app/src/presentation/screen/customer/my_profile_customer_screen.dart';
+import 'package:wisata_app/src/presentation/screen/page/help_and_support.dart';
 import 'package:wisata_app/src/presentation/screen/page/login_page.dart';
+import 'package:wisata_app/src/presentation/widget/change_password.dart';
 import 'package:wisata_app/src/presentation/widget/profil_list_item.dart';
 import '../../../../core/app_asset.dart';
 import '../../../business_logic/provider/providers/auth_provider.dart';
@@ -36,14 +39,21 @@ class ProfileAdminScreen extends StatelessWidget {
         'onTap': (BuildContext context) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MyProfileAdminScreen()),
+            MaterialPageRoute(
+                builder: (context) => const MyProfileAdminScreen()),
           );
         },
       },
       {
         'icon': Icons.lock,
         'text': 'Change Password',
-        'onTap': null,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ChangePasswordScreen()),
+          );
+        },
       },
       {
         'icon': Icons.notifications,
@@ -51,14 +61,24 @@ class ProfileAdminScreen extends StatelessWidget {
         'onTap': null,
       },
       {
-        'icon': Icons.settings,
-        'text': 'Settings',
-        'onTap': null,
+        'icon': Icons.info,
+        'text': 'About',
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AboutPage()),
+          );
+        },
       },
       {
         'icon': Icons.help,
         'text': 'Help & Support',
-        'onTap': null,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HelpAndSupportPage()),
+          );
+        },
       },
     ];
 
@@ -136,7 +156,7 @@ class ProfileAdminScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Bergabung', // Baris pertama
+                    'Joined Since', // Baris pertama
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[500],

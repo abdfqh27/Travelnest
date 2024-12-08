@@ -29,7 +29,7 @@ class KebijakanScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Ketentuan dan Kebijakan",
+          "Terms and Policies",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
@@ -50,52 +50,52 @@ class KebijakanScreen extends StatelessWidget {
                 child: ListView(
                   children: const [
                     Text(
-                      "1. Tiket hanya dapat dibeli melalui aplikasi ini. Pastikan semua data yang diisi saat pemesanan benar dan sesuai dengan identitas asli.",
+                      "1. Tickets can only be purchased through this application. Make sure all data filled in when ordering is correct and matches the original identity.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "2. Harga tiket sudah termasuk pajak dan biaya layanan.",
+                      "2. Ticket prices include taxes and service charges.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "3. Tiket yang sudah dibeli tidak dapat dibatalkan dengan alasan apapun.",
+                      "3. Tickets that have been purchased cannot be cancelled for any reason.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "4. Pengembalian dana (refund) tidak berlaku untuk semua jenis tiket.",
+                      "4. Refunds do not apply to all types of tickets.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "5. Tiket yang sudah dibeli tidak dapat diubah jadwalnya. Pemesanan baru harus dilakukan jika ingin mengganti tanggal atau waktu kunjungan.",
+                      "5. Tickets that have been purchased cannot be rescheduled. A new booking must be made if you wish to change the date or time of your visit.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "6. Tiket hanya berlaku pada tanggal dan waktu yang tercantum pada tiket. Tiket tidak dapat digunakan di luar jadwal tersebut.",
+                      "6. Tickets are only valid on the date and time stated on the ticket. Tickets cannot be used outside of these schedules.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "7. Tiket hanya berlaku untuk satu kali penggunaan.",
+                      "7. Tickets are valid for one time use only.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "8. Tiket yang diterima berbentuk tiket elektronik (e-ticket) yang dapat diakses melalui daftar tiket pada aplikasi.",
+                      "8. The tickets received are in the form of electronic tickets (e-tickets) which can be accessed via the ticket list in the application.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "9. Pengguna wajib menunjukkan e-ticket beserta identitas diri yang sah saat masuk ke lokasi wisata.",
+                      "9. Users are required to show an e-ticket along with valid identification when entering the tourist location.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "10. Pemalsuan tiket akan dikenakan tindakan hukum sesuai peraturan yang berlaku.",
+                      "10. Ticket counterfeiting will be subject to legal action in accordance with applicable regulations.",
                       style: TextStyle(color: Color(0xFF7B7B7B)),
                     ),
                   ],
@@ -131,7 +131,7 @@ class KebijakanScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
-                  "Lanjutkan",
+                  "Continue",
                   style: TextStyle(color: Colors.white),
                 ),
               ),

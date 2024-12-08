@@ -101,7 +101,7 @@ class WisataListCustomerScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
               ).fadeAnimation(0.2),
               Text(
-                "Discover and book the best \ntravel experiences around you!",
+                "Your journey to amazing \ndestinations starts here",
                 style: Theme.of(context).textTheme.displayLarge,
               ).fadeAnimation(0.4),
               _searchBar(context),
@@ -162,7 +162,7 @@ class WisataListCustomerScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 50),
                       child: Center(
                         child: Text(
-                          "Data wisata tidak tersedia",
+                          "Travel data not available",
                           style: Theme.of(context)
                               .textTheme
                               .headlineMedium
@@ -183,7 +183,7 @@ class WisataListCustomerScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Best wisata for you",
+                      "News wisata for you",
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     Padding(

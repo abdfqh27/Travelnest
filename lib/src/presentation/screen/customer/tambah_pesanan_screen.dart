@@ -58,7 +58,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Form Pemesanan",
+          "Order Form",
           style: Theme.of(context).textTheme.displayMedium, // Warna teks putih
         ),
       ),
@@ -74,7 +74,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 TextFormField(
                   initialValue: widget.wisata.name,
                   decoration: const InputDecoration(
-                    labelText: "Nama Wisata",
+                    labelText: "Tour Name",
                   ),
                   readOnly: true,
                 ),
@@ -83,7 +83,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 TextFormField(
                   initialValue: formatRupiah(widget.wisata.price),
                   decoration: const InputDecoration(
-                    labelText: "Harga Tiket",
+                    labelText: "Ticket Price",
                   ),
                   readOnly: true,
                 ),
@@ -101,7 +101,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: "Nama Pemesan",
+                    labelText: "Booker Name",
                   ),
                   validator: (value) =>
                       value == null || value.isEmpty ? "Nama wajib diisi" : null,
@@ -132,7 +132,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 TextFormField(
                   controller: _alamatController,
                   decoration: const InputDecoration(
-                    labelText: "Alamat",
+                    labelText: "Addres",
                   ),
                   validator: (value) =>
                       value == null || value.isEmpty ? "Alamat wajib diisi" : null,
@@ -142,7 +142,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 TextFormField(
                   readOnly: true,
                   decoration: const InputDecoration(
-                    labelText: "Tanggal",
+                    labelText: "Date",
                   ),
                   controller: TextEditingController(
                     text: _selectedDate == null
@@ -187,7 +187,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                       backgroundColor: const Color(0xFF5A189A), // Warna tombol (contoh)
                       padding: const EdgeInsets.symmetric(vertical: 16), // Padding vertikal
                     ),
-                    child: const Text("Lanjutkan",
+                    child: const Text("Continue",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

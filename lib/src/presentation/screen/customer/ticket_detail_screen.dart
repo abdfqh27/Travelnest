@@ -24,7 +24,7 @@ class TicketDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Tiket",
+          "Ticket",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
@@ -64,7 +64,7 @@ class TicketDetailScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   // Kode Pemesanan
                   Text(
-                    "Kode Pemesanan: $kodePemesanan",
+                    "Order Code: $kodePemesanan",
                     style: const TextStyle(
                       fontSize: 16,
                       color: Color(0xFF1F1F30),

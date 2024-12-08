@@ -52,7 +52,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        "Tambah Wisata",
+        "Add Tour",
         style: Theme.of(context).textTheme.displayMedium,
       )),
       body: SingleChildScrollView(
@@ -71,14 +71,14 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Tambah Wisata Baru",
+                      "Add New Tour",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const Divider(),
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: "Nama Wisata",
+                        labelText: "Tourist Name",
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -86,7 +86,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       onChanged: (value) => name = value,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Nama wisata diperlukan";
+                          return "Tourist name required";
                         }
                         return null;
                       },
@@ -94,7 +94,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: "Harga",
+                        labelText: "Price",
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -103,10 +103,10 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Harga diperlukan";
+                          return "Price required";
                         }
                         if (double.tryParse(value) == null) {
-                          return "Harga tidak valid";
+                          return "Price is invalid";
                         }
                         return null;
                       },
@@ -114,7 +114,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: "Lokassi",
+                        labelText: "Location",
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -122,7 +122,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       onChanged: (value) => location = value,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Lokasi diperlukan";
+                          return "Location required";
                         }
                         return null;
                       },
@@ -130,7 +130,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: "Deskripsi",
+                        labelText: "Description",
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -138,7 +138,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       onChanged: (value) => description = value,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Deskripsi diperlukan";
+                          return "Description required";
                         }
                         return null;
                       },
@@ -146,7 +146,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     const SizedBox(height: 16),
                     DropdownButtonFormField<WisataType>(
                       decoration: const InputDecoration(
-                        labelText: "Tipe",
+                        labelText: "Category",
                         border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -166,7 +166,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Gambar Utama",
+                      "Main Image",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -175,7 +175,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                         icon: const Icon(Icons.add_a_photo,
                             size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
-                        tooltip: 'Pilih Gambar Utama',
+                        tooltip: 'Select Main Image',
                       ),
                     ),
                     if (_mainImageFile != null)
@@ -193,7 +193,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                       ),
                     const SizedBox(height: 20),
                     const Text(
-                      "Gambar Carousel",
+                      "Carousel Image",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -202,7 +202,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                         icon: const Icon(Icons.collections,
                             size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
-                        tooltip: 'Pilih Gambar Carousel',
+                        tooltip: 'Select Carousel Image',
                       ),
                     ),
                     if (_carouselImages.isNotEmpty)
@@ -268,7 +268,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text("Tambah Wisata"),
+                        child: const Text("Add Tour"),
                       ),
                     ),
                   ],

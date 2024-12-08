@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -21,7 +20,9 @@ class _LoginPageState extends State<LoginPage>
   final TextEditingController _passwordController = TextEditingController();
   late AnimationController _animationController;
   late Animation<double> _opacityAnimation;
-  final _formKey = GlobalKey<FormState>();  // GlobalKey untuk form validation
+  final _formKey = GlobalKey<FormState>(); // GlobalKey untuk form validation
+  bool _isEmailError = false;
+  bool _isPasswordError = false;
 
   @override
   void initState() {
@@ -47,6 +48,24 @@ class _LoginPageState extends State<LoginPage>
   Future<void> _login(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+      setState(() {
+        _isEmailError = false;
+        _isPasswordError = false;
+      });
+
+      // Validasi input
+      if (_emailController.text.trim().isEmpty ||
+          !_emailController.text.contains('@')) {
+        setState(() => _isEmailError = true);
+        return;
+      }
+
+      if (_passwordController.text.trim().isEmpty) {
+        setState(() => _isPasswordError = true);
+        return;
+      }
+
       try {
         await authProvider.signIn(
           context,
@@ -54,49 +73,70 @@ class _LoginPageState extends State<LoginPage>
           _passwordController.text.trim(),
         );
 
-        if (authProvider.user != null) {
+        if (authProvider.user != null &&
+            authProvider.user?.email != null &&
+            authProvider.user?.role != null) {
           if (authProvider.user?.role == 'admin') {
             Navigator.pushReplacement(
-              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(builder: (context) => HomeAdminScreen()),
             );
           } else {
             Navigator.pushReplacement(
-              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(builder: (context) => HomeCustomerScreen()),
             );
           }
+        } else {
+          if (authProvider.user == null) {
+            showDialog(
+              context: context,
+              builder: (context) => const AlertDialog(
+                title: Text(
+                  'Login Failed',
+                  style: TextStyle(color: Colors.black),
+                ),
+                content: Text('Email or password is incorrect.'),
+              ),
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            });
+            return;
+          }
         }
       } catch (e) {
-        // Tampilkan dialog jika login gagal
-        // ignore: use_build_context_synchronously
-        _showErrorDialog(context, 'Login failed: $e');
+        print('Login failed: $e');
+        setState(() {
+          _isEmailError = true;
+          _isPasswordError = true;
+        });
       }
     }
   }
 
   // Fungsi untuk menampilkan dialog kesalahan
-  void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Login Failed'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showErrorDialog(BuildContext context, String message) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Login Failed'),
+  //         content: Text(message),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,24 +187,29 @@ class _LoginPageState extends State<LoginPage>
                           decoration: InputDecoration(
                             labelText: 'Enter Your Email',
                             labelStyle: const TextStyle(color: Color(0xFF5A189A)),
-                            prefixIcon: const Icon(Icons.email, color: Color(0xFF5A189A)),
+                            prefixIcon: const Icon(Icons.email,
+                                color: Color(0xFF5A189A)),
                             filled: true,
                             fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color(0xFF5A189A), width: 2),
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF5A189A), width: 2),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color(0xFF5A189A), width: 2),
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF5A189A), width: 2),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.red, width: 2),
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 2),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.red, width: 2),
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 2),
                             ),
                           ),
                           style: const TextStyle(color: Color(0xFF5A189A)),
@@ -173,7 +218,8 @@ class _LoginPageState extends State<LoginPage>
                               return 'Please enter your email';
                             }
                             // Tambahkan validasi email dengan RegExp (optional)
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
@@ -186,24 +232,29 @@ class _LoginPageState extends State<LoginPage>
                           decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: const TextStyle(color: Color(0xFF5A189A)),
-                            prefixIcon: const Icon(Icons.lock, color: Color(0xFF5A189A)),
+                            prefixIcon: const Icon(Icons.lock,
+                                color: Color(0xFF5A189A)),
                             filled: true,
                             fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color(0xFF5A189A), width: 2),
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF5A189A), width: 2),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Color(0xFF5A189A), width: 2),
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF5A189A), width: 2),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.red, width: 2),
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 2),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.red, width: 2),
+                              borderSide:
+                                  const BorderSide(color: Colors.red, width: 2),
                             ),
                           ),
                           style: const TextStyle(color: Color(0xFF5A189A)),
@@ -219,7 +270,8 @@ class _LoginPageState extends State<LoginPage>
                           onPressed: () => _login(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF5A189A),
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.2, vertical: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.2, vertical: 10),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -237,7 +289,8 @@ class _LoginPageState extends State<LoginPage>
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage()),
                       );
                     },
                     child: const Text(
@@ -250,7 +303,8 @@ class _LoginPageState extends State<LoginPage>
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()),
                       );
                     },
                     child: const Text(

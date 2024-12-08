@@ -54,8 +54,8 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'TravelNest adalah aplikasi wisata modern yang dirancang untuk memudahkan pengguna dalam menemukan dan merencanakan perjalanan wisata terbaik. '
-              'Dengan antarmuka yang intuitif dan fitur yang kaya, TravelNest menjadi solusi lengkap untuk para pelancong yang ingin mengeksplorasi destinasi menarik, menambahkan favorit, hingga memesan wisata dengan mudah.',
+              'TravelNest is a modern travel app designed to make it easier for users to find and plan the best travel trips. '
+              'With an intuitive interface and rich features, TravelNest is a complete solution for travelers who want to explore interesting destinations, add favorites, and book tours easily.',
               style: TextStyle(
                 fontSize: 16,
                 height: 1.5,
@@ -77,24 +77,29 @@ class AboutPage extends StatelessWidget {
             const Column(
               children: [
                 DeveloperCard(
-                  name: 'John Doe',
-                  role: 'Lead Developer',
+                  name: 'Abdullah Faqih',
+                  role: 'IOS & Android Development',
+                  imagePath: AppAsset.faqih,
+                ),
+                DeveloperCard(
+                  name: 'M Abdurahman Almujahid',
+                  role: 'IOS & Android Development',
                   imagePath: AppAsset.mujahid,
                 ),
                 DeveloperCard(
-                  name: 'Jane Smith',
-                  role: 'UI/UX Designer',
-                  imagePath: AppAsset.mujahid,
+                  name: 'Aufa Tri Hapsari',
+                  role: 'IOS & Android Development',
+                  imagePath: AppAsset.aufa,
                 ),
                 DeveloperCard(
-                  name: 'Emily Davis',
-                  role: 'Backend Developer',
-                  imagePath: AppAsset.mujahid,
+                  name: 'M. Fahmi Jazuli',
+                  role: 'IOS & Android Development',
+                  imagePath: AppAsset.fahmi,
                 ),
                 DeveloperCard(
-                  name: 'Michael Brown',
-                  role: 'Project Manager',
-                  imagePath: 'assets/images/developer4.png',
+                  name: 'A. Rahma Ramadhanti M.N ',
+                  role: 'IOS & Android Development',
+                  imagePath: AppAsset.rahma,
                 ),
               ],
             ),

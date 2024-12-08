@@ -29,16 +29,16 @@ class MyProfileAdminScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Profile",
+          "My Profile",
           style: Theme.of(context).textTheme.displayMedium,
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _showLogoutConfirmation(context),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.logout),
+        //     onPressed: () => _showLogoutConfirmation(context),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -100,7 +100,7 @@ class MyProfileAdminScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Bergabung', // Baris pertama
+                    'Joined since', // Baris pertama
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[500],
@@ -123,8 +123,8 @@ class MyProfileAdminScreen extends StatelessWidget {
               const SizedBox(height: 10),
               InfoCard(
                 icon: Icons.person_3_rounded,
-                label: "Jenis Kelamin",
-                value: user?.jeniskelamin ?? "Jenis not available",
+                label: "Gender",
+                value: user?.jeniskelamin ?? "Gender not available",
               ),
               const SizedBox(height: 10),
               InfoCard(
@@ -174,13 +174,13 @@ class MyProfileAdminScreen extends StatelessWidget {
     final shouldLogout = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text("Apakah Anda yakin ingin keluar?"),
-        content: const Text("Pastikan semua data sudah aman tersimpan"),
+        title: const Text("Are you sure you want to logout?"),
+        content: const Text("Make sure all data is stored safely"),
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(context, false),
             child: const Text(
-              "Tidak",
+              "No",
               style: TextStyle(color: Colors.blueAccent),
             ),
           ),
@@ -188,7 +188,7 @@ class MyProfileAdminScreen extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, true),
             child: const Text(
-              "Ya",
+              "Yes",
               style: TextStyle(color: Colors.blueAccent),
             ),
           ),

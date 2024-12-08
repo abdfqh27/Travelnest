@@ -23,7 +23,7 @@ class TicketScreen extends StatelessWidget {
       body: currentUser == null
           ? Center(
               child: Text(
-                "User tidak ditemukan.",
+                "User not found.",
                 style: TextStyle(
                   color: context.read<ThemeProvider>().isLightTheme
                       ? Colors.black
@@ -43,7 +43,7 @@ class TicketScreen extends StatelessWidget {
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
-                    child: Text("Tidak ada data pesanan.",
+                    child: Text("There is no order data.",
                         style: TextStyle(
                           color: context.read<ThemeProvider>().isLightTheme
                               ? Colors.black
@@ -111,7 +111,7 @@ class TicketScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 _buildDetailRow(
-                                    context, "Kode Pemesanan: $kodePemesanan", ""),
+                                    context, "Order Code: $kodePemesanan", ""),
                                 _buildDetailRow(context, "$namaPemesan", nik),
                                 _buildDetailRow(context, nomorTelepon, ""),
                                 _buildDetailRow(context, alamat, ""),

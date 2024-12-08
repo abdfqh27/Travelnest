@@ -122,7 +122,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: Text("Edit Profile",
+            style: Theme.of(context).textTheme.displayMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -199,7 +200,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       suffixIcon: IconButton(
                         icon: const Icon(
                           Icons.calendar_today,
-                          color: Colors.blue, // Ubah warna ikon di sini
+                          color: const Color(0xFF5A189A), // Ubah warna ikon di sini
                         ),
                         onPressed:
                             _selectBirthDate, // Panggil fungsi pemilih tanggal

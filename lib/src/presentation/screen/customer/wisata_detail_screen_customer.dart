@@ -42,7 +42,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       title: Text(
-        "Wisata Detail",
+        "Tour Details",
         style: TextStyle(
           color: context.read<ThemeProvider>().isLightTheme
               ? Colors.black
@@ -254,7 +254,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    "Deskripsi:",
+                    "Description:",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 10),
@@ -274,7 +274,7 @@ class _WisataDetailScreenState extends State<WisataDetailScreenCustomer> {
                             builder: (_) => TambahPesananScreen(wisata: widget.wisata),
                           ),
                       ),
-                      child: const Text("Pesan Wisata"),
+                      child: const Text("Book a Tour"),
                     ),
                   ),
                 ],

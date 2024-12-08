@@ -21,7 +21,7 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Pembayaran Berhasil",
+          "Payment Successful",
           style: Theme.of(context).textTheme.displayMedium,
         ),
       ),

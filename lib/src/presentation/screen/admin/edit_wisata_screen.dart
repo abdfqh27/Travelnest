@@ -58,7 +58,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        "Edit Wisata",
+        "Edit Travel",
         style: Theme.of(context).textTheme.displayMedium,
       )),
       body: SingleChildScrollView(
@@ -78,7 +78,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Edit Wisata",
+                      "Edit Travel",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -86,56 +86,56 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     TextFormField(
                       initialValue: name,
                       decoration: const InputDecoration(
-                        labelText: "Nama Wisata",
+                        labelText: "Tourist Name",
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) => name = value,
                       validator: (value) => value == null || value.isEmpty
-                          ? "Nama wisata diperlukan"
+                          ? "Tourist name required"
                           : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: price.toString(),
                       decoration: const InputDecoration(
-                        labelText: "Harga",
+                        labelText: "Price",
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
                       validator: (value) => value == null || value.isEmpty
-                          ? "Harga diperlukan"
+                          ? "Price required"
                           : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: location, // Tampilkan lokasi awal
                       decoration: const InputDecoration(
-                        labelText: "Lokasi",
+                        labelText: "Lokcation",
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) => location = value, // Perbarui lokasi
                       validator: (value) => value == null || value.isEmpty
-                          ? "Lokasi diperlukan"
+                          ? "Location required"
                           : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: description,
                       decoration: const InputDecoration(
-                        labelText: "Deskripsi",
+                        labelText: "Description",
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) => description = value,
                       validator: (value) => value == null || value.isEmpty
-                          ? "Deskripsi diperlukan"
+                          ? "Description required"
                           : null,
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<WisataType>(
                       value: type,
                       decoration: const InputDecoration(
-                        labelText: "Tipe",
+                        labelText: "Category",
                         border: OutlineInputBorder(),
                       ),
                       items: WisataType.values.map((type) {
@@ -148,7 +148,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      "Gambar Utama",
+                      "Main Image",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -157,7 +157,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                         icon: const Icon(Icons.add_a_photo,
                             size: 40, color: Colors.blueAccent),
                         onPressed: _pickMainImage,
-                        tooltip: 'Pilih Gambar Utama',
+                        tooltip: 'Select Main Image',
                       ),
                     ),
                     if (_mainImageFile != null)
@@ -176,7 +176,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                       ),
                     const SizedBox(height: 24),
                     const Text(
-                      "Gambar Carousel",
+                      "Carousel Image",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -185,7 +185,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                         icon: const Icon(Icons.collections,
                             size: 40, color: Colors.green),
                         onPressed: _pickCarouselImages,
-                        tooltip: 'Pilih Gambar Carousel',
+                        tooltip: 'Select Carousel Image',
                       ),
                     ),
                     if (_carouselImages.isNotEmpty)
@@ -238,7 +238,7 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                             Navigator.pop(context, true);
                           }
                         },
-                        child: const Text("Simpan Perubahan"),
+                        child: const Text("Save Changes"),
                       ),
                     ),
                   ],
