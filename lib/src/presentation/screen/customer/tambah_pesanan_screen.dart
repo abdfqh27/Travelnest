@@ -23,8 +23,6 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
   final _alamatController = TextEditingController();
   DateTime? _selectedDate;
 
-  
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -73,8 +71,24 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 // Nama Wisata (Tidak Bisa Diubah)
                 TextFormField(
                   initialValue: widget.wisata.name,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Tour Name",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
                   ),
                   readOnly: true,
                 ),
@@ -82,8 +96,24 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 // Harga Tiket (Tidak Bisa Diubah)
                 TextFormField(
                   initialValue: formatRupiah(widget.wisata.price),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Ticket Price",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
                   ),
                   readOnly: true,
                 ),
@@ -100,49 +130,201 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                 // Nama Pemesan
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: "Booker Name",
-                  ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? "Nama wajib diisi" : null,
+                  decoration: InputDecoration(
+                      labelText: "Booker Name",
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Add border radius
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Add border radius
+                        borderSide: const BorderSide(
+                          color: Color(0xFF5A189A),
+                          width: 2.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 2.0,
+                        ),
+                      )),
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Booker Name Required"
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 // NIK
                 TextFormField(
                   controller: _nikController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "NIK",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
                   ),
                   validator: (value) =>
-                      value == null || value.isEmpty ? "NIK wajib diisi" : null,
+                      value == null || value.isEmpty ? "NIK Required" : null,
                 ),
                 const SizedBox(height: 16),
                 // Nomor Telepon
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "No. Handphone",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
                   ),
                   keyboardType: TextInputType.phone,
-                  validator: (value) =>
-                      value == null || value.isEmpty ? "No. Handphone wajib diisi" : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Mobile phone number required"
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 // Nama Pengunjung
                 TextFormField(
                   controller: _alamatController,
-                  decoration: const InputDecoration(
-                    labelText: "Addres",
+                  decoration: InputDecoration(
+                    labelText: "Address",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? "Alamat wajib diisi" : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Address Required"
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 // Tanggal Kunjungan
                 TextFormField(
                   readOnly: true,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Date",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(8), // Add border radius
+                      borderSide: const BorderSide(
+                        color: Color(0xFF5A189A),
+                        width: 2.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                        width: 2.0,
+                      ),
+                    ),
                   ),
                   controller: TextEditingController(
                     text: _selectedDate == null
@@ -151,7 +333,7 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                   ),
                   onTap: () => pickDate(context),
                   validator: (value) =>
-                      _selectedDate == null ? "Tanggal" : null,
+                      _selectedDate == null ? "Date Required" : null,
                 ),
                 const SizedBox(height: 16),
                 // Tombol Submit
@@ -174,7 +356,8 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                               alamat: _alamatController.text,
                               tanggalKunjungan: _selectedDate == null
                                   ? ""
-                                  : DateFormat('dd MMM yyyy').format(_selectedDate!),
+                                  : DateFormat('dd MMM yyyy')
+                                      .format(_selectedDate!),
                             ),
                           ),
                         );
@@ -182,12 +365,16 @@ class _TambahPesananScreenState extends State<TambahPesananScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // Border radius 8
+                        borderRadius:
+                            BorderRadius.circular(8), // Border radius 8
                       ),
-                      backgroundColor: const Color(0xFF5A189A), // Warna tombol (contoh)
-                      padding: const EdgeInsets.symmetric(vertical: 16), // Padding vertikal
+                      backgroundColor:
+                          const Color(0xFF5A189A), // Warna tombol (contoh)
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16), // Padding vertikal
                     ),
-                    child: const Text("Continue",
+                    child: const Text(
+                      "Continue",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

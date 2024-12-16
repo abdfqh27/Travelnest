@@ -77,9 +77,38 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const Divider(),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Tourist Name",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
@@ -93,9 +122,38 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Price",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
@@ -113,9 +171,38 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Location",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
@@ -129,9 +216,38 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Description",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
@@ -145,9 +261,24 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<WisataType>(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Category",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
@@ -241,6 +372,26 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            if (_mainImageFile == null) {
+                              // Tampilkan pesan kesalahan jika Main Image kosong
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Main Image is required")),
+                              );
+                              return; // Hentikan proses jika Main Image kosong
+                            }
+
+                            if (_carouselImages.isEmpty) {
+                              // Tampilkan pesan kesalahan jika Carousel Images kosong
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        "At least one Carousel Image is required")),
+                              );
+                              return; // Hentikan proses jika Carousel Images kosong
+                            }
+
+                            // Jika semua validasi lulus, lanjutkan proses
                             final wisata = Wisata(
                               id: '',
                               image: '',

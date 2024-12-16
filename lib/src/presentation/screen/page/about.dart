@@ -5,7 +5,7 @@ import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +124,11 @@ class DeveloperCard extends StatelessWidget {
   final String imagePath;
 
   const DeveloperCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.role,
     required this.imagePath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

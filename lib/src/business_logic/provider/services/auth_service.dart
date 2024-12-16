@@ -196,29 +196,45 @@ Future<void> updateBirthDate(String uid, DateTime newBirthdate) async {
     if (!isConnected) {
       throw Exception("Tidak ada koneksi internet.");
     }
-    print("Koneksi internet aktif.");
+    if (kDebugMode) {
+      print("Koneksi internet aktif.");
+    }
 
-    print("Merefresh token...");
+    if (kDebugMode) {
+      print("Merefresh token...");
+    }
     await user.reload(); // Refresh token pengguna
-    print("Token diperbarui.");
+    if (kDebugMode) {
+      print("Token diperbarui.");
+    }
 
-    print("Memulai login ulang...");
+    if (kDebugMode) {
+      print("Memulai login ulang...");
+    }
     // Login ulang dengan password lama untuk verifikasi
     await _auth.signInWithEmailAndPassword(email: email, password: oldPassword)
         .timeout(const Duration(seconds: 30), onTimeout: () {
       throw Exception("Login ulang timeout. Periksa koneksi internet Anda.");
     });
-    print("Login ulang berhasil.");
+    if (kDebugMode) {
+      print("Login ulang berhasil.");
+    }
 
-    print("Mengganti password...");
+    if (kDebugMode) {
+      print("Mengganti password...");
+    }
     // Ganti password baru
     await user.updatePassword(newPassword)
         .timeout(const Duration(seconds: 30), onTimeout: () {
       throw Exception("Update password timeout. Periksa koneksi internet Anda.");
     });
-    print("Password berhasil diganti.");
+    if (kDebugMode) {
+      print("Password berhasil diganti.");
+    }
   } catch (e) {
-    print("Error: $e");
+    if (kDebugMode) {
+      print("Error: $e");
+    }
     if (e is FirebaseAuthException) {
       switch (e.code) {
         case 'wrong-password':
@@ -233,6 +249,22 @@ Future<void> updateBirthDate(String uid, DateTime newBirthdate) async {
     }
   }
 }
+
+// Metode untuk memvalidasi password lama
+  Future<bool> validateOldPassword(String email, String oldPassword) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: oldPassword,
+      );
+      return true; // Password valid
+    } catch (e) {
+      if (e is FirebaseAuthException && e.code == 'wrong-password') {
+        return false; // Password salah
+      }
+      throw Exception("Error validating old password: ${e.toString()}");
+    }
+  }
 
 
   // Sign out the user

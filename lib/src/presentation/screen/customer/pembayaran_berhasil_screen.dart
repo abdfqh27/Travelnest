@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
+import 'package:wisata_app/src/presentation/screen/customer/home_customer_screen.dart';
 
 class KonfirmasiPembayaranScreen extends StatelessWidget {
   final String totalPembayaran;
@@ -37,8 +38,8 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
               "Payment Notification Sent",
               style: TextStyle(
                 color: context.read<ThemeProvider>().isLightTheme
-                          ? Colors.black
-                          : Colors.white,
+                    ? Colors.black
+                    : Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -49,16 +50,16 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: context.read<ThemeProvider>().isLightTheme
-                          ? Colors.black87
-                          : Colors.white70,
+                    ? Colors.black87
+                    : Colors.white70,
                 fontSize: 14,
               ),
             ),
             const SizedBox(height: 16),
             Card(
               color: context.read<ThemeProvider>().isLightTheme
-                          ? LightThemeColor.primaryDark
-                          : DarkThemeColor.primaryLight,
+                  ? LightThemeColor.primaryDark
+                  : DarkThemeColor.primaryLight,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -101,8 +102,8 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Card(
               color: context.read<ThemeProvider>().isLightTheme
-                          ? LightThemeColor.primaryDark
-                          : DarkThemeColor.primaryLight,
+                  ? LightThemeColor.primaryDark
+                  : DarkThemeColor.primaryLight,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -122,11 +123,17 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeCustomerScreen(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF5A189A),
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -148,8 +155,13 @@ class KonfirmasiPembayaranScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Color(0xFF7B7B7B), fontSize: 14)),
-          Text(value, style: const TextStyle(color: Color(0xFF7B7B7B), fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(label,
+              style: const TextStyle(color: Color(0xFF7B7B7B), fontSize: 14)),
+          Text(value,
+              style: const TextStyle(
+                  color: Color(0xFF7B7B7B),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14)),
         ],
       ),
     );

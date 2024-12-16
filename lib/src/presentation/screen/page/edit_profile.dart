@@ -73,8 +73,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final shouldSave = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text("Apakah Anda yakin ingin melakukan perubahan?"),
-        content: const Text("Pastikan semua data sudah benar"),
+        title: const Text("Are you sure you want to make a change?"),
+        content: const Text("Make sure all data is correct"),
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(context, false),
@@ -148,9 +148,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Name",
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Color(0xFF5A189A),
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty
@@ -161,9 +188,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _jeniskelaminController,
-                decoration: const InputDecoration(
-                  labelText: "Jenis Kelamin",
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: "Gender",
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Color(0xFF5A189A),
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty
@@ -174,9 +228,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _nohpController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "No Hp",
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Color(0xFF5A189A),
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty
@@ -196,11 +277,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     decoration: InputDecoration(
                       labelText: "Birth Date",
-                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Add border radius
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Add border radius
+                        borderSide: const BorderSide(
+                          color: Color(0xFF5A189A),
+                          width: 2.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 2.0,
+                        ),
+                      ),
                       suffixIcon: IconButton(
                         icon: const Icon(
                           Icons.calendar_today,
-                          color: const Color(0xFF5A189A), // Ubah warna ikon di sini
+                          color: const Color(
+                              0xFF5A189A), // Ubah warna ikon di sini
                         ),
                         onPressed:
                             _selectBirthDate, // Panggil fungsi pemilih tanggal
@@ -217,9 +328,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _addressController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Address",
-                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8), // Add border radius
+                    borderSide: const BorderSide(
+                      color: Color(0xFF5A189A),
+                      width: 2.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(
+                      color: Colors.red,
+                      width: 2.0,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty

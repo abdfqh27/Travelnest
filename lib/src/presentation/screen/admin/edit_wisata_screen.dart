@@ -85,9 +85,38 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const Divider(),
                     TextFormField(
                       initialValue: name,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Tourist Name",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                       ),
                       onChanged: (value) => name = value,
                       validator: (value) => value == null || value.isEmpty
@@ -97,9 +126,38 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: price.toString(),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Price",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) => price = double.tryParse(value) ?? 0,
@@ -110,9 +168,38 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: location, // Tampilkan lokasi awal
-                      decoration: const InputDecoration(
-                        labelText: "Lokcation",
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: "Location",
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                       ),
                       onChanged: (value) => location = value, // Perbarui lokasi
                       validator: (value) => value == null || value.isEmpty
@@ -122,9 +209,38 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       initialValue: description,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Description",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.red,
+                            width: 2.0,
+                          ),
+                        ),
                       ),
                       onChanged: (value) => description = value,
                       validator: (value) => value == null || value.isEmpty
@@ -134,9 +250,24 @@ class _EditWisataScreenState extends State<EditWisataScreen> {
                     const SizedBox(height: 16),
                     DropdownButtonFormField<WisataType>(
                       value: type,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Category",
-                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(8), // Add border radius
+                          borderSide: const BorderSide(
+                            color: Color(0xFF5A189A),
+                            width: 2.0,
+                          ),
+                        ),
                       ),
                       items: WisataType.values.map((type) {
                         return DropdownMenuItem(

@@ -5,8 +5,6 @@ import 'package:wisata_app/firebase_options.dart';
 import 'package:wisata_app/src/business_logic/provider/providers/auth_provider.dart';
 import 'dart:ui' show PointerDeviceKind;
 
-import 'package:wisata_app/src/presentation/screen/admin/home_admin_screen.dart';
-import 'package:wisata_app/src/presentation/screen/customer/home_customer_screen.dart';
 import 'package:wisata_app/src/business_logic/provider/category/category_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';

@@ -134,11 +134,26 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Metode untuk memvalidasi password lama
+  Future<bool> validateOldPassword(String email, String oldPassword) async {
+    try {
+      final isValid = await _authService.validateOldPassword(email, oldPassword);
+      return isValid; // Return true jika valid
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error validating old password: $e");
+      }
+      throw Exception("Error validating old password: ${e.toString()}");
+    }
+  }
+
   Future<void> changePassword(String oldPassword, String newPassword) async {
     try {
       await _authService.changePassword(oldPassword, newPassword);
     } catch (e) {
-      print("Error saat mengganti password: $e");
+      if (kDebugMode) {
+        print("Error saat mengganti password: $e");
+      }
       throw Exception("Gagal mengganti password: ${e.toString()}");
     }
   }

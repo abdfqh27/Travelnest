@@ -5,7 +5,7 @@ import 'package:wisata_app/core/app_color.dart';
 import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
-  const HelpAndSupportPage({Key? key}) : super(key: key);
+  const HelpAndSupportPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -219,12 +219,13 @@ class FAQItem extends StatefulWidget {
   final String answer;
 
   const FAQItem({
-    Key? key,
+    super.key,
     required this.question,
     required this.answer,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _FAQItemState createState() => _FAQItemState();
 }
 
