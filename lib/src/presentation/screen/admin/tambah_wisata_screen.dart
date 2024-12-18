@@ -304,7 +304,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     Center(
                       child: IconButton(
                         icon: const Icon(Icons.add_a_photo,
-                            size: 40, color: Colors.blueAccent),
+                            size: 40, color: Color(0xFF5A189A)),
                         onPressed: _pickMainImage,
                         tooltip: 'Select Main Image',
                       ),
@@ -331,7 +331,7 @@ class _TambahWisataScreenState extends State<TambahWisataScreen> {
                     Center(
                       child: IconButton(
                         icon: const Icon(Icons.collections,
-                            size: 40, color: Colors.green),
+                            size: 40, color: Color(0xFF5A189A)),
                         onPressed: _pickCarouselImages,
                         tooltip: 'Select Carousel Image',
                       ),

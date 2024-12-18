@@ -5,6 +5,7 @@ import 'package:wisata_app/src/business_logic/provider/wisata/wisata_provider.da
 import 'package:wisata_app/src/data/model/wisata.dart';
 import 'package:wisata_app/src/presentation/screen/admin/tambah_wisata_screen.dart';
 import 'package:wisata_app/src/presentation/screen/admin/edit_wisata_screen.dart';
+import 'package:wisata_app/src/business_logic/provider/theme/theme_provider.dart';
 
 class DaftarWisataScreen extends StatelessWidget {
   const DaftarWisataScreen({super.key});
@@ -84,7 +85,9 @@ class DaftarWisataScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                color: Colors.white.withOpacity(0.8),
+                color: context.read<ThemeProvider>().isLightTheme
+                    ? Colors.white
+                    : DarkThemeColor.primaryLight,
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(8.0),
                   leading: ClipRRect(
@@ -100,10 +103,7 @@ class DaftarWisataScreen extends StatelessWidget {
                   ),
                   title: Text(
                     wisata.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   subtitle: Text(
                     "Rp ${wisata.price.toStringAsFixed(0).replaceAll(RegExp(r'\B(?=(\d{3})+(?!\d))'), '.')} ",
@@ -155,8 +155,8 @@ class DaftarWisataScreen extends StatelessWidget {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
-                                    wisataProvider
-                                        .deleteWisata(context, wisata.id);
+                                    wisataProvider.deleteWisata(
+                                        context, wisata.id);
                                     if (context.mounted) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

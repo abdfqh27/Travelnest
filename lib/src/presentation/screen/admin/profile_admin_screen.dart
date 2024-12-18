@@ -199,8 +199,8 @@ class ProfileAdminScreen extends StatelessWidget {
     final shouldLogout = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text("Apakah Anda yakin ingin keluar?"),
-        content: const Text("Pastikan semua data sudah aman tersimpan"),
+        title: const Text("Are you sure you want to logout?"),
+        content: const Text("Make sure all data is stored safely"),
         actions: [
           CupertinoDialogAction(
             onPressed: () => Navigator.pop(context, false),
